@@ -3,10 +3,12 @@ package com.truck.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.truck.common.Const;
 import com.truck.common.ServerResponse;
 import com.truck.dao.TransportMapper;
 import com.truck.pojo.Transport;
 import com.truck.service.ITransportService;
+import com.truck.util.DateTimeUtil;
 import com.truck.vo.TransportVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class TransportServiceImpl implements ITransportService {
                 || StringUtils.isEmpty(transport.getSalesContract()) || StringUtils.isEmpty(transport.getInvoice()) || StringUtils.isEmpty(transport.getExportCost())){
             return ServerResponse.createByErrorMessage("上传信息不足，请完善");
         }
+        transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
         int resultCount = transportMapper.insertSelective(transport);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("信息录入成功");
@@ -91,6 +94,7 @@ public class TransportServiceImpl implements ITransportService {
         transport.setId(id);
         transport.setSalesList(salesList);
         transport.setEntranceCost(entranceCost);
+        transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("完善成功");
@@ -128,8 +132,31 @@ public class TransportServiceImpl implements ITransportService {
      */
     public TransportVo assembleTransport(Transport transport){
         TransportVo transportVo = new TransportVo();
-
+        transportVo.setId(transport.getId());
+        transportVo.setDeclareNum(transport.getDeclareNum());
+        transportVo.setDestination(transport.getDestination());
+        transportVo.setArrivalList(getFileName(transport.getArrivalList()));
+        transportVo.setPurchaseList(getFileName(transport.getPurchaseList()));
+        transportVo.setSalesContract(getFileName(transport.getSalesContract()));
+        transportVo.setInvoice(getFileName(transport.getInvoice()));
+        transportVo.setPurchaseContract(getFileName(transport.getPurchaseContract()));
+        transportVo.setExportCost(getFileName(transport.getExportCost()));
+        if(!StringUtils.isEmpty(transport.getSalesList())){
+            transportVo.setSalesList(getFileName(transport.getSalesList()));
+        }
+        if(!StringUtils.isEmpty(transport.getEntranceCost())){
+            transportVo.setEntranceCost(getFileName(transport.getEntranceCost()));
+        }
+        transportVo.setStatus(transportVo.getStatus());
+        transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
+        transportVo.setCreateTime(DateTimeUtil.dateToStr(transport.getCreateTime()));
+        transportVo.setUpdateTime(DateTimeUtil.dateToStr(transport.getUpdateTime()));
 
         return transportVo;
+    }
+
+    public String getFileName(String url){
+        String fileName = url.substring(url.lastIndexOf("/") +1);
+        return fileName;
     }
 }

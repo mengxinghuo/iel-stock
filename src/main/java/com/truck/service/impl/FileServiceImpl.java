@@ -83,7 +83,7 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
-    public String uploadReturnCDN(MultipartFile file, String path) throws IOException {
+    /*public String uploadReturnCDN(MultipartFile file, String path) throws IOException {
         UpYun upyun = new UpYun(bucketName, userName, passWord);
         upyun.setTimeout(60);
         upyun.setApiDomain(UpYun.ED_AUTO);
@@ -101,13 +101,13 @@ public class FileServiceImpl implements FileService {
                 targetFile, true);
 //        targetFile.delete();
         if (result) {
-        /*    String remoteFilePath = PropertiesUtil.getProperty("field") +uploadUrl+uploadFileName;
+        *//*    String remoteFilePath = PropertiesUtil.getProperty("field") +uploadUrl+uploadFileName;
             File file2 = new File(path); // 创建一个本地临时文件
-            boolean result2= upyun.readFile(remoteFilePath, file2);*/
+            boolean result2= upyun.readFile(remoteFilePath, file2);*//*
             return uploadFileName;
         }
         return null;
-    }
+    }*/
 
     public Map<String,String> delCDN( String urls) throws IOException {
         Map fileMap = Maps.newHashMap();

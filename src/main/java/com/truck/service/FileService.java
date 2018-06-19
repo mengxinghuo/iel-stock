@@ -14,7 +14,5 @@ public interface FileService {
 
     String uploadCDN(MultipartFile file, String path) throws IOException;
 
-    String uploadReturnCDN(MultipartFile file, String path) throws IOException;
-
     Map<String,String> delCDN(String urls) throws IOException;
 }

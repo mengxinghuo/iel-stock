@@ -1,6 +1,9 @@
 package com.truck.dao;
 
 import com.truck.pojo.EntryDetail;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface EntryDetailMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,6 @@ public interface EntryDetailMapper {
     int updateByPrimaryKeySelective(EntryDetail record);
 
     int updateByPrimaryKey(EntryDetail record);
+
+    int bachInsertExports(@Param("exportsListsList") List<EntryDetail> entryDetailList);
 }

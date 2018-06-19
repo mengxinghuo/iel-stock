@@ -244,4 +244,24 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="bachInsertExports" parameterType="list" >
+    insert into iel_entry_detail ( entry_id, customs_clearance,
+    destination, package_no, serial_no,
+    parts_no, parts_name, parts_en_name,
+    unit, purchase_num, purchase_price,
+    sales_price, device_type, create_time,
+    update_time)
+    values
+    <foreach collection="exportsListsList" index="index" item="item" separator=",">
+      (
+      #{entryId,jdbcType=INTEGER}, #{customsClearance,jdbcType=VARCHAR},
+      #{destination,jdbcType=VARCHAR}, #{packageNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR},
+      #{partsNo,jdbcType=VARCHAR}, #{partsName,jdbcType=VARCHAR}, #{partsEnName,jdbcType=VARCHAR},
+      #{unit,jdbcType=VARCHAR}, #{purchaseNum,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL},
+      #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, now(),now()
+      )
+    </foreach>
+    values ()
+  </insert>
 </mapper>
