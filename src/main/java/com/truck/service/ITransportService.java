@@ -12,4 +12,6 @@ public interface ITransportService {
     ServerResponse consummateTransport(Integer adminId, Integer id, String salesList, String entranceCost);
 
     ServerResponse getAllList(Integer status,int pageNum,int pageSize);
+
+    ServerResponse createEntry(Integer id);
 }

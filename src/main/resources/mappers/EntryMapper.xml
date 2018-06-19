@@ -113,4 +113,24 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkoutDeclare" parameterType="map" resultType="int">
+    select count(1) from iel_entry
+    where declare_num = #{declareNum}
+  </select>
+
+  <select id="selectAllList" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_entry
+    <where>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="declareNum != null">
+        and declare_num = #{declareNum}
+      </if>
+    </where>
+    order by create_time desc
+  </select>
 </mapper>

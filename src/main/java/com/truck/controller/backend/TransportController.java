@@ -1,25 +1,44 @@
 package com.truck.controller.backend;
 
+import com.google.common.collect.Maps;
 import com.truck.common.Const;
 import com.truck.common.ResponseCode;
 import com.truck.common.ServerResponse;
 import com.truck.pojo.Admin;
 import com.truck.pojo.Transport;
+import com.truck.service.FileService;
+import com.truck.service.IExportsListsService;
 import com.truck.service.ITransportService;
+import com.truck.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/manage/transport/")
 public class TransportController {
 
+    private static  final Logger logger = LoggerFactory.getLogger(FileController.class);
     @Autowired
     private ITransportService iTransportService;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private IExportsListsService iExportsListsService;
 
     /**
      * 出口录入信息
@@ -63,12 +82,17 @@ public class TransportController {
      */
     @RequestMapping("consummate_transport.do")
     @ResponseBody
-    public ServerResponse consummateTransport(HttpSession session,Integer id,String salesList,String entranceCost){
+    public ServerResponse consummateTransport(HttpSession session,Integer id,HttpServletRequest request,
+                                              @RequestParam(value = "salesList",required = false) MultipartFile[] salesList,
+                                              @RequestParam(value = "entranceCost",required = false) MultipartFile[] entranceCost){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
-        return iTransportService.consummateTransport(admin.getAdminId(),id,salesList,entranceCost);
+        ServerResponse serverResponse = iTransportService.createEntry(id);
+        Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
+        Map entranceMap = upLoadCDN(entranceCost,request);
+        return iTransportService.consummateTransport(admin.getAdminId(),id,salesMap.get("file_path").toString(),entranceMap.get("file_path").toString());
     }
 
     /**
@@ -84,5 +108,60 @@ public class TransportController {
                                      @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                      @RequestParam(value = "pageNum",defaultValue = "10") int pageSize){
         return iTransportService.getAllList(status,pageNum,pageSize);
+    }
+
+    public Map uploadFileCDNExcel(MultipartFile[] files, HttpServletRequest request,ServerResponse serverResponse) {
+        Map resultMap = Maps.newHashMap();
+        MultipartFile file = null;
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String targetFileName = null;
+        int success = 0;
+        String[] urlS = new String[files.length];
+        try {
+            for (int i = 0; i < files.length; i++) {
+                targetFileName = fileService.uploadReturnCDN(files[i], path);
+                if (StringUtils.isNotBlank(targetFileName)) {
+                    urlS[i] = PropertiesUtil.getProperty("field") + PropertiesUtil.getProperty("uploadUrl") +targetFileName;
+                    if(serverResponse.isSuccess()){
+                        iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
+                        File targetFile = new File(path, targetFileName);
+                        Boolean results = targetFile.delete();
+                        logger.info("删除结果:{}",results);
+                    }
+                }
+                success++;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        resultMap.put("success", true);
+        resultMap.put("msg", "成功导入" + success + "文件");
+        resultMap.put("file_path", urlS);
+
+        return resultMap;
+    }
+
+    public Map upLoadCDN(MultipartFile[] files, HttpServletRequest request) {
+        Map resultMap = Maps.newHashMap();
+        MultipartFile file = null;
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String targetFileName = null;
+        int success = 0;
+        String[] urlS = new String[files.length];
+        try {
+            for (int i = 0; i < files.length; i++) {
+                targetFileName = fileService.uploadCDN(files[i], path);
+                if (StringUtils.isNotBlank(targetFileName)) {
+                    urlS[i] = PropertiesUtil.getProperty("field") + targetFileName;
+                }
+                success++;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        resultMap.put("success", true);
+        resultMap.put("msg", "成功上传" + success + "文件");
+        resultMap.put("file_path", urlS);
+        return resultMap;
     }
 }

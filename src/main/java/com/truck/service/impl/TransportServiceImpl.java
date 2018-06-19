@@ -3,9 +3,12 @@ package com.truck.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.sun.org.apache.regexp.internal.RE;
 import com.truck.common.Const;
 import com.truck.common.ServerResponse;
+import com.truck.dao.EntryMapper;
 import com.truck.dao.TransportMapper;
+import com.truck.pojo.Entry;
 import com.truck.pojo.Transport;
 import com.truck.service.ITransportService;
 import com.truck.util.DateTimeUtil;
@@ -15,12 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Random;
 
 @Service("iTransportService")
 public class TransportServiceImpl implements ITransportService {
 
     @Autowired
     private TransportMapper transportMapper;
+    @Autowired
+    private EntryMapper entryMapper;
 
     /**
      * 出口 录入信息
@@ -123,6 +129,36 @@ public class TransportServiceImpl implements ITransportService {
         PageInfo pageInfo = new PageInfo(transportList);
         pageInfo.setList(transportVoList);
         return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    /**
+     * 创建入库单
+     * @param id
+     * @return
+     */
+    public ServerResponse createEntry(Integer id){
+        Transport transport = transportMapper.selectByPrimaryKey(id);
+        int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
+        if(rowCount > 0){
+            return ServerResponse.createByErrorMessage("已存在");
+            //业务待定
+        }
+        String entryNo = String.valueOf(this.generateEntryNo());
+        Entry entry = new Entry();
+        entry.setEntryNo(entryNo);
+        entry.setDeclareNum(transport.getDeclareNum());
+        entry.setDestination(transport.getDestination());
+        entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
+        int resultCount = entryMapper.insertSelective(entry);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccess(entry.getId());
+        }
+        return ServerResponse.createByErrorMessage("创建失败");
+    }
+
+    private long generateEntryNo(){
+        long currentTime =System.currentTimeMillis();
+        return currentTime+new Random().nextInt(100);
     }
 
     /**

@@ -264,4 +264,11 @@
     </foreach>
     values ()
   </insert>
+
+  <select id="selectEntryDetail" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_entry_detail
+    where entry_id = #{entryId}
+  </select>
 </mapper>

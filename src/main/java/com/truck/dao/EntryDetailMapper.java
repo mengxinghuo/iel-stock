@@ -19,4 +19,6 @@ public interface EntryDetailMapper {
     int updateByPrimaryKey(EntryDetail record);
 
     int bachInsertExports(@Param("exportsListsList") List<EntryDetail> entryDetailList);
+
+    List selectEntryDetail(@Param("entryId") Integer entryId);
 }

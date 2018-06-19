@@ -2,8 +2,6 @@ package com.truck.vo;
 
 import com.truck.pojo.Transport;
 
-import java.util.Date;
-
 public class TransportVo {
     private Integer id;
 

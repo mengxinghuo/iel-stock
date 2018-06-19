@@ -57,6 +57,36 @@ public class Const {
 
     }
 
+    public enum EntryStatusEnum{
+        STANDBY(0,"未入库"),
+        CONFIRM(1,"检查中"),
+        FINISH(2,"已入库");
+
+        private String value;
+        private int code;
+        EntryStatusEnum(int code,String value){
+            this.code = code;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+        public static EntryStatusEnum codeOf(int code){
+            for(EntryStatusEnum entryStatusEnum : values()){
+                if(entryStatusEnum.getCode() == code){
+                    return entryStatusEnum;
+                }
+            }
+            throw new RuntimeException("么有找到对应的枚举");
+        }
+
+    }
+
     public interface AlipayCallback {
         String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
         String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
