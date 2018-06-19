@@ -7,6 +7,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,8 +18,12 @@ import java.util.List;
 
 public class Excel {
 
+    private static  final Logger logger = LoggerFactory.getLogger(Excel.class);
+
     public static List<EntryDetail> loadExportsLists(Integer entryId,String xlsPath) throws IOException {
+
         List<EntryDetail> temp = new ArrayList();
+        logger.info("xlsPath路径：{}",xlsPath);
         FileInputStream fileIn = new FileInputStream(xlsPath);
 //根据指定的文件输入流导入Excel从而产生Workbook对象
         Workbook wb0 = new HSSFWorkbook(fileIn);

@@ -2,6 +2,7 @@ package com.truck.controller.backend;
 
 import com.google.common.collect.Maps;
 import com.truck.service.FileService;
+import com.truck.service.IExportsListsService;
 import com.truck.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -30,6 +32,9 @@ public class FileController {
     private static  final Logger logger = LoggerFactory.getLogger(FileController.class);
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private IExportsListsService iExportsListsService;
 
 
     @RequestMapping(value = "uploadFile.do", method = RequestMethod.POST)
@@ -86,17 +91,17 @@ public class FileController {
         return resultMap;
     }
 
-   /* @RequestMapping(value = "uploadFileCDNExcel.do", method = RequestMethod.POST)
+    @RequestMapping(value = "uploadFileCDNExcel.do", method = RequestMethod.POST)
     @ResponseBody
     //上传图片
     public Map uploadFileCDNExcel(HttpSession session,@RequestParam(value = "upload_file", required = false) MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws IOException {
 //        Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         Map resultMap = Maps.newHashMap();
-   *//*     if(admin == null){
+      /*  if(admin == null){
             resultMap.put("success",false);
             resultMap.put("msg","请登录管理员");
             return resultMap;
-        }*//*
+        }*/
         MultipartFile file = null;
         String path = request.getSession().getServletContext().getRealPath("upload");
         String targetFileName = null;
@@ -106,7 +111,7 @@ public class FileController {
             targetFileName = fileService.uploadReturnCDN(files[i], path);
             if (StringUtils.isNotBlank(targetFileName)) {
                 urlS[i] = PropertiesUtil.getProperty("field") + PropertiesUtil.getProperty("uploadUrl") +targetFileName;
-                iExportsListsService.bachInsertExports(path+"/"+targetFileName);
+                iExportsListsService.bachInsertExports(null,path+"/"+targetFileName);
                 File targetFile = new File(path, targetFileName);
                 Boolean results = targetFile.delete();
                 logger.info("删除结果:{}",results);
@@ -118,7 +123,7 @@ public class FileController {
         resultMap.put("file_path", urlS);
 
         return resultMap;
-    }*/
+    }
 
     @RequestMapping(value = "delFileCDN.do", method = RequestMethod.POST)
     @ResponseBody
