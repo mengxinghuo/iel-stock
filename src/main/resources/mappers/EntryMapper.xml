@@ -34,7 +34,7 @@
       #{destination,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{inspector,jdbcType=VARCHAR}, 
       now(), now())
   </insert>
-  <insert id="insertSelective" parameterType="com.truck.pojo.Entry" >
+  <insert id="insertSelective" parameterType="com.truck.pojo.Entry" useGeneratedKeys="true" keyProperty="id">
     insert into iel_entry
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
