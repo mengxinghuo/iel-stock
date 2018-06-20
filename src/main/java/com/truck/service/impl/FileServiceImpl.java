@@ -4,6 +4,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.truck.service.FileService;
+import com.truck.util.DateTimeUtil;
 import com.truck.util.FTPUtil;
 import com.truck.util.PropertiesUtil;
 import main.java.com.UpYun;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -66,7 +68,10 @@ public class FileServiceImpl implements FileService {
         upyun.setApiDomain(UpYun.ED_AUTO);
         String fileName = file.getOriginalFilename();
         String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
+//        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
+        Date date = new Date();
+        String dateStr = DateTimeUtil.dateToStr(date,"yyyy-MM-dd");
+        String uploadFileName = dateStr+fileName;
         File fileDir = new File(path);
         if (!fileDir.exists()) {
             fileDir.setWritable(true);
