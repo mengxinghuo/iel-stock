@@ -14,7 +14,10 @@ import com.truck.pojo.Entry;
 import com.truck.pojo.Transport;
 import com.truck.service.ITransportService;
 import com.truck.util.DateTimeUtil;
+import com.truck.util.FTPUtil;
 import com.truck.vo.TransportVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,6 +33,8 @@ public class TransportServiceImpl implements ITransportService {
     private TransportMapper transportMapper;
     @Autowired
     private EntryMapper entryMapper;
+
+    private static  final Logger logger = LoggerFactory.getLogger(TransportServiceImpl.class);
 
     /**
      * 出口 录入信息
@@ -138,6 +143,8 @@ public class TransportServiceImpl implements ITransportService {
      */
     public ServerResponse createEntry(Integer id){
         Transport transport = transportMapper.selectByPrimaryKey(id);
+        logger.info("mmm:{}",transport);
+        logger.info("mmm:{}",transport.getDeclareNum());
         int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
         if(rowCount > 0){
             return ServerResponse.createByErrorMessage("已存在");
