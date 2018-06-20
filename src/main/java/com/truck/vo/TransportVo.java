@@ -2,6 +2,8 @@ package com.truck.vo;
 
 import com.truck.pojo.Transport;
 
+import java.util.List;
+
 public class TransportVo {
     private Integer id;
 
@@ -9,21 +11,21 @@ public class TransportVo {
 
     private String destination;
 
-    private String arrivalList;
+    private List arrivalList;
 
-    private String purchaseList;
+    private List purchaseList;
 
-    private String salesContract;
+    private List salesContract;
 
-    private String invoice;
+    private List invoice;
 
-    private String purchaseContract;
+    private List purchaseContract;
 
-    private String exportCost;
+    private List exportCost;
 
-    private String salesList;
+    private List salesList;
 
-    private String entranceCost;
+    private List entranceCost;
 
     private Integer status;
     private String statusDesc;
@@ -32,22 +34,12 @@ public class TransportVo {
 
     private String updateTime;
 
-    private Transport transport;
-
     public String getStatusDesc() {
         return statusDesc;
     }
 
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
-    }
-
-    public Transport getTransport() {
-        return transport;
-    }
-
-    public void setTransport(Transport transport) {
-        this.transport = transport;
     }
 
     public Integer getId() {
@@ -74,67 +66,67 @@ public class TransportVo {
         this.destination = destination;
     }
 
-    public String getArrivalList() {
+    public List getArrivalList() {
         return arrivalList;
     }
 
-    public void setArrivalList(String arrivalList) {
+    public void setArrivalList(List arrivalList) {
         this.arrivalList = arrivalList;
     }
 
-    public String getPurchaseList() {
+    public List getPurchaseList() {
         return purchaseList;
     }
 
-    public void setPurchaseList(String purchaseList) {
+    public void setPurchaseList(List purchaseList) {
         this.purchaseList = purchaseList;
     }
 
-    public String getSalesContract() {
+    public List getSalesContract() {
         return salesContract;
     }
 
-    public void setSalesContract(String salesContract) {
+    public void setSalesContract(List salesContract) {
         this.salesContract = salesContract;
     }
 
-    public String getInvoice() {
+    public List getInvoice() {
         return invoice;
     }
 
-    public void setInvoice(String invoice) {
+    public void setInvoice(List invoice) {
         this.invoice = invoice;
     }
 
-    public String getPurchaseContract() {
+    public List getPurchaseContract() {
         return purchaseContract;
     }
 
-    public void setPurchaseContract(String purchaseContract) {
+    public void setPurchaseContract(List purchaseContract) {
         this.purchaseContract = purchaseContract;
     }
 
-    public String getExportCost() {
+    public List getExportCost() {
         return exportCost;
     }
 
-    public void setExportCost(String exportCost) {
+    public void setExportCost(List exportCost) {
         this.exportCost = exportCost;
     }
 
-    public String getSalesList() {
+    public List getSalesList() {
         return salesList;
     }
 
-    public void setSalesList(String salesList) {
+    public void setSalesList(List salesList) {
         this.salesList = salesList;
     }
 
-    public String getEntranceCost() {
+    public List getEntranceCost() {
         return entranceCost;
     }
 
-    public void setEntranceCost(String entranceCost) {
+    public void setEntranceCost(List entranceCost) {
         this.entranceCost = entranceCost;
     }
 

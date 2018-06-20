@@ -2,7 +2,9 @@ package com.truck.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.sun.org.apache.regexp.internal.RE;
 import com.truck.common.Const;
 import com.truck.common.ServerResponse;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service("iTransportService")
@@ -171,17 +174,77 @@ public class TransportServiceImpl implements ITransportService {
         transportVo.setId(transport.getId());
         transportVo.setDeclareNum(transport.getDeclareNum());
         transportVo.setDestination(transport.getDestination());
-        transportVo.setArrivalList(getFileName(transport.getArrivalList()));
-        transportVo.setPurchaseList(getFileName(transport.getPurchaseList()));
-        transportVo.setSalesContract(getFileName(transport.getSalesContract()));
-        transportVo.setInvoice(getFileName(transport.getInvoice()));
-        transportVo.setPurchaseContract(getFileName(transport.getPurchaseContract()));
-        transportVo.setExportCost(getFileName(transport.getExportCost()));
-        if(!StringUtils.isEmpty(transport.getSalesList())){
-            transportVo.setSalesList(getFileName(transport.getSalesList()));
+        if(!StringUtils.isEmpty(transport.getArrivalList())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getArrivalList());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setArrivalList(mapList);
         }
-        if(!StringUtils.isEmpty(transport.getEntranceCost())){
-            transportVo.setEntranceCost(getFileName(transport.getEntranceCost()));
+        if(!StringUtils.isEmpty(transport.getPurchaseList())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getPurchaseList());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setPurchaseList(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getSalesContract())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getSalesContract());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setSalesContract(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getInvoice())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getInvoice());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setInvoice(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getPurchaseContract())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getPurchaseContract());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setPurchaseContract(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getExportCost())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getExportCost());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setExportCost(mapList);
         }
         transportVo.setStatus(transportVo.getStatus());
         transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
