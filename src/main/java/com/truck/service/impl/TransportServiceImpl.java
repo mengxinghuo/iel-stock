@@ -142,6 +142,7 @@ public class TransportServiceImpl implements ITransportService {
      * @return
      */
     public ServerResponse createEntry(Integer id){
+        logger.info("id:{}",id);
         Transport transport = transportMapper.selectByPrimaryKey(id);
         logger.info("mmm:{}",transport);
         logger.info("mmm:{}",transport.getDeclareNum());
