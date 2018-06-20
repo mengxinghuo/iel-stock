@@ -91,7 +91,7 @@ public class TransportServiceImpl implements ITransportService {
      * @param salesList
      * @return
      */
-    public ServerResponse consummateTransport(Integer adminId, Integer id, String salesList){
+    public ServerResponse consummateTransport( Integer id, String salesList){
         if(StringUtils.isEmpty(id)){
             return ServerResponse.createByErrorMessage("请选择记录");
         }

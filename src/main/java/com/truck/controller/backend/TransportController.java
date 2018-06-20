@@ -82,15 +82,11 @@ public class TransportController {
      */
     @RequestMapping("consummate_transport.do")
     @ResponseBody
-    public ServerResponse consummateTransport(HttpSession session,Integer id,HttpServletRequest request,
+    public ServerResponse consummateTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
-        Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
-        if(admin == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
-        }
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
-        return iTransportService.consummateTransport(admin.getAdminId(),id,salesMap.get("file_path").toString());
+        return iTransportService.consummateTransport(id,salesMap.get("file_path").toString());
     }
 
     /**
