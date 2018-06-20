@@ -86,9 +86,19 @@ public class TransportController {
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
-        String str = JsonUtil.obj2String(salesMap.get("file_path"));
-        str.substring(str.indexOf("["),str.lastIndexOf("]"));
-        return iTransportService.consummateTransport(id,str);
+       /* String str = JsonUtil.obj2String(salesMap.get("file_path"));
+        str.substring(str.indexOf("["),str.lastIndexOf("]"));*/
+        String[] urlS= (String[])salesMap.get("file_path");
+        StringBuffer filePath = new StringBuffer();
+        for(int i=0;i<urlS.length;i++){
+            if(i==0){
+                filePath.append(urlS[i]);
+            }else{
+                filePath.append(",").append(urlS[i]);
+            }
+        }
+
+        return iTransportService.consummateTransport(id,filePath.toString());
     }
 
     /**
