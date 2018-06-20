@@ -17,7 +17,7 @@
       <arg column="purchase_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="sales_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="device_type" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="entry_position" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="entry_position" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="inspect_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="entry_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -51,7 +51,7 @@
       #{destination,jdbcType=VARCHAR}, #{packageNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR}, 
       #{partsNo,jdbcType=VARCHAR}, #{partsName,jdbcType=VARCHAR}, #{partsEnName,jdbcType=VARCHAR}, 
       #{unit,jdbcType=VARCHAR}, #{purchaseNum,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL}, 
-      #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, #{entryPosition,jdbcType=VARCHAR}, 
+      #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, #{entryPosition,jdbcType=INTEGER},
       #{inspectStatus,jdbcType=INTEGER}, #{entryNum,jdbcType=INTEGER}, now(),
       now())
   </insert>
@@ -156,7 +156,7 @@
         #{deviceType,jdbcType=VARCHAR},
       </if>
       <if test="entryPosition != null" >
-        #{entryPosition,jdbcType=VARCHAR},
+        #{entryPosition,jdbcType=INTEGER},
       </if>
       <if test="inspectStatus != null" >
         #{inspectStatus,jdbcType=INTEGER},
@@ -211,7 +211,7 @@
         device_type = #{deviceType,jdbcType=VARCHAR},
       </if>
       <if test="entryPosition != null" >
-        entry_position = #{entryPosition,jdbcType=VARCHAR},
+        entry_position = #{entryPosition,jdbcType=INTEGER},
       </if>
       <if test="inspectStatus != null" >
         inspect_status = #{inspectStatus,jdbcType=INTEGER},
@@ -238,7 +238,7 @@
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},
       sales_price = #{salesPrice,jdbcType=DECIMAL},
       device_type = #{deviceType,jdbcType=VARCHAR},
-      entry_position = #{entryPosition,jdbcType=VARCHAR},
+      entry_position = #{entryPosition,jdbcType=INTEGER},
       inspect_status = #{inspectStatus,jdbcType=INTEGER},
       entry_num = #{entryNum,jdbcType=INTEGER},
       update_time = now()

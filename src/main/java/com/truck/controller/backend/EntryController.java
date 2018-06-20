@@ -45,4 +45,26 @@ public class EntryController {
                                          @RequestParam(value = "pageNum",defaultValue = "10") int pageSize){
         return iEntryService.getEntryDetail(entryId,pageNum,pageSize);
     }
+
+    /**
+     * 检验实际入库量,修改状态
+     * @return
+     */
+    @RequestMapping("update_entry_detail_status.do")
+    @ResponseBody
+    public ServerResponse updateEntryDetailStatus(Integer entryDetailId,
+                                              @RequestParam(value = "inspectStatus", required = false) Integer inspectStatus){
+        return iEntryService.updateEntryDetailStatus(entryDetailId,inspectStatus);
+    }
+
+    /**
+     * 检验实际入库量,修改数量
+     * @return
+     */
+    @RequestMapping("update_entry_detail_num.do")
+    @ResponseBody
+    public ServerResponse updateEntryDetailNum(Integer entryDetailId,
+                                              @RequestParam(value = "entryNum", required = false) Integer entryNum){
+        return iEntryService.updateEntryDetailNum(entryDetailId,entryNum);
+    }
 }

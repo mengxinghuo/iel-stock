@@ -31,7 +31,8 @@ public class EntryDetailVo {
 
     private String deviceType;
 
-    private String entryPosition;
+    private Integer entryPosition;
+
     private String positionDesc;
 
     private Integer inspectStatus;
@@ -154,11 +155,11 @@ public class EntryDetailVo {
         this.deviceType = deviceType;
     }
 
-    public String getEntryPosition() {
+    public Integer getEntryPosition() {
         return entryPosition;
     }
 
-    public void setEntryPosition(String entryPosition) {
+    public void setEntryPosition(Integer entryPosition) {
         this.entryPosition = entryPosition;
     }
 

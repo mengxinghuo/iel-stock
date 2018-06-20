@@ -32,7 +32,7 @@ public class EntryDetail {
 
     private String deviceType;
 
-    private String entryPosition;
+    private Integer entryPosition;
 
     private Integer inspectStatus;
 
@@ -42,7 +42,7 @@ public class EntryDetail {
 
     private Date updateTime;
 
-    public EntryDetail(Integer id, Integer entryId, String customsClearance, String destination, String packageNo, String serialNo, String partsNo, String partsName, String partsEnName, String unit, Integer purchaseNum, BigDecimal purchasePrice, BigDecimal salesPrice, String deviceType, String entryPosition, Integer inspectStatus, Integer entryNum, Date createTime, Date updateTime) {
+    public EntryDetail(Integer id, Integer entryId, String customsClearance, String destination, String packageNo, String serialNo, String partsNo, String partsName, String partsEnName, String unit, Integer purchaseNum, BigDecimal purchasePrice, BigDecimal salesPrice, String deviceType, Integer entryPosition, Integer inspectStatus, Integer entryNum, Date createTime, Date updateTime) {
         this.id = id;
         this.entryId = entryId;
         this.customsClearance = customsClearance;
@@ -180,12 +180,12 @@ public class EntryDetail {
         this.deviceType = deviceType == null ? null : deviceType.trim();
     }
 
-    public String getEntryPosition() {
+    public Integer getEntryPosition() {
         return entryPosition;
     }
 
-    public void setEntryPosition(String entryPosition) {
-        this.entryPosition = entryPosition == null ? null : entryPosition.trim();
+    public void setEntryPosition(Integer entryPosition) {
+        this.entryPosition = entryPosition;
     }
 
     public Integer getInspectStatus() {

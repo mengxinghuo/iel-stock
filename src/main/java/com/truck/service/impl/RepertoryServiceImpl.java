@@ -156,6 +156,16 @@ public class RepertoryServiceImpl implements IRepertoryService {
         return ServerResponse.createByErrorMessage("删除节点失败");
     }
 
-
+    public List<Integer> findDeepParentId(List<Integer> idList , Integer id){
+        Repertory repertory = repertoryMapper.selectByPrimaryKey(id);
+        if(repertory != null){
+            idList.add(repertory.getId());
+            //查找父节点,递归算法一定要有一个退出的条件
+            if(repertory.getParentId() >0){
+                findDeepParentId(idList,repertory.getParentId());
+            }
+        }
+        return idList;
+    }
 
 }

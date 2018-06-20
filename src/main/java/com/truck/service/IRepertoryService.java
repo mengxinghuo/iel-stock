@@ -18,4 +18,6 @@ public interface IRepertoryService {
 
     ServerResponse deleteById(Integer categoryId);
 
+    List<Integer> findDeepParentId(List<Integer> idList , Integer id);
+
 }

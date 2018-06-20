@@ -7,9 +7,12 @@ import com.truck.common.Const;
 import com.truck.common.ServerResponse;
 import com.truck.dao.EntryDetailMapper;
 import com.truck.dao.EntryMapper;
+import com.truck.dao.RepertoryMapper;
 import com.truck.pojo.Entry;
 import com.truck.pojo.EntryDetail;
+import com.truck.pojo.Repertory;
 import com.truck.service.IEntryService;
+import com.truck.service.IRepertoryService;
 import com.truck.util.DateTimeUtil;
 import com.truck.vo.EntryDetailVo;
 import com.truck.vo.EntryVo;
@@ -26,6 +29,10 @@ public class EntryServiceImpl implements IEntryService {
     private EntryMapper entryMapper;
     @Autowired
     private EntryDetailMapper entryDetailMapper;
+    @Autowired
+    private RepertoryMapper repertoryMapper;
+    @Autowired
+    private IRepertoryService iRepertoryService;
 
     /**
      * 入库单列表
@@ -63,6 +70,32 @@ public class EntryServiceImpl implements IEntryService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    public ServerResponse updateEntryDetailStatus(Integer entryDetailId,Integer inspectStatus){
+        if (entryDetailId == null || inspectStatus ==null) {
+            return ServerResponse.createByErrorMessage("更新入库详情状态错误");
+        }
+        EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        entryDetail.setInspectStatus(inspectStatus);
+        int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
+        if(rowCount > 0){
+            return ServerResponse.createBySuccess("更新入库详情状态成功");
+        }
+        return ServerResponse.createByErrorMessage("更新入库详情状态失败");
+    }
+
+    public ServerResponse updateEntryDetailNum(Integer entryDetailId,Integer entryNum){
+        if (entryDetailId == null || entryNum ==null) {
+            return ServerResponse.createByErrorMessage("更新入库详情数量错误");
+        }
+        EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        entryDetail.setEntryNum(entryNum);
+        int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
+        if(rowCount > 0){
+            return ServerResponse.createBySuccess("更新入库详情数量成功");
+        }
+        return ServerResponse.createByErrorMessage("更新入库详情数量失败");
+    }
+
     public EntryVo assembleEntry(Entry entry){
         EntryVo entryVo = new EntryVo();
         entryVo.setId(entry.getId());
@@ -96,6 +129,17 @@ public class EntryServiceImpl implements IEntryService {
         if(!StringUtils.isEmpty(entryDetail.getEntryPosition())){
             entryDetailVo.setEntryPosition(entryDetail.getEntryPosition());
             //拼接 位置代码
+            List<Integer> idList = Lists.newArrayList();
+            iRepertoryService.findDeepParentId(idList,entryDetailVo.getEntryPosition());
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = idList.size() - 1; i >= 0; i--) {
+                Repertory repertory = repertoryMapper.selectByPrimaryKey(idList.get(i));
+                if (repertory != null) {
+                    stringBuilder.append("-"+repertory.getName());
+                }
+            }
+            entryDetailVo.setPositionDesc(entryDetail.getCustomsClearance()+stringBuilder.toString());
+
         }
         if(!StringUtils.isEmpty(entryDetail.getInspectStatus())){
             entryDetailVo.setInspectStatus(entryDetail.getInspectStatus());
