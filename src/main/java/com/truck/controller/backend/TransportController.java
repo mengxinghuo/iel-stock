@@ -151,7 +151,7 @@ public class TransportController {
      */
     @RequestMapping("upload_excel.do")
     @ResponseBody
-    public Map uploadFileCDNExcels(MultipartFile[] files, HttpServletRequest request,Integer id) {
+    public Map uploadFileCDNExcels(@RequestParam(value = "upload_file", required = false) MultipartFile[] files, HttpServletRequest request,Integer id) {
         Map resultMap = Maps.newHashMap();
         MultipartFile file = null;
         String path = request.getSession().getServletContext().getRealPath("upload");
