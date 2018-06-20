@@ -45,10 +45,10 @@ public class TransportServiceImpl implements ITransportService {
         if(StringUtils.isEmpty(transport.getDestination())){
             return ServerResponse.createByErrorMessage("请填写目的地");
         }
-        if(StringUtils.isEmpty(transport.getArrivalList()) || StringUtils.isEmpty(transport.getPurchaseList()) || StringUtils.isEmpty(transport.getPurchaseContract())
+        /*if(StringUtils.isEmpty(transport.getArrivalList()) || StringUtils.isEmpty(transport.getPurchaseList()) || StringUtils.isEmpty(transport.getPurchaseContract())
                 || StringUtils.isEmpty(transport.getSalesContract()) || StringUtils.isEmpty(transport.getInvoice()) || StringUtils.isEmpty(transport.getExportCost())){
             return ServerResponse.createByErrorMessage("上传信息不足，请完善");
-        }
+        }*/
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
         int resultCount = transportMapper.insertSelective(transport);
         if(resultCount > 0){
