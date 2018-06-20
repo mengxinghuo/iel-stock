@@ -47,31 +47,31 @@ public class Excel {
             entryDetail.setCustomsClearance(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(0).getNumericCellValue()))));
             entryDetail.setDestination(r.getCell(1).getStringCellValue());
             entryDetail.setPackageNo(r.getCell(2).getStringCellValue());
-            entryDetail.setSerialNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(3).getNumericCellValue()))));
+//            entryDetail.setSerialNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(3).getNumericCellValue()))));
 
-         if(r.getCell(4).getCellType() == HSSFCell.CELL_TYPE_STRING){
-             entryDetail.setPartsNo(r.getCell(4).getStringCellValue());
+         if(r.getCell(3).getCellType() == HSSFCell.CELL_TYPE_STRING){
+             entryDetail.setPartsNo(r.getCell(3).getStringCellValue());
          }else{
-             entryDetail.setPartsNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(4).getNumericCellValue()))));
+             entryDetail.setPartsNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(3).getNumericCellValue()))));
 //             exportsLists.setSerialNo(String.valueOf(r.getCell(4).getNumericCellValue()));、
          }
 
-            entryDetail.setPartsName(r.getCell(5).getStringCellValue());
-            entryDetail.setPartsEnName(r.getCell(6).getStringCellValue());
-            entryDetail.setUnit(r.getCell(7).getStringCellValue());
-            entryDetail.setPurchaseNum(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(8).getNumericCellValue())));
-//         exportsLists.setBuyPrice(new BigDecimal(0));
-            if(String.valueOf(r.getCell(9).getNumericCellValue())!=null){
+            entryDetail.setPartsName(r.getCell(4).getStringCellValue());
+            entryDetail.setPartsEnName(r.getCell(5).getStringCellValue());
+            entryDetail.setUnit(r.getCell(6).getStringCellValue());
+            entryDetail.setPurchaseNum(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(7).getNumericCellValue())));
+            entryDetail.setPurchasePrice(new BigDecimal(0));
+      /*      if(String.valueOf(r.getCell(9).getNume、ricCellValue())!=null){
                 entryDetail.setPurchasePrice(new BigDecimal(r.getCell(9).getNumericCellValue()));
             }else{
                 entryDetail.setPurchasePrice(new BigDecimal(0));
-            }
-            if(String.valueOf(r.getCell(10).getNumericCellValue())!=null){
-                entryDetail.setSalesPrice(new BigDecimal(r.getCell(10).getNumericCellValue()));
+            }*/
+            if(String.valueOf(r.getCell(8).getNumericCellValue())!=null){
+                entryDetail.setSalesPrice(new BigDecimal(r.getCell(8).getNumericCellValue()));
             }else{
                 entryDetail.setSalesPrice(new BigDecimal(0));
             }
-            entryDetail.setDeviceType(r.getCell(11).getStringCellValue());
+            entryDetail.setDeviceType(r.getCell(9).getStringCellValue());
 
 
 //            info.setLscore(r.getCell(3).getNumericCellValue());
