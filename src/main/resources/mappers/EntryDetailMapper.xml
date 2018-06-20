@@ -255,14 +255,13 @@
     values
     <foreach collection="exportsListsList" index="index" item="item" separator=",">
       (
-      #{entryId,jdbcType=INTEGER}, #{customsClearance,jdbcType=VARCHAR},
-      #{destination,jdbcType=VARCHAR}, #{packageNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR},
-      #{partsNo,jdbcType=VARCHAR}, #{partsName,jdbcType=VARCHAR}, #{partsEnName,jdbcType=VARCHAR},
-      #{unit,jdbcType=VARCHAR}, #{purchaseNum,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL},
-      #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, now(),now()
+      #{item.entryId,jdbcType=INTEGER}, #{item.customsClearance,jdbcType=VARCHAR},
+      #{item.destination,jdbcType=VARCHAR}, #{item.packageNo,jdbcType=VARCHAR}, #{item.serialNo,jdbcType=VARCHAR},
+      #{item.partsNo,jdbcType=VARCHAR}, #{item.partsName,jdbcType=VARCHAR}, #{item.partsEnName,jdbcType=VARCHAR},
+      #{item.unit,jdbcType=VARCHAR}, #{item.purchaseNum,jdbcType=INTEGER}, #{item.purchasePrice,jdbcType=DECIMAL},
+      #{item.salesPrice,jdbcType=DECIMAL}, #{item.deviceType,jdbcType=VARCHAR}, now(),now()
       )
     </foreach>
-    values ()
   </insert>
 
   <select id="selectEntryDetail" parameterType="map" resultMap="BaseResultMap">

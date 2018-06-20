@@ -180,6 +180,7 @@ public class TransportController {
         resultMap.put("success", true);
         resultMap.put("msg", "成功导入" + success + "文件");
         resultMap.put("file_path", urlS);
+        resultMap.put("entryId", id);
 
         return resultMap;
     }

@@ -30,7 +30,6 @@ public class ExportsListsServiceImpl implements IExportsListsService {
         list = null;
         int result=0;
         try {
-            path = fileService.downloadCDN(path);
             if (path != null) {
                 list = Excel.loadExportsLists(entryId,path);
                 if (list != null) {
