@@ -251,18 +251,6 @@ public class TransportServiceImpl implements ITransportService {
             }
             transportVo.setExportCost(mapList);
         }
-        if(!StringUtils.isEmpty(transport.getSalesContract())){
-            List<Map>  mapList = Lists.newArrayList();
-            List<String> list = Splitter.on(",").splitToList(transport.getSalesContract());
-            for (String str : list) {
-                Map map = Maps.newHashMap();
-                String name = getFileName(str);
-                map.put("name",name);
-                map.put("url",str);
-                mapList.add(map);
-            }
-            transportVo.setSalesContract(mapList);
-        }
         if(!StringUtils.isEmpty(transport.getEntranceCost())){
             List<Map>  mapList = Lists.newArrayList();
             List<String> list = Splitter.on(",").splitToList(transport.getEntranceCost());
@@ -274,6 +262,18 @@ public class TransportServiceImpl implements ITransportService {
                 mapList.add(map);
             }
             transportVo.setEntranceCost(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getSalesList())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getSalesList());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setSalesList(mapList);
         }
         transportVo.setStatus(transportVo.getStatus());
         transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
