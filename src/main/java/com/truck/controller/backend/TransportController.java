@@ -9,6 +9,7 @@ import com.truck.pojo.Transport;
 import com.truck.service.FileService;
 import com.truck.service.IExportsListsService;
 import com.truck.service.ITransportService;
+import com.truck.util.JsonUtil;
 import com.truck.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -85,7 +86,8 @@ public class TransportController {
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
-        return iTransportService.consummateTransport(id,salesMap.get("file_path").toString());
+        String str = JsonUtil.obj2String(salesMap.get("file_path"));
+        return iTransportService.consummateTransport(id,str);
     }
 
     /**
