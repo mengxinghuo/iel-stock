@@ -78,22 +78,19 @@ public class TransportController {
      * @param session
      * @param id
      * @param salesList
-     * @param entranceCost
      * @return
      */
     @RequestMapping("consummate_transport.do")
     @ResponseBody
     public ServerResponse consummateTransport(HttpSession session,Integer id,HttpServletRequest request,
-                                              @RequestParam(value = "salesList",required = false) MultipartFile[] salesList,
-                                              @RequestParam(value = "entranceCost",required = false) MultipartFile[] entranceCost){
+                                              @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
-        Map entranceMap = upLoadCDN(entranceCost,request);
-        return iTransportService.consummateTransport(admin.getAdminId(),id,salesMap.get("file_path").toString(),entranceMap.get("file_path").toString());
+        return iTransportService.consummateTransport(admin.getAdminId(),id,salesMap.get("file_path").toString());
     }
 
     /**
@@ -182,30 +179,6 @@ public class TransportController {
         resultMap.put("file_path", urlS);
         resultMap.put("entryId", id);
 
-        return resultMap;
-    }
-
-    public Map upLoadCDN(MultipartFile[] files, HttpServletRequest request) {
-        Map resultMap = Maps.newHashMap();
-        MultipartFile file = null;
-        String path = request.getSession().getServletContext().getRealPath("upload");
-        String targetFileName = null;
-        int success = 0;
-        String[] urlS = new String[files.length];
-        try {
-            for (int i = 0; i < files.length; i++) {
-                targetFileName = fileService.uploadCDN(files[i], path);
-                if (StringUtils.isNotBlank(targetFileName)) {
-                    urlS[i] = PropertiesUtil.getProperty("field") + targetFileName;
-                }
-                success++;
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        resultMap.put("success", true);
-        resultMap.put("msg", "成功上传" + success + "文件");
-        resultMap.put("file_path", urlS);
         return resultMap;
     }
 }

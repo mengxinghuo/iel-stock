@@ -89,20 +89,18 @@ public class TransportServiceImpl implements ITransportService {
      * @param adminId
      * @param id
      * @param salesList
-     * @param entranceCost
      * @return
      */
-    public ServerResponse consummateTransport(Integer adminId, Integer id, String salesList, String entranceCost){
+    public ServerResponse consummateTransport(Integer adminId, Integer id, String salesList){
         if(StringUtils.isEmpty(id)){
             return ServerResponse.createByErrorMessage("请选择记录");
         }
-        if(StringUtils.isEmpty(salesList) || StringUtils.isEmpty(entranceCost)){
+        if(StringUtils.isEmpty(salesList)){
             return ServerResponse.createByErrorMessage("信息不完整");
         }
         Transport transport = new Transport();
         transport.setId(id);
         transport.setSalesList(salesList);
-        transport.setEntranceCost(entranceCost);
         transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){

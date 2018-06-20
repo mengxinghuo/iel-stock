@@ -9,7 +9,7 @@ public interface ITransportService {
 
     ServerResponse updateTransport(Integer adminId, Transport transport);
 
-    ServerResponse consummateTransport(Integer adminId, Integer id, String salesList, String entranceCost);
+    ServerResponse consummateTransport(Integer adminId, Integer id, String salesList);
 
     ServerResponse getAllList(Integer status,int pageNum,int pageSize);
 
