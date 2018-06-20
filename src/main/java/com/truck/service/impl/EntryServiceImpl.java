@@ -117,13 +117,13 @@ public class EntryServiceImpl implements IEntryService {
         entryDetailVo.setCustomsClearance(entryDetail.getCustomsClearance());
         entryDetailVo.setDestination(entryDetail.getDestination());
         entryDetailVo.setPackageNo(entryDetail.getPackageNo());
-        entryDetailVo.setSerialNo(entryDetail.getSerialNo());
+        //entryDetailVo.setSerialNo(entryDetail.getSerialNo());
         entryDetailVo.setPartsNo(entryDetail.getPartsNo());
         entryDetailVo.setPartsName(entryDetail.getPartsName());
         entryDetailVo.setPartsEnName(entryDetail.getPartsEnName());
         entryDetailVo.setUnit(entryDetail.getUnit());
         entryDetailVo.setPurchaseNum(entryDetail.getPurchaseNum());
-        entryDetailVo.setPurchasePrice(entryDetail.getPurchasePrice());
+        //entryDetailVo.setPurchasePrice(entryDetail.getPurchasePrice());
         entryDetailVo.setSalesPrice(entryDetail.getSalesPrice());
         entryDetailVo.setDeviceType(entryDetail.getDeviceType());
         if(!StringUtils.isEmpty(entryDetail.getEntryPosition())){
