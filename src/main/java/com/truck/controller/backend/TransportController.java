@@ -87,6 +87,7 @@ public class TransportController {
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
         String str = JsonUtil.obj2String(salesMap.get("file_path"));
+        str.substring(str.indexOf("["),str.lastIndexOf("]"));
         return iTransportService.consummateTransport(id,str);
     }
 
