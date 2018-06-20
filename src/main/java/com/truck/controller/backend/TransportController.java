@@ -75,7 +75,6 @@ public class TransportController {
 
     /**
      * 进口完善信息
-     * @param session
      * @param id
      * @param salesList
      * @return
