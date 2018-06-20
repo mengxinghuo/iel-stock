@@ -107,7 +107,7 @@ public class TransportController {
     @ResponseBody
     public ServerResponse getAllList(@RequestParam(value = "status",required = false) Integer status,
                                      @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                     @RequestParam(value = "pageNum",defaultValue = "10") int pageSize){
+                                     @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         return iTransportService.getAllList(status,pageNum,pageSize);
     }
 
