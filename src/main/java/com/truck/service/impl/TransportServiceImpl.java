@@ -86,7 +86,6 @@ public class TransportServiceImpl implements ITransportService {
 
     /**
      * 进口 完善信息
-     * @param adminId
      * @param id
      * @param salesList
      * @return
@@ -243,6 +242,30 @@ public class TransportServiceImpl implements ITransportService {
                 mapList.add(map);
             }
             transportVo.setExportCost(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getSalesContract())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getSalesContract());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setSalesContract(mapList);
+        }
+        if(!StringUtils.isEmpty(transport.getEntranceCost())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getEntranceCost());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setEntranceCost(mapList);
         }
         transportVo.setStatus(transportVo.getStatus());
         transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
