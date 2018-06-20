@@ -27,7 +27,7 @@ public class EntryController {
     public ServerResponse getEntryList(@RequestParam(value = "status",required = false) Integer status,
                                        @RequestParam(value = "declareNum",required = false) Integer declareNum,
                                        @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                       @RequestParam(value = "pageNum",defaultValue = "10") int pageSize){
+                                       @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         return iEntryService.getEntryList(status,declareNum,pageNum,pageSize);
     }
 
@@ -42,7 +42,7 @@ public class EntryController {
     @ResponseBody
     public ServerResponse getEntryDetail(Integer entryId,
                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageNum",defaultValue = "10") int pageSize){
+                                         @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         return iEntryService.getEntryDetail(entryId,pageNum,pageSize);
     }
 
