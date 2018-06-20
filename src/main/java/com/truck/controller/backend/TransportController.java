@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/manage/transport/")
@@ -128,6 +129,48 @@ public class TransportController {
                         Boolean results = targetFile.delete();
                         logger.info("删除结果:{}",results);
                     }
+                }
+                success++;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        resultMap.put("success", true);
+        resultMap.put("msg", "成功导入" + success + "文件");
+        resultMap.put("file_path", urlS);
+
+        return resultMap;
+    }
+
+    /**
+     * 直接上传导入
+     * @param files
+     * @param request
+     * @param id
+     * @return
+     */
+    @RequestMapping("upload_excel.do")
+    @ResponseBody
+    public Map uploadFileCDNExcels(MultipartFile[] files, HttpServletRequest request,Integer id) {
+        Map resultMap = Maps.newHashMap();
+        MultipartFile file = null;
+        String path = request.getSession().getServletContext().getRealPath("upload");
+        String targetFileName = null;
+        int success = 0;
+        String[] urlS = new String[files.length];
+        try {
+            for (int i = 0; i < files.length; i++) {
+                targetFileName = fileService.uploadReturnCDN(files[i], path);
+                if (StringUtils.isNotBlank(targetFileName)) {
+
+                    urlS[i] = PropertiesUtil.getProperty("field") + PropertiesUtil.getProperty("uploadUrl") +targetFileName;
+                    if(id ==null){
+                        id=new Random().nextInt(1000);
+                    }
+                        iExportsListsService.bachInsertExports(id,path+"/"+targetFileName);
+                        File targetFile = new File(path, targetFileName);
+                        Boolean results = targetFile.delete();
+                        logger.info("删除结果:{}",results);
                 }
                 success++;
             }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/entry/")
+@RequestMapping("/manage/entry/")
 public class EntryController {
 
     @Autowired
