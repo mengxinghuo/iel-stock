@@ -41,8 +41,8 @@
     values (#{id,jdbcType=INTEGER}, #{outId,jdbcType=INTEGER}, #{partsNo,jdbcType=VARCHAR}, 
       #{partsName,jdbcType=VARCHAR}, #{partsEnName,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
       #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, #{stockPosition,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{outNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=INTEGER}, #{outNum,jdbcType=INTEGER}, now(),
+      now())
   </insert>
   <insert id="insertSelective" parameterType="com.truck.pojo.OutDetail" >
     insert into iel_out_detail
@@ -80,12 +80,8 @@
       <if test="outNum != null" >
         out_num,
       </if>
-      <if test="createTime != null" >
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -121,12 +117,8 @@
       <if test="outNum != null" >
         #{outNum,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      now(),
+      now(),
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.truck.pojo.OutDetail" >
@@ -162,12 +154,7 @@
       <if test="outNum != null" >
         out_num = #{outNum,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time = now(),
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -183,8 +170,30 @@
       stock_position = #{stockPosition,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       out_num = #{outNum,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="batchInsert" parameterType="list" >
+    insert into iel_out_detail (out_id, parts_no,
+    parts_name, parts_en_name, unit,
+    sales_price, device_type, stock_position,
+    out_num, create_time,
+    update_time)
+    values
+    <foreach collection="outDetailList" index="index" item="item" separator=",">
+      (#{item.outId,jdbcType=INTEGER}, #{item.partsNo,jdbcType=VARCHAR},
+      #{item.partsName,jdbcType=VARCHAR}, #{item.partsEnName,jdbcType=VARCHAR}, #{item.unit,jdbcType=VARCHAR},
+      #{item.salesPrice,jdbcType=DECIMAL}, #{item.deviceType,jdbcType=VARCHAR}, #{item.stockPosition,jdbcType=INTEGER},
+      #{item.outNum,jdbcType=INTEGER}, now(),
+      now())
+    </foreach>
+  </insert>
+
+  <select id="selectByOutId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_out_detail
+    where out_id = #{outId}
+  </select>
 </mapper>

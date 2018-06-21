@@ -1,6 +1,9 @@
 package com.truck.dao;
 
 import com.truck.pojo.Out;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OutMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,6 @@ public interface OutMapper {
     int updateByPrimaryKeySelective(Out record);
 
     int updateByPrimaryKey(Out record);
+
+    List selectByAdminId(@Param("adminId") Integer adminId);
 }

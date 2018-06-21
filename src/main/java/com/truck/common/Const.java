@@ -58,6 +58,35 @@ public class Const {
 
     }
 
+    public enum OutStatusEnum{
+        UN_OUT(0,"未出库"),
+        OVER_OUT(1,"已出库");
+
+        private String value;
+        private int code;
+        OutStatusEnum(int code,String value){
+            this.code = code;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+        public static OutStatusEnum codeOf(int code){
+            for(OutStatusEnum outStatusEnum : values()){
+                if(outStatusEnum.getCode() == code){
+                    return outStatusEnum;
+                }
+            }
+            throw new RuntimeException("么有找到对应的枚举");
+        }
+
+    }
+
     public interface Cart {
         int CHECKED = 1;//即购物车选中状态
         int UN_CHECKED = 0;//购物车未选中状态

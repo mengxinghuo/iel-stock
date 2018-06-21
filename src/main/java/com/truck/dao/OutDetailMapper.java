@@ -1,6 +1,9 @@
 package com.truck.dao;
 
 import com.truck.pojo.OutDetail;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OutDetailMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,8 @@ public interface OutDetailMapper {
     int updateByPrimaryKeySelective(OutDetail record);
 
     int updateByPrimaryKey(OutDetail record);
+
+    int batchInsert(@Param("outDetailList") List<OutDetail> outDetailList);
+
+    List selectByOutId(@Param("outId") Integer outId);
 }
