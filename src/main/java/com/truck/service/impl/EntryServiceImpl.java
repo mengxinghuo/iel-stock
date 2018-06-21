@@ -78,6 +78,11 @@ public class EntryServiceImpl implements IEntryService {
         entryDetail.setInspectStatus(inspectStatus);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
+            Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+            if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
+                entry.setStatus(Const.EntryStatusEnum.CONFIRM.getCode());
+                entryMapper.updateByPrimaryKeySelective(entry);
+            }
             return ServerResponse.createBySuccess("更新入库详情状态成功");
         }
         return ServerResponse.createByErrorMessage("更新入库详情状态失败");
@@ -94,6 +99,11 @@ public class EntryServiceImpl implements IEntryService {
         entryDetail.setEntryNum(entryNum);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
+            Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+            if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
+                entry.setStatus(Const.EntryStatusEnum.CONFIRM.getCode());
+                entryMapper.updateByPrimaryKeySelective(entry);
+            }
             return ServerResponse.createBySuccess("更新入库详情数量成功");
         }
         return ServerResponse.createByErrorMessage("更新入库详情数量失败");
