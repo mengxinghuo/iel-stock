@@ -8,6 +8,8 @@ import com.truck.common.ServerResponse;
 import com.truck.dao.RepertoryMapper;
 import com.truck.pojo.Repertory;
 import com.truck.service.IRepertoryService;
+import com.truck.util.DateTimeUtil;
+import com.truck.vo.RepertoryVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -120,25 +122,26 @@ public class RepertoryServiceImpl implements IRepertoryService {
      * @return
      */
     public ServerResponse selectRepertoryObjectAndChildrenById(Integer repertoryId){
-        List list = Lists.newArrayList();
-        Set<Repertory> repertorySet = Sets.newHashSet();
-        findChildRepertorys(repertorySet,repertoryId,list);
-        return ServerResponse.createBySuccess(list);
+        List<RepertoryVo> list = Lists.newArrayList();
+        Repertory repertory = repertoryMapper.selectByPrimaryKey(repertoryId);
+        RepertoryVo repertoryVo = this.assembleRepertory(repertory);
+        list = findChildRepertorys(repertoryId,list);
+        repertoryVo.setRepertoryVoList(list);
+        return ServerResponse.createBySuccess(repertoryVo);
     }
 
 
     //递归算法,算出子节点
-    private List findChildRepertorys(Set<Repertory> repertorySet , Integer repertoryId,List list){
-        Set<Repertory> repertorySet2 = Sets.newHashSet();
-        Repertory repertory = repertoryMapper.selectByPrimaryKey(repertoryId);
-        if(repertory != null){
-            repertorySet2.add(repertory);
-        }
+    private List<RepertoryVo> findChildRepertorys(Integer repertoryId,List<RepertoryVo> list){
         //查找子节点,递归算法一定要有一个退出的条件
         List<Repertory> repertoryList = repertoryMapper.selectRepertoryChildrenByParentId(repertoryId);
-        for(Repertory repertoryItem : repertoryList){
-            list.add(repertorySet2);
-            findChildRepertory(repertorySet2,repertoryItem.getId());
+        if(repertoryList.size() > 0){
+            for(Repertory repertoryItem : repertoryList){
+                RepertoryVo repertoryVo = this.assembleRepertory(repertoryItem);
+                List<RepertoryVo> repertoryVoList = findChildRepertorys(repertoryItem.getId(),list);
+                repertoryVo.setRepertoryVoList(repertoryVoList);
+                list.add(repertoryVo);
+            }
         }
         return list;
     }
@@ -184,6 +187,19 @@ public class RepertoryServiceImpl implements IRepertoryService {
             }
         }
         return idList;
+    }
+
+    public RepertoryVo assembleRepertory(Repertory repertory){
+        RepertoryVo repertoryVo = new RepertoryVo();
+        repertoryVo.setId(repertory.getId());
+        repertoryVo.setAdminId(repertory.getAdminId());
+        repertoryVo.setParentId(repertory.getParentId());
+        repertoryVo.setName(repertory.getName());
+        repertoryVo.setCode(repertory.getCode());
+        //repertoryVo.setStatus(repertory.getStatus());
+        repertoryVo.setCreateTime(DateTimeUtil.dateToStr(repertory.getCreateTime()));
+        repertoryVo.setUpdateTime(DateTimeUtil.dateToStr(repertory.getUpdateTime()));
+        return repertoryVo;
     }
 
 }
