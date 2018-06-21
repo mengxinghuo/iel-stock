@@ -67,4 +67,14 @@ public class EntryController {
                                               @RequestParam(value = "entryNum", required = false) Integer entryNum){
         return iEntryService.updateEntryDetailNum(entryDetailId,entryNum);
     }
+    /**
+     * 检验实际入库量,修改数量
+     * @return
+     */
+    @RequestMapping("update_entry_detail_position.do")
+    @ResponseBody
+    public ServerResponse updateEntryDetailPosition(Integer entryDetailId,
+                                              @RequestParam(value = "entryPosition", required = false) Integer entryPosition){
+        return iEntryService.updateEntryDetailPosition(entryDetailId,entryPosition);
+    }
 }

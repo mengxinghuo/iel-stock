@@ -109,6 +109,19 @@ public class EntryServiceImpl implements IEntryService {
         return ServerResponse.createByErrorMessage("更新入库详情数量失败");
     }
 
+    public ServerResponse updateEntryDetailPosition(Integer entryDetailId,Integer entryPosition){
+        if (entryDetailId == null || entryPosition ==null) {
+            return ServerResponse.createByErrorMessage("更新入库详情位置错误");
+        }
+        EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        entryDetail.setEntryPosition(entryPosition);
+        int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
+        if(rowCount > 0){
+            return ServerResponse.createBySuccess("更新入库详情位置成功");
+        }
+        return ServerResponse.createByErrorMessage("更新入库详情位置失败");
+    }
+
     public EntryVo assembleEntry(Entry entry){
         EntryVo entryVo = new EntryVo();
         entryVo.setId(entry.getId());

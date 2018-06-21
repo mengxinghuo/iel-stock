@@ -11,4 +11,6 @@ public interface IEntryService {
     ServerResponse updateEntryDetailStatus(Integer entryDetailId,Integer inspectStatus);
 
     ServerResponse updateEntryDetailNum(Integer entryDetailId,Integer entryNum);
+
+    ServerResponse updateEntryDetailPosition(Integer entryDetailId,Integer entryPosition);
 }
