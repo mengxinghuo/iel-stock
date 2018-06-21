@@ -6,8 +6,10 @@ import com.google.common.collect.Lists;
 import com.truck.common.Const;
 import com.truck.common.ServerResponse;
 import com.truck.dao.EntryDetailMapper;
+import com.truck.dao.EntryMapper;
 import com.truck.dao.StockMapper;
 import com.truck.dao.RepertoryMapper;
+import com.truck.pojo.Entry;
 import com.truck.pojo.EntryDetail;
 import com.truck.pojo.Stock;
 import com.truck.pojo.Repertory;
@@ -29,9 +31,9 @@ public class StockServiceImpl implements IStockService {
     @Autowired
     private EntryDetailMapper entryDetailMapper;
     @Autowired
-    private RepertoryMapper repertoryMapper;
-    @Autowired
     private IRepertoryService iRepertoryService;
+    @Autowired
+    private EntryMapper entryMapper;
 
     public ServerResponse batchStockIn(Integer entryId){
         if (entryId == null ) {
@@ -45,14 +47,16 @@ public class StockServiceImpl implements IStockService {
             if (entryDetail.getEntryPosition()==null) {
                 return ServerResponse.createByErrorMessage("请选择入库位置");
             }
-            Stock stock = new Stock();
-            stock = entryDetailToStock(entryDetail);
-            int count = stockMapper.insertSelective(stock);
-            if(count <= 0){
-                return ServerResponse.createByErrorMessage("入库失败");
-            }
         }
-            return ServerResponse.createBySuccess("入库成功");
+        List<Stock> stockList = entryDetailToStock(entryDetails);
+        int count = stockMapper.batchInsert(stockList);
+        if(count == 0){
+            Entry entry = entryMapper.selectByPrimaryKey(entryId);
+            entry.setStatus(Const.EntryStatusEnum.FINISH.getCode());
+            entryMapper.updateByPrimaryKeySelective(entry);
+            return ServerResponse.createByErrorMessage("入库失败");
+        }
+        return ServerResponse.createBySuccess("入库成功");
     }
 
     public ServerResponse getStockList(Integer entryId, int pageNum, int pageSize){
@@ -70,32 +74,6 @@ public class StockServiceImpl implements IStockService {
         pageInfo.setList(stockVoList);
         return ServerResponse.createBySuccess(pageInfo);
     }
-
-/*    public ServerResponse updateStockStatus(Integer stockId,Integer inspectStatus){
-        if (stockId == null || inspectStatus ==null) {
-            return ServerResponse.createByErrorMessage("更新入库详情状态错误");
-        }
-        Stock stock = stockMapper.selectByPrimaryKey(stockId);
-        stock.setInspectStatus(inspectStatus);
-        int rowCount = stockMapper.updateByPrimaryKeySelective(stock);
-        if(rowCount > 0){
-            return ServerResponse.createBySuccess("更新入库详情状态成功");
-        }
-        return ServerResponse.createByErrorMessage("更新入库详情状态失败");
-    }
-
-    public ServerResponse updateStockNum(Integer stockId,Integer stockNum){
-        if (stockId == null || stockNum ==null) {
-            return ServerResponse.createByErrorMessage("更新入库详情数量错误");
-        }
-        Stock stock = stockMapper.selectByPrimaryKey(stockId);
-        stock.setStockNum(stockNum);
-        int rowCount = stockMapper.updateByPrimaryKeySelective(stock);
-        if(rowCount > 0){
-            return ServerResponse.createBySuccess("更新入库详情数量成功");
-        }
-        return ServerResponse.createByErrorMessage("更新入库详情数量失败");
-    }*/
 
     public StockVo assembleStockVo(Stock stock){
         StockVo stockVo = new StockVo();
@@ -117,29 +95,37 @@ public class StockServiceImpl implements IStockService {
         return stockVo;
     }
     
-    public Stock entryDetailToStock(EntryDetail entryDetail){
-        Stock stock = new Stock();
-        stock.setEntryId(entryDetail.getEntryId());
-        stock.setCustomsClearance(entryDetail.getCustomsClearance());
-        stock.setDestination(entryDetail.getDestination());
-        stock.setPartsNo(entryDetail.getPartsNo());
-        stock.setPartsName(entryDetail.getPartsName());
-        stock.setPartsEnName(entryDetail.getPartsEnName());
-        stock.setUnit(entryDetail.getUnit());
-        if (entryDetail.getEntryNum() !=null){
-            stock.setQuantity(entryDetail.getEntryNum());
-        }else{
-            stock.setQuantity(entryDetail.getPurchaseNum());
+    public List<Stock> entryDetailToStock(List<EntryDetail> entryDetailList){
+        List<Stock> stockList = Lists.newArrayList();
+        for(EntryDetail entryDetailItem : entryDetailList){
+            Stock stock = new Stock();
+            stock.setEntryId(entryDetailItem.getEntryId());
+            stock.setCustomsClearance(entryDetailItem.getCustomsClearance());
+            stock.setDestination(entryDetailItem.getDestination());
+            stock.setPartsNo(entryDetailItem.getPartsNo());
+            stock.setPartsName(entryDetailItem.getPartsName());
+            stock.setPartsEnName(entryDetailItem.getPartsEnName());
+            stock.setUnit(entryDetailItem.getUnit());
+            //根据状态判断入库数量
+            if(entryDetailItem.getInspectStatus() == 0){
+                stock.setQuantity(entryDetailItem.getEntryNum());
+            }else{
+                stock.setQuantity(entryDetailItem.getPurchaseNum());
+            }
+
+            stock.setSalesPrice(entryDetailItem.getSalesPrice());
+            stock.setDeviceType(entryDetailItem.getDeviceType());
+
+            List<Integer> idList = Lists.newArrayList();
+            iRepertoryService.findDeepParentId(idList,entryDetailItem.getEntryPosition());
+            if (idList.size() > 0) {
+                stock.setRepertory(idList.get(idList.size()-1));
+            }
+            stock.setPosition(entryDetailItem.getEntryPosition());
+
+
         }
-        stock.setSalesPrice(entryDetail.getSalesPrice());
-        stock.setDeviceType(entryDetail.getDeviceType());
-        List<Integer> idList = Lists.newArrayList();
-        iRepertoryService.findDeepParentId(idList,entryDetail.getEntryPosition());
-        if (idList.size() > 0) {
-            stock.setRepertory(idList.get(idList.size()-1));
-        }
-        stock.setPosition(entryDetail.getEntryPosition());
-        return stock;
+        return stockList;
     }
 
 }

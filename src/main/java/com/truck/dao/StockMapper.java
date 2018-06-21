@@ -19,4 +19,6 @@ public interface StockMapper {
     int updateByPrimaryKey(Stock record);
 
     List selectByEntryId(@Param("entryId") Integer entryId);
+
+    int batchInsert(@Param("stockList")List<Stock> stockList);
 }

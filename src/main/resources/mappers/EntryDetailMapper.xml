@@ -250,7 +250,7 @@
     destination, package_no, serial_no,
     parts_no, parts_name, parts_en_name,
     unit, purchase_num, purchase_price,
-    sales_price, device_type, create_time,
+    sales_price, device_type,inspect_status, create_time,
     update_time)
     values
     <foreach collection="exportsListsList" index="index" item="item" separator=",">
@@ -259,7 +259,7 @@
       #{item.destination,jdbcType=VARCHAR}, #{item.packageNo,jdbcType=VARCHAR}, #{item.serialNo,jdbcType=VARCHAR},
       #{item.partsNo,jdbcType=VARCHAR}, #{item.partsName,jdbcType=VARCHAR}, #{item.partsEnName,jdbcType=VARCHAR},
       #{item.unit,jdbcType=VARCHAR}, #{item.purchaseNum,jdbcType=INTEGER}, #{item.purchasePrice,jdbcType=DECIMAL},
-      #{item.salesPrice,jdbcType=DECIMAL}, #{item.deviceType,jdbcType=VARCHAR}, now(),now()
+      #{item.salesPrice,jdbcType=DECIMAL}, #{item.deviceType,jdbcType=VARCHAR},#{item.inspectStatus,jdbcType=INTEGER}, now(),now()
       )
     </foreach>
   </insert>
