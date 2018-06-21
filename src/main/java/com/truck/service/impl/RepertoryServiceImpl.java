@@ -123,11 +123,8 @@ public class RepertoryServiceImpl implements IRepertoryService {
      */
     public ServerResponse selectRepertoryObjectAndChildrenById(Integer repertoryId){
         List<RepertoryVo> list = Lists.newArrayList();
-        Repertory repertory = repertoryMapper.selectByPrimaryKey(repertoryId);
-        RepertoryVo repertoryVo = this.assembleRepertory(repertory);
         list = findChildRepertorys(repertoryId,list);
-        repertoryVo.setRepertoryVoList(list);
-        return ServerResponse.createBySuccess(repertoryVo);
+        return ServerResponse.createBySuccess(list);
     }
 
 
