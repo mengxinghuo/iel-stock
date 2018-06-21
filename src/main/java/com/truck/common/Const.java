@@ -58,6 +58,14 @@ public class Const {
 
     }
 
+    public interface Cart {
+        int CHECKED = 1;//即购物车选中状态
+        int UN_CHECKED = 0;//购物车未选中状态
+
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
+
     public enum EntryStatusEnum{
         STANDBY(0,"未入库"),
         CONFIRM(1,"检查中"),
