@@ -88,6 +88,9 @@ public class EntryServiceImpl implements IEntryService {
             return ServerResponse.createByErrorMessage("更新入库详情数量错误");
         }
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        if(entryDetail.getInspectStatus() == 1){
+            return ServerResponse.createByErrorMessage("请更改状态");
+        }
         entryDetail.setEntryNum(entryNum);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){

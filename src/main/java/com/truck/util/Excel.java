@@ -43,6 +43,7 @@ public class Excel {
 //创建实体类
             EntryDetail entryDetail =new EntryDetail();
             entryDetail.setEntryId(entryId);
+            entryDetail.setInspectStatus(0);
 //取出当前行第1个单元格数据，并封装在info实体stuName属性上
             entryDetail.setCustomsClearance(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(0).getNumericCellValue()))));
             entryDetail.setDestination(r.getCell(1).getStringCellValue());
