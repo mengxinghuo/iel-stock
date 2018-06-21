@@ -47,6 +47,7 @@ public class OutServiceImpl implements IOutService {
         List<OutDetail> outDetailList = getOutDetailList(cartList,out.getId());
         resultCount = outDetailMapper.batchInsert(outDetailList);
         if(resultCount > 0){
+            cartMapper.deleteByAdminId(adminId);
             return ServerResponse.createBySuccess("生成出库单成功");
         }
         return ServerResponse.createByErrorMessage("生成出库单失败");
