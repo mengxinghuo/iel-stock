@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.truck.common.Const;
 import com.truck.common.ResponseCode;
 import com.truck.common.ServerResponse;
+import com.truck.dao.TransportMapper;
 import com.truck.pojo.Admin;
 import com.truck.pojo.Transport;
 import com.truck.service.FileService;
@@ -41,6 +42,8 @@ public class TransportController {
     private FileService fileService;
     @Autowired
     private IExportsListsService iExportsListsService;
+    @Autowired
+    private TransportMapper transportMapper;
 
     /**
      * 出口录入信息
@@ -84,10 +87,12 @@ public class TransportController {
     @ResponseBody
     public ServerResponse consummateTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
+        Transport transport = transportMapper.selectByPrimaryKey(id);
+        if(Const.TransportStatusEnum.ON_ENTRY.getCode() == transport.getStatus()){
+            return ServerResponse.createByErrorMessage("该记录无法进行修改");
+        }
         ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
-       /* String str = JsonUtil.obj2String(salesMap.get("file_path"));
-        str.substring(str.indexOf("["),str.lastIndexOf("]"));*/
         String[] urlS= (String[])salesMap.get("file_path");
         StringBuffer filePath = new StringBuffer();
         for(int i=0;i<urlS.length;i++){
