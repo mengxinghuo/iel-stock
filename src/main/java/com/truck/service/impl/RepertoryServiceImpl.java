@@ -115,14 +115,32 @@ public class RepertoryServiceImpl implements IRepertoryService {
     }
 
     /**
-     * 递归查询本节点的id及孩子节点的对象
+     * 递归查询本节点及孩子节点的对象
      * @param repertoryId
      * @return
      */
     public ServerResponse selectRepertoryObjectAndChildrenById(Integer repertoryId){
+        List list = Lists.newArrayList();
         Set<Repertory> repertorySet = Sets.newHashSet();
-        findChildRepertory(repertorySet,repertoryId);
-        return ServerResponse.createBySuccess(repertorySet);
+        findChildRepertorys(repertorySet,repertoryId,list);
+        return ServerResponse.createBySuccess(list);
+    }
+
+
+    //递归算法,算出子节点
+    private List findChildRepertorys(Set<Repertory> repertorySet , Integer repertoryId,List list){
+        Set<Repertory> repertorySet2 = Sets.newHashSet();
+        Repertory repertory = repertoryMapper.selectByPrimaryKey(repertoryId);
+        if(repertory != null){
+            repertorySet2.add(repertory);
+        }
+        //查找子节点,递归算法一定要有一个退出的条件
+        List<Repertory> repertoryList = repertoryMapper.selectRepertoryChildrenByParentId(repertoryId);
+        for(Repertory repertoryItem : repertoryList){
+            list.add(repertorySet2);
+            findChildRepertory(repertorySet2,repertoryItem.getId());
+        }
+        return list;
     }
 
 
