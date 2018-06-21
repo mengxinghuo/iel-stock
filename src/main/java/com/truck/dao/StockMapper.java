@@ -1,6 +1,9 @@
 package com.truck.dao;
 
 import com.truck.pojo.Stock;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface StockMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,6 @@ public interface StockMapper {
     int updateByPrimaryKeySelective(Stock record);
 
     int updateByPrimaryKey(Stock record);
+
+    List selectByEntryId(@Param("entryId") Integer entryId);
 }

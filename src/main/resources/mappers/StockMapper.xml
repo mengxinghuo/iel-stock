@@ -211,4 +211,15 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByEntryId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_stock
+    <where>
+      <if test="entryId !=null">
+       and entry_id = #{entryId}
+      </if>
+    </where>
+  </select>
 </mapper>
