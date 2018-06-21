@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,24 +124,25 @@ public class RepertoryServiceImpl implements IRepertoryService {
      */
     public ServerResponse selectRepertoryObjectAndChildrenById(Integer repertoryId){
         List<RepertoryVo> list = Lists.newArrayList();
-        list = findChildRepertorys(repertoryId,list);
+        list = findChildRepertorys(repertoryId);
         return ServerResponse.createBySuccess(list);
     }
 
 
     //递归算法,算出子节点
-    private List<RepertoryVo> findChildRepertorys(Integer repertoryId,List<RepertoryVo> list){
+    private List<RepertoryVo> findChildRepertorys(Integer repertoryId){
+        List<RepertoryVo> repertoryVoList = new ArrayList();
         //查找子节点,递归算法一定要有一个退出的条件
         List<Repertory> repertoryList = repertoryMapper.selectRepertoryChildrenByParentId(repertoryId);
         if(repertoryList.size() > 0){
             for(Repertory repertoryItem : repertoryList){
                 RepertoryVo repertoryVo = this.assembleRepertory(repertoryItem);
-                List<RepertoryVo> repertoryVoList = findChildRepertorys(repertoryItem.getId(),list);
-                repertoryVo.setRepertoryVoList(repertoryVoList);
-                list.add(repertoryVo);
+                List<RepertoryVo> search = findChildRepertorys(repertoryItem.getId());
+                repertoryVo.setRepertoryVoList(search);
+                repertoryVoList.add(repertoryVo);
             }
         }
-        return list;
+        return repertoryVoList;
     }
 
 
