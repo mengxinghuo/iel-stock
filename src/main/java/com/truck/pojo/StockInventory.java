@@ -8,12 +8,12 @@ public class StockInventory {
 
     private Integer quantity;
 
-    private Integer pandlan;
+    private Integer pandian;
 
-    public StockInventory(Integer id, Integer quantity, Integer pandlan) {
+    public StockInventory(Integer id, Integer quantity, Integer pandian) {
         this.id = id;
         this.quantity = quantity;
-        this.pandlan = pandlan;
+        this.pandian = pandian;
     }
 
     public StockInventory() {
@@ -35,11 +35,11 @@ public class StockInventory {
         this.quantity = quantity;
     }
 
-    public Integer getPandlan() {
-        return pandlan;
+    public Integer getPandian() {
+        return pandian;
     }
 
-    public void setPandlan(Integer pandlan) {
-        this.pandlan = pandlan;
+    public void setPandian(Integer pandian) {
+        this.pandian = pandian;
     }
 }

@@ -35,15 +35,17 @@ public class InventoryController {
         /*for (StockInventory stockInventory : stockInventoryList) {
             logger.info("id===:{}",stockInventory.getId());
             logger.info("quantity===:{}",stockInventory.getQuantity());
-            logger.info("pandlan===:{}",stockInventory.getPandlan());
+            logger.info("pandian===:{}",stockInventory.getPandian());
         }*/
         JSONArray json = JSONArray.fromObject(stockInventoryList);
+        List<StockInventory> list = JSONArray.toList(json,StockInventory.class);
+
         if(json!=null||json.size()!=0){
             for(int i=0;i<json.size();i++){
                 JSONObject jo = JSONObject.fromObject(json.get(i));
                 String id = jo.getString("id");
                 String quantity = jo.getString("quantity");
-                String pandlan = jo.getString("pandlan");
+                String pandian = jo.getString("pandian");
                 logger.info("id===:{}",id);
             }
         }
