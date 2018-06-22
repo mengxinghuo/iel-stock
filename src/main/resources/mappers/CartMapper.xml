@@ -154,7 +154,7 @@
     WHERE admin_id=#{adminId}
   </delete>
 
-  <select id="selectCartProductCount" parameterType="int" resultType="int">
+  <select id="selectCartProductCount" parameterType="integer" resultType="integer">
     SELECT  NULLIF(sum(amount),0)   as count FROM iel_cart where admin_id=#{adminId}
   </select>
 
