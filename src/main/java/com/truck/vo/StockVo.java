@@ -34,6 +34,8 @@ public class StockVo {
 
     private String updateTime;
 
+    private Integer amount;
+
     public StockVo() {
         super();
     }
@@ -156,5 +158,13 @@ public class StockVo {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

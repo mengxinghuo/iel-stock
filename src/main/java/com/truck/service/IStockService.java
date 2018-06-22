@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IStockService {
 
-    ServerResponse getStockList(Integer entryId,int pageNum, int pageSize);
+    ServerResponse getStockList(Integer adminId,Integer entryId,int pageNum, int pageSize);
 
   /*  ServerResponse getStockDetail(Integer entryId, int pageNum, int pageSize);
 

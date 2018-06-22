@@ -5,14 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.truck.common.Const;
 import com.truck.common.ServerResponse;
-import com.truck.dao.EntryDetailMapper;
-import com.truck.dao.EntryMapper;
-import com.truck.dao.StockMapper;
-import com.truck.dao.RepertoryMapper;
-import com.truck.pojo.Entry;
-import com.truck.pojo.EntryDetail;
-import com.truck.pojo.Stock;
-import com.truck.pojo.Repertory;
+import com.truck.dao.*;
+import com.truck.pojo.*;
 import com.truck.service.IStockService;
 import com.truck.service.IRepertoryService;
 import com.truck.util.DateTimeUtil;
@@ -34,6 +28,8 @@ public class StockServiceImpl implements IStockService {
     private IRepertoryService iRepertoryService;
     @Autowired
     private EntryMapper entryMapper;
+    @Autowired
+    private CartMapper cartMapper;
 
     public ServerResponse batchStockIn(Integer entryId){
         if (entryId == null ) {
@@ -59,7 +55,7 @@ public class StockServiceImpl implements IStockService {
         return ServerResponse.createBySuccess("入库成功");
     }
 
-    public ServerResponse getStockList(Integer entryId, int pageNum, int pageSize){
+    public ServerResponse getStockList(Integer adminId,Integer entryId, int pageNum, int pageSize){
         PageHelper.startPage(pageNum, pageSize);
         List<Stock> stockList = stockMapper.selectByEntryId(entryId);
         if(stockList.size() == 0){
@@ -67,7 +63,7 @@ public class StockServiceImpl implements IStockService {
         }
         List<StockVo> stockVoList = Lists.newArrayList();
         for(Stock stockItem : stockList){
-            StockVo stockVo = this.assembleStockVo(stockItem);
+            StockVo stockVo = this.assembleStockVo(adminId,stockItem);
             stockVoList.add(stockVo);
         }
         PageInfo pageInfo = new PageInfo(stockList);
@@ -75,7 +71,7 @@ public class StockServiceImpl implements IStockService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
-    public StockVo assembleStockVo(Stock stock){
+    public StockVo assembleStockVo(Integer adminId,Stock stock){
         StockVo stockVo = new StockVo();
         stockVo.setId(stock.getId());
         stockVo.setEntryId(stock.getEntryId());
@@ -90,6 +86,12 @@ public class StockServiceImpl implements IStockService {
         stockVo.setDeviceType(stock.getDeviceType());
         stockVo.setRepertory(stock.getRepertory());
         stockVo.setPosition(stock.getPosition());
+        Cart cart = cartMapper.selectCartByAdminIdStockId(adminId,stock.getId());
+        if (cart != null) {
+            stockVo.setAmount(cart.getAmount());
+        }else{
+            stockVo.setAmount(0);
+        }
         stockVo.setCreateTime(DateTimeUtil.dateToStr(stock.getCreateTime()));
         stockVo.setUpdateTime(DateTimeUtil.dateToStr(stock.getUpdateTime()));
         return stockVo;
