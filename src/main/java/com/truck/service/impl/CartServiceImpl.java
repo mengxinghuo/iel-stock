@@ -70,8 +70,12 @@ public class CartServiceImpl implements ICartService {
                 }
                 cart.setCartPrice(cartPrice);
             }
-            cart.setAmount(count);
-            cartMapper.updateByPrimaryKeySelective(cart);
+            if(count ==0){
+                this.deleteProduct(adminId,cart.getStockId().toString());
+            }else{
+                cart.setAmount(count);
+                cartMapper.updateByPrimaryKeySelective(cart);
+            }
         }
         return this.list(adminId);
     }
