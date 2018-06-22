@@ -27,12 +27,12 @@ public class OutController {
      */
     @RequestMapping("out_stock.do")
     @ResponseBody
-    public ServerResponse outStock(HttpSession session){
+    public ServerResponse outStock(HttpSession session,String repairNo){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
-        return iOutService.outStock(admin.getAdminId());
+        return iOutService.outStock(admin.getAdminId(),repairNo);
     }
 
     /**

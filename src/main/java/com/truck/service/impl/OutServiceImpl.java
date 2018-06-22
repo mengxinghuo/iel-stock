@@ -10,6 +10,7 @@ import com.truck.pojo.*;
 import com.truck.service.IOutService;
 import com.truck.util.DateTimeUtil;
 import com.truck.vo.OutVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,10 @@ public class OutServiceImpl implements IOutService {
     @Autowired
     private AdminMapper adminMapper;
 
-    public ServerResponse outStock(Integer adminId){
+    public ServerResponse outStock(Integer adminId,String repairNo){
+        if(StringUtils.isBlank(repairNo)){
+            return ServerResponse.createByErrorMessage("请输入维修单号");
+        }
         List<Cart> cartList = cartMapper.selectCartByAdminId(adminId);
         if(cartList.size() == 0){
             return ServerResponse.createByErrorMessage("购物车为空");
@@ -40,6 +44,7 @@ public class OutServiceImpl implements IOutService {
         out.setOutNo(outNo);
         out.setStatus(Const.OutStatusEnum.UN_OUT.getCode());
         out.setOperatorId(adminId);
+        out.setRepairNo(repairNo);
         int resultCount = outMapper.insertSelective(out);
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("数据异常，未生成出库单");
@@ -111,6 +116,7 @@ public class OutServiceImpl implements IOutService {
         Admin admin = adminMapper.selectByPrimaryKey(out.getOperatorId());
         outVo.setOperatorName(admin.getAdminName());
         outVo.setStatus(out.getStatus());
+        outVo.setRepairNo(out.getRepairNo());
         outVo.setStatusDesc(Const.OutStatusEnum.codeOf(out.getStatus()).getValue());
         outVo.setCreateTime(DateTimeUtil.dateToStr(out.getCreateTime()));
         outVo.setUpdateTime(DateTimeUtil.dateToStr(out.getUpdateTime()));

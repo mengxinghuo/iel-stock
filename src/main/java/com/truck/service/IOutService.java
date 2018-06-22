@@ -4,7 +4,7 @@ import com.truck.common.ServerResponse;
 
 public interface IOutService {
 
-    ServerResponse outStock(Integer adminId);
+    ServerResponse outStock(Integer adminId,String repairNo);
 
     ServerResponse getOutList(Integer adminId,int pageNum,int pageSize);
 
