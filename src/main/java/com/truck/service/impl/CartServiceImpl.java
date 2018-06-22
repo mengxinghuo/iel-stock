@@ -94,10 +94,11 @@ public class CartServiceImpl implements ICartService {
 
 
     public ServerResponse<Integer> getcartCount(Integer adminId) {
-        if (adminId == null)
-            return ServerResponse.createBySuccess(0);
-
-        return ServerResponse.createBySuccess(cartMapper.selectCartProductCount(adminId));
+       Integer count = cartMapper.selectCartProductCount(adminId);
+        if (count == null) {
+            count =0;
+        }
+        return ServerResponse.createBySuccess(count);
     }
 
     public ServerResponse cleanCart(Integer adminId) {
