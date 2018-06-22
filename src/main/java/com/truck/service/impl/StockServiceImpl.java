@@ -35,6 +35,13 @@ public class StockServiceImpl implements IStockService {
         if (entryId == null ) {
             return ServerResponse.createByErrorMessage("入库参数错误");
         }
+        Entry entry = entryMapper.selectByPrimaryKey(entryId);
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("本记录已入库，无法再次入库");
+        }
+        if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("未盘点，无法入库");
+        }
         List<EntryDetail> entryDetails = entryDetailMapper.selectEntryDetail(entryId);
         for (EntryDetail entryDetail : entryDetails) {
             if (entryDetail.getInspectStatus() == 0 && entryDetail.getEntryNum()==null) {
@@ -47,7 +54,6 @@ public class StockServiceImpl implements IStockService {
         List<Stock> stockList = entryDetailToStock(entryDetails);
         int count = stockMapper.batchInsert(stockList);
         if(count == 0){
-            Entry entry = entryMapper.selectByPrimaryKey(entryId);
             entry.setStatus(Const.EntryStatusEnum.FINISH.getCode());
             entryMapper.updateByPrimaryKeySelective(entry);
             return ServerResponse.createByErrorMessage("入库失败");
