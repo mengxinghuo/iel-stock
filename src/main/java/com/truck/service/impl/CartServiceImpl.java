@@ -70,7 +70,7 @@ public class CartServiceImpl implements ICartService {
                 }
                 cart.setCartPrice(cartPrice);
             }
-            if(count ==0){
+            if(cart.getAmount()+count <=0){
                 this.deleteProduct(adminId,cart.getStockId().toString());
             }else{
                 cart.setAmount(count);
