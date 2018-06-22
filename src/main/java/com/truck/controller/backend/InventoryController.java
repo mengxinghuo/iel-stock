@@ -4,6 +4,8 @@ import com.truck.common.ServerResponse;
 import com.truck.pojo.StockInventory;
 import com.truck.service.IEntryService;
 import com.truck.util.FTPUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,23 @@ public class InventoryController {
      */
     @RequestMapping("gen_inventory_order.do")
     @ResponseBody
-    public ServerResponse getEntryList( List<StockInventory> stockInventoryList){
+    public ServerResponse getEntryList( String stockInventoryList){
+
         logger.info("传过来的参数:{}",stockInventoryList);
-        for (StockInventory stockInventory : stockInventoryList) {
+        /*for (StockInventory stockInventory : stockInventoryList) {
             logger.info("id===:{}",stockInventory.getId());
             logger.info("quantity===:{}",stockInventory.getQuantity());
             logger.info("pandlan===:{}",stockInventory.getPandlan());
+        }*/
+        JSONArray json = JSONArray.fromObject(stockInventoryList);
+        if(json!=null||json.size()!=0){
+            for(int i=0;i<json.size();i++){
+                JSONObject jo = JSONObject.fromObject(json.get(i));
+                String id = jo.getString("id");
+                String quantity = jo.getString("quantity");
+                String pandlan = jo.getString("pandlan");
+                logger.info("id===:{}",id);
+            }
         }
         return null;
     }
