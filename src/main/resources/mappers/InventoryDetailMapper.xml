@@ -113,6 +113,7 @@
     (#{item.inventoryId,jdbcType=INTEGER},#{item.stockId,jdbcType=INTEGER}, #{item.stockNum,jdbcType=INTEGER},
     #{item.inventoryNum,jdbcType=INTEGER}, now(), now()
     )
+    </foreach>
   </insert>
 
   <select id="selectByInventoryId" parameterType="map" resultMap="BaseResultMap">
