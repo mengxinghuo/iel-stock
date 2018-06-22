@@ -195,5 +195,6 @@
     <include refid="Base_Column_List" />
     from iel_out_detail
     where out_id = #{outId}
+    order by create_time desc
   </select>
 </mapper>

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.truck.pojo.InventoryDetail" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="inventory_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="stock_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="stock_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="inventory_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -12,7 +13,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, stock_id, stock_num, inventory_num, create_time, update_time
+    id,inventory_id, stock_id, stock_num, inventory_num, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,10 +26,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.truck.pojo.InventoryDetail" >
-    insert into iel_inventory_detail (id, stock_id, stock_num, 
+    insert into iel_inventory_detail (id,inventory_id, stock_id, stock_num,
       inventory_num, create_time, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{stockId,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{inventoryId,jdbcType=INTEGER},#{stockId,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER},
       #{inventoryNum,jdbcType=INTEGER}, now(), now()
       )
   </insert>
@@ -37,6 +38,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="inventoryId != null" >
+        inventory_id,
       </if>
       <if test="stockId != null" >
         stock_id,
@@ -54,6 +58,9 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="inventoryId != null" >
+        #{inventoryId,jdbcType=INTEGER},
+      </if>
       <if test="stockId != null" >
         #{stockId,jdbcType=INTEGER},
       </if>
@@ -70,6 +77,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.truck.pojo.InventoryDetail" >
     update iel_inventory_detail
     <set >
+      <if test="inventoryId != null" >
+        inventory_id = #{inventoryId,jdbcType=INTEGER},
+      </if>
       <if test="stockId != null" >
         stock_id = #{stockId,jdbcType=INTEGER},
       </if>
@@ -85,10 +95,31 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.truck.pojo.InventoryDetail" >
     update iel_inventory_detail
-    set stock_id = #{stockId,jdbcType=INTEGER},
+    set
+      inventory_id = #{inventoryId,jdbcType=INTEGER},
+      stock_id = #{stockId,jdbcType=INTEGER},
       stock_num = #{stockNum,jdbcType=INTEGER},
       inventory_num = #{inventoryNum,jdbcType=INTEGER},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="batchInsert" parameterType="list" >
+    insert into iel_inventory_detail (inventory_id,stock_id, stock_num,
+    inventory_num, create_time, update_time
+    )
+    values
+    <foreach collection="inventoryDetailList" index="index" item="item" separator=",">
+    (#{item.inventoryId,jdbcType=INTEGER},#{item.stockId,jdbcType=INTEGER}, #{item.stockNum,jdbcType=INTEGER},
+    #{item.inventoryNum,jdbcType=INTEGER}, now(), now()
+    )
+  </insert>
+
+  <select id="selectByInventoryId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_inventory_detail
+    where inventory_id = #{inventoryId}
+    order by create_time desc
+  </select>
 </mapper>

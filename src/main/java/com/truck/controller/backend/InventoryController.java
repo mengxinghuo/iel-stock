@@ -3,6 +3,8 @@ package com.truck.controller.backend;
 import com.truck.common.ServerResponse;
 import com.truck.pojo.StockInventory;
 import com.truck.service.IEntryService;
+import com.truck.service.IInventoryService;
+import com.truck.util.DateTimeUtil;
 import com.truck.util.FTPUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/manage/inventory/")
 public class InventoryController {
 
+    @Autowired
+    private IInventoryService iInventoryService;
 
     private static  final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
@@ -39,17 +44,35 @@ public class InventoryController {
         }*/
         JSONArray json = JSONArray.fromObject(stockInventoryList);
         List<StockInventory> list = JSONArray.toList(json,StockInventory.class);
+        return iInventoryService.createInventory(list);
+    }
 
-        if(json!=null||json.size()!=0){
-            for(int i=0;i<json.size();i++){
-                JSONObject jo = JSONObject.fromObject(json.get(i));
-                String id = jo.getString("id");
-                String quantity = jo.getString("quantity");
-                String pandian = jo.getString("pandian");
-                logger.info("id===:{}",id);
-            }
-        }
-        return null;
+    /**
+     * 查询盘点列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("get_inventory_list.do")
+    @ResponseBody
+    public ServerResponse getInventoryList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        return iInventoryService.getInventoryList(pageNum,pageSize);
+    }
+
+    /**
+     * 查询盘点详情
+     * @param inventoryId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("get_inventory_detail.do")
+    @ResponseBody
+    public ServerResponse getInventoryDetail(Integer inventoryId,
+                                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        return iInventoryService.getInventoryDetail(inventoryId,pageNum,pageSize);
     }
 
 }

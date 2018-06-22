@@ -2,6 +2,8 @@ package com.truck.dao;
 
 import com.truck.pojo.Inventory;
 
+import java.util.List;
+
 public interface InventoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface InventoryMapper {
     int updateByPrimaryKeySelective(Inventory record);
 
     int updateByPrimaryKey(Inventory record);
+
+    List selectAllList();
 }

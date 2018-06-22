@@ -33,7 +33,7 @@
       #{endTime,jdbcType=TIMESTAMP}, #{inventoryStatus,jdbcType=INTEGER}, now(),
       now())
   </insert>
-  <insert id="insertSelective" parameterType="com.truck.pojo.Inventory" >
+  <insert id="insertSelective" parameterType="com.truck.pojo.Inventory" useGeneratedKeys="true" keyProperty="id">
     insert into iel_inventory
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -102,4 +102,12 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectAllList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_inventory
+    order by create_time desc
+  </select>
+
 </mapper>

@@ -123,5 +123,6 @@
         and operator_id = #{adminId}
       </if>
     </where>
+    order by create_time desc
   </select>
 </mapper>

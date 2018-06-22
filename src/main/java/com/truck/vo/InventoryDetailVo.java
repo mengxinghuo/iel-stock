@@ -1,8 +1,8 @@
-package com.truck.pojo;
+package com.truck.vo;
 
 import java.util.Date;
 
-public class InventoryDetail {
+public class InventoryDetailVo {
     private Integer id;
 
     private Integer inventoryId;
@@ -13,18 +13,18 @@ public class InventoryDetail {
 
     private Integer inventoryNum;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date updateTime;
+    private String updateTime;
 
-    public InventoryDetail(Integer id,Integer inventoryId, Integer stockId, Integer stockNum, Integer inventoryNum, Date createTime, Date updateTime) {
+    private StockVo stockVo;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
-        this.inventoryId = inventoryId;
-        this.stockId = stockId;
-        this.stockNum = stockNum;
-        this.inventoryNum = inventoryNum;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
     }
 
     public Integer getInventoryId() {
@@ -33,18 +33,6 @@ public class InventoryDetail {
 
     public void setInventoryId(Integer inventoryId) {
         this.inventoryId = inventoryId;
-    }
-
-    public InventoryDetail() {
-        super();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getStockId() {
@@ -71,19 +59,29 @@ public class InventoryDetail {
         this.inventoryNum = inventoryNum;
     }
 
-    public Date getCreateTime() {
+
+
+    public StockVo getStockVo() {
+        return stockVo;
+    }
+
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public void setStockVo(StockVo stockVo) {
+        this.stockVo = stockVo;
     }
 }
