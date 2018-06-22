@@ -70,7 +70,8 @@ public class CartServiceImpl implements ICartService {
                 }
                 cart.setCartPrice(cartPrice);
             }
-            if(cart.getAmount()+count <=0){
+            Integer real= cart.getAmount()+count;
+            if(real <=0){
                 cartMapper.deleteByPrimaryKey(cart.getCartId());
             }else{
                 cart.setAmount(count);
