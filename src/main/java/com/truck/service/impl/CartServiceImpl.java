@@ -52,7 +52,11 @@ public class CartServiceImpl implements ICartService {
             //这个产品已经在购物车中相加产品数量
             count = cart.getAmount() + count;
             cart.setAmount(count);
-            cartMapper.updateByPrimaryKeySelective(cart);
+            if(count <=0){
+                cartMapper.deleteByPrimaryKey(cart.getCartId());
+            }else {
+                cartMapper.updateByPrimaryKeySelective(cart);
+            }
         }
         return this.list(adminId);
     }
