@@ -71,7 +71,7 @@ public class CartServiceImpl implements ICartService {
                 cart.setCartPrice(cartPrice);
             }
             if(cart.getAmount()+count <=0){
-                this.deleteProduct(adminId,cart.getStockId().toString());
+                cartMapper.deleteByPrimaryKey(cart.getCartId());
             }else{
                 cart.setAmount(count);
                 cartMapper.updateByPrimaryKeySelective(cart);
