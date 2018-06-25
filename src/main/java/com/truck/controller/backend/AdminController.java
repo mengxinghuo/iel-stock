@@ -60,13 +60,7 @@ public class AdminController {
     @RequestMapping("register.do")
     @ResponseBody
     public ServerResponse<String> register(HttpSession session,Admin admin){
-       Admin  loginAdmin=(Admin) session.getAttribute(Const.CURRENT_ADMIN);
-        if (loginAdmin==null)
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登陆，请登陆超级管理员账户");
-        if (iAdminService.checkAdminRole(loginAdmin).isSuccess())
             return  iAdminService.register(admin);
-
-        return ServerResponse.createByErrorMessage("权限不足");
     }
 
     /**
