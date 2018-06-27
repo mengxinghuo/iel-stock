@@ -54,4 +54,24 @@ public class StockController {
         }
         return iStockService.getStockList(admin.getAdminId(),entryId, pageNum, pageSize);
     }
+
+    /**
+     * 搜索查询在库详情
+     * @param stock
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("search_stock_list.do")
+    @ResponseBody
+    public ServerResponse searchStockList(HttpSession session,
+                                          Stock stock,
+                                          @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
+        if(admin == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
+        }
+        return iStockService.searchStockList(admin.getAdminId(),stock, pageNum, pageSize);
+    }
 }

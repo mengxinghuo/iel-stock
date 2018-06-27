@@ -17,7 +17,9 @@ public class InventoryDetail {
 
     private Date updateTime;
 
-    public InventoryDetail(Integer id,Integer inventoryId, Integer stockId, Integer stockNum, Integer inventoryNum, Date createTime, Date updateTime) {
+    private Integer status;
+
+    public InventoryDetail(Integer id,Integer inventoryId, Integer stockId, Integer stockNum, Integer inventoryNum, Date createTime, Date updateTime,Integer status) {
         this.id = id;
         this.inventoryId = inventoryId;
         this.stockId = stockId;
@@ -25,6 +27,7 @@ public class InventoryDetail {
         this.inventoryNum = inventoryNum;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.status = status;
     }
 
     public Integer getInventoryId() {
@@ -85,5 +88,13 @@ public class InventoryDetail {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

@@ -30,6 +30,8 @@ public class StockServiceImpl implements IStockService {
     private EntryMapper entryMapper;
     @Autowired
     private CartMapper cartMapper;
+    @Autowired
+    private RepertoryMapper repertoryMapper;
 
     public ServerResponse batchStockIn(Integer entryId){
         if (entryId == null ) {
@@ -77,6 +79,22 @@ public class StockServiceImpl implements IStockService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    public ServerResponse searchStockList(Integer adminId,Stock stock, int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Stock> stockList =stockMapper.selectByStockSelective(stock);
+        if(stockList.size() == 0){
+            return ServerResponse.createByErrorMessage("未查到任何记录");
+        }
+        List<StockVo> stockVoList = Lists.newArrayList();
+        for(Stock stockItem : stockList){
+            StockVo stockVo = this.assembleStockVo(adminId,stockItem);
+            stockVoList.add(stockVo);
+        }
+        PageInfo pageInfo = new PageInfo(stockList);
+        pageInfo.setList(stockVoList);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
     public StockVo assembleStockVo(Integer adminId,Stock stock){
         StockVo stockVo = new StockVo();
         stockVo.setId(stock.getId());
@@ -100,6 +118,20 @@ public class StockServiceImpl implements IStockService {
         }
         stockVo.setCreateTime(DateTimeUtil.dateToStr(stock.getCreateTime()));
         stockVo.setUpdateTime(DateTimeUtil.dateToStr(stock.getUpdateTime()));
+
+        if(!org.springframework.util.StringUtils.isEmpty(stock.getPosition())){
+            //拼接 位置代码
+            List<Integer> idList = Lists.newArrayList();
+            iRepertoryService.findDeepParentId(idList,stock.getPosition());
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = idList.size() - 1; i >= 0; i--) {
+                Repertory repertory = repertoryMapper.selectByPrimaryKey(idList.get(i));
+                if (repertory != null) {
+                    stringBuilder.append("-"+repertory.getName());
+                }
+            }
+            stockVo.setAddress(stock.getCustomsClearance()+stringBuilder.toString());
+        }
         return stockVo;
     }
     

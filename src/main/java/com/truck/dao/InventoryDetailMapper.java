@@ -20,5 +20,6 @@ public interface InventoryDetailMapper {
 
     int batchInsert(@Param("inventoryDetailList") List<InventoryDetail> inventoryDetailList);
 
-    List selectByInventoryId(@Param("inventoryId") Integer inventoryId);
+    List selectByInventoryIdStatus(@Param("inventoryId") Integer inventoryId,@Param("status") Integer status);
+
 }

@@ -7,12 +7,11 @@ import com.truck.common.Const;
 import com.truck.common.ServerResponse;
 import com.truck.dao.InventoryDetailMapper;
 import com.truck.dao.InventoryMapper;
+import com.truck.dao.RepertoryMapper;
 import com.truck.dao.StockMapper;
-import com.truck.pojo.Inventory;
-import com.truck.pojo.InventoryDetail;
-import com.truck.pojo.Stock;
-import com.truck.pojo.StockInventory;
+import com.truck.pojo.*;
 import com.truck.service.IInventoryService;
+import com.truck.service.IRepertoryService;
 import com.truck.util.DateTimeUtil;
 import com.truck.vo.InventoryDetailVo;
 import com.truck.vo.InventoryVo;
@@ -33,6 +32,10 @@ public class InventoryServiceImpl implements IInventoryService {
     private InventoryDetailMapper inventoryDetailMapper;
     @Autowired
     private StockMapper stockMapper;
+    @Autowired
+    private IRepertoryService iRepertoryService;
+    @Autowired
+    private RepertoryMapper repertoryMapper;
 
     public ServerResponse createInventory(List<StockInventory> stockInventoryList){
         Inventory inventory = new Inventory();
@@ -68,6 +71,10 @@ public class InventoryServiceImpl implements IInventoryService {
             inventoryDetail.setStockId(stockInventoryItem.getId());
             inventoryDetail.setStockNum(stockInventoryItem.getQuantity());
             inventoryDetail.setInventoryNum(stockInventoryItem.getPandian());
+            inventoryDetail.setStatus(Const.InventoryDetailStatusEnum.NORMAL.getCode());
+            if(inventoryDetail.getStockNum() > inventoryDetail.getInventoryNum()){
+                inventoryDetail.setStatus(Const.InventoryDetailStatusEnum.LESS.getCode());
+            }
             inventoryDetailList.add(inventoryDetail);
         }
         return inventoryDetailList;
@@ -89,12 +96,12 @@ public class InventoryServiceImpl implements IInventoryService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
-    public ServerResponse getInventoryDetail(Integer inventoryId,int pageNum,int pageSize){
+    public ServerResponse getInventoryDetail(Integer inventoryId,Integer status,int pageNum,int pageSize){
         PageHelper.startPage(pageNum, pageSize);
         if(StringUtils.isEmpty(inventoryId)){
             return ServerResponse.createByErrorMessage("请选择要查询的记录");
         }
-        List<InventoryDetail> inventoryDetailList = inventoryDetailMapper.selectByInventoryId(inventoryId);
+        List<InventoryDetail> inventoryDetailList = inventoryDetailMapper.selectByInventoryIdStatus(inventoryId,status);
         List<InventoryDetailVo> inventoryDetailVoList = Lists.newArrayList();
         for(InventoryDetail inventoryDetailItem : inventoryDetailList){
             InventoryDetailVo inventoryDetailVo = this.assembleInventoryDetail(inventoryDetailItem);
@@ -128,6 +135,9 @@ public class InventoryServiceImpl implements IInventoryService {
         inventoryDetailVo.setStockVo(stockVo);
         inventoryDetailVo.setCreateTime(DateTimeUtil.dateToStr(inventoryDetail.getCreateTime()));
         inventoryDetailVo.setUpdateTime(DateTimeUtil.dateToStr(inventoryDetail.getUpdateTime()));
+
+        inventoryDetailVo.setStatus(inventoryDetail.getStatus());
+        inventoryDetailVo.setStatusDesc(Const.InventoryDetailStatusEnum.codeOf(inventoryDetail.getStatus()).getValue());
         return inventoryDetailVo;
     }
 
@@ -148,6 +158,19 @@ public class InventoryServiceImpl implements IInventoryService {
         stockVo.setPosition(stock.getPosition());
         stockVo.setCreateTime(DateTimeUtil.dateToStr(stock.getCreateTime()));
         stockVo.setUpdateTime(DateTimeUtil.dateToStr(stock.getUpdateTime()));
+        if(!org.springframework.util.StringUtils.isEmpty(stock.getPosition())){
+            //拼接 位置代码
+            List<Integer> idList = Lists.newArrayList();
+            iRepertoryService.findDeepParentId(idList,stock.getPosition());
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = idList.size() - 1; i >= 0; i--) {
+                Repertory repertory = repertoryMapper.selectByPrimaryKey(idList.get(i));
+                if (repertory != null) {
+                    stringBuilder.append("-"+repertory.getName());
+                }
+            }
+            stockVo.setAddress(stock.getCustomsClearance()+stringBuilder.toString());
+        }
         return stockVo;
     }
 }

@@ -36,6 +36,8 @@ public class StockVo {
 
     private Integer amount;
 
+    private String address;
+
     public StockVo() {
         super();
     }
@@ -166,5 +168,13 @@ public class StockVo {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

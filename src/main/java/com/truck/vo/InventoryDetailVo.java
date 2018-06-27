@@ -19,6 +19,10 @@ public class InventoryDetailVo {
 
     private StockVo stockVo;
 
+    private Integer status;
+
+    private String statusDesc;
+
     public Integer getId() {
         return id;
     }
@@ -59,8 +63,6 @@ public class InventoryDetailVo {
         this.inventoryNum = inventoryNum;
     }
 
-
-
     public StockVo getStockVo() {
         return stockVo;
     }
@@ -83,5 +85,21 @@ public class InventoryDetailVo {
 
     public void setStockVo(StockVo stockVo) {
         this.stockVo = stockVo;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
     }
 }
