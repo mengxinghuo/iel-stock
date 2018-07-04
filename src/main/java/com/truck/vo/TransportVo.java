@@ -28,11 +28,14 @@ public class TransportVo {
     private List entranceCost;
 
     private Integer status;
+
     private String statusDesc;
 
     private String createTime;
 
     private String updateTime;
+
+    private String shipNum;
 
     public String getStatusDesc() {
         return statusDesc;
@@ -152,5 +155,13 @@ public class TransportVo {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getShipNum() {
+        return shipNum;
+    }
+
+    public void setShipNum(String shipNum) {
+        this.shipNum = shipNum;
     }
 }

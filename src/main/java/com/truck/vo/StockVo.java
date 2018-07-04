@@ -38,6 +38,8 @@ public class StockVo {
 
     private String address;
 
+    private String shipNum;
+
     public StockVo() {
         super();
     }
@@ -176,5 +178,13 @@ public class StockVo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getShipNum() {
+        return shipNum;
+    }
+
+    public void setShipNum(String shipNum) {
+        this.shipNum = shipNum;
     }
 }

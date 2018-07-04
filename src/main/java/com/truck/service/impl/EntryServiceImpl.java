@@ -140,6 +140,7 @@ public class EntryServiceImpl implements IEntryService {
         entryVo.setInspector(entry.getInspector());
         entryVo.setCreateTime(DateTimeUtil.dateToStr(entry.getCreateTime()));
         entryVo.setUpdateTime(DateTimeUtil.dateToStr(entry.getUpdateTime()));
+        entryVo.setShipNum(entry.getShipNum());
         return entryVo;
     }
 
@@ -182,6 +183,7 @@ public class EntryServiceImpl implements IEntryService {
         }
         entryDetailVo.setCreateTime(DateTimeUtil.dateToStr(entryDetail.getCreateTime()));
         entryDetailVo.setUpdateTime(DateTimeUtil.dateToStr(entryDetail.getUpdateTime()));
+        entryDetailVo.setShipNum(entryDetail.getShipNum());
         return entryDetailVo;
     }
 }

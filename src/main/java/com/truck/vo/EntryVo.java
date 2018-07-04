@@ -18,6 +18,8 @@ public class EntryVo {
 
     private String updateTime;
 
+    private String shipNum;
+
     public Integer getId() {
         return id;
     }
@@ -88,5 +90,13 @@ public class EntryVo {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getShipNum() {
+        return shipNum;
+    }
+
+    public void setShipNum(String shipNum) {
+        this.shipNum = shipNum;
     }
 }

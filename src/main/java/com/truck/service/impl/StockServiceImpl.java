@@ -148,6 +148,7 @@ public class StockServiceImpl implements IStockService {
             }
             stockVo.setAddress(stock.getCustomsClearance()+stringBuilder.toString());
         }
+        stockVo.setShipNum(stock.getShipNum());
         return stockVo;
     }
     
