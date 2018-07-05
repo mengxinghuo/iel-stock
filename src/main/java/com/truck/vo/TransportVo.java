@@ -37,6 +37,10 @@ public class TransportVo {
 
     private String shipNum;
 
+    private String urlPeiJian;
+
+    private String urlZhuJi;
+
     public String getStatusDesc() {
         return statusDesc;
     }
@@ -163,5 +167,21 @@ public class TransportVo {
 
     public void setShipNum(String shipNum) {
         this.shipNum = shipNum;
+    }
+
+    public String getUrlPeiJian() {
+        return urlPeiJian;
+    }
+
+    public void setUrlPeiJian(String urlPeiJian) {
+        this.urlPeiJian = urlPeiJian;
+    }
+
+    public String getUrlZhuJi() {
+        return urlZhuJi;
+    }
+
+    public void setUrlZhuJi(String urlZhuJi) {
+        this.urlZhuJi = urlZhuJi;
     }
 }
