@@ -111,8 +111,9 @@ public class FileServiceImpl implements FileService {
         String fileName = file.getOriginalFilename();
         String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
         Date date = new Date();
-        String dateStr = DateTimeUtil.dateToStr(date,"yyyy-MM-dd");
-        String uploadFileName = dateStr+fileName;
+//        String dateStr = DateTimeUtil.dateToStr(date,"yyyy-MM-dd");
+//        String uploadFileName = dateStr+fileName;
+        String uploadFileName = fileName;
         File fileDir = new File(path);
         if (!fileDir.exists()) {
             fileDir.setWritable(true);
