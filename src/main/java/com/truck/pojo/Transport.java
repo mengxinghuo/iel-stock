@@ -33,7 +33,11 @@ public class Transport {
 
     private String shipNum;
 
-    public Transport(Integer id, String declareNum, String destination, String arrivalList, String purchaseList, String salesContract, String invoice, String purchaseContract, String exportCost, String salesList, String entranceCost, Integer status, Date createTime, Date updateTime,String shipNum) {
+    private String zhuJiSalesList;
+
+    public Transport(Integer id, String declareNum, String destination, String arrivalList, String purchaseList, String salesContract,
+                     String invoice, String purchaseContract, String exportCost, String salesList, String entranceCost, Integer status,
+                     Date createTime, Date updateTime,String shipNum,String zhuJiSalesList) {
         this.id = id;
         this.declareNum = declareNum;
         this.destination = destination;
@@ -49,6 +53,7 @@ public class Transport {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.shipNum = shipNum;
+        this.zhuJiSalesList = zhuJiSalesList;
     }
 
     public Transport() {
@@ -173,5 +178,13 @@ public class Transport {
 
     public void setShipNum(String shipNum) {
         this.shipNum = shipNum;
+    }
+
+    public String getZhuJiSalesList() {
+        return zhuJiSalesList;
+    }
+
+    public void setZhuJiSalesList(String zhuJiSalesList) {
+        this.zhuJiSalesList = zhuJiSalesList;
     }
 }

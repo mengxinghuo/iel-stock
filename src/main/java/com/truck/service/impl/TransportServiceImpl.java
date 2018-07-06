@@ -336,13 +336,14 @@ public class TransportServiceImpl implements ITransportService {
             }
             transportVo.setSalesList(mapList);
         }
-        transportVo.setStatus(transportVo.getStatus());
+        transportVo.setStatus(transport.getStatus());
         transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
         transportVo.setCreateTime(DateTimeUtil.dateToStr(transport.getCreateTime(),"yyyy-MM-dd"));
         transportVo.setUpdateTime(DateTimeUtil.dateToStr(transport.getUpdateTime()));
         transportVo.setShipNum(transport.getShipNum());
         transportVo.setUrlPeiJian("http://cdn.ayotrust.com/upload/配件入库模板.xls");
         transportVo.setUrlZhuJi("http://cdn.ayotrust.com/upload/主机入库模板.xls");
+        transportVo.setZhuJiSalesList(transport.getZhuJiSalesList());
 
         return transportVo;
     }

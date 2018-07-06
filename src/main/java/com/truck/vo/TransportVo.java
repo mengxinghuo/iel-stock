@@ -41,6 +41,8 @@ public class TransportVo {
 
     private String urlZhuJi;
 
+    private String zhuJiSalesList;
+
     public String getStatusDesc() {
         return statusDesc;
     }
@@ -183,5 +185,13 @@ public class TransportVo {
 
     public void setUrlZhuJi(String urlZhuJi) {
         this.urlZhuJi = urlZhuJi;
+    }
+
+    public String getZhuJiSalesList() {
+        return zhuJiSalesList;
+    }
+
+    public void setZhuJiSalesList(String zhuJiSalesList) {
+        this.zhuJiSalesList = zhuJiSalesList;
     }
 }
