@@ -46,7 +46,13 @@ public class Excel {
             entryDetail.setInspectStatus(0);
 //取出当前行第1个单元格数据，并封装在info实体stuName属性上
             entryDetail.setShipNum(r.getCell(0).getStringCellValue());
-            entryDetail.setCustomsClearance(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(1).getNumericCellValue()))));
+
+            if(r.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                entryDetail.setCustomsClearance(r.getCell(1).getStringCellValue());
+            }else{
+                entryDetail.setCustomsClearance(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(1).getNumericCellValue()))));
+            }
+
             entryDetail.setDestination(r.getCell(2).getStringCellValue());
             entryDetail.setPackageNo(r.getCell(3).getStringCellValue());
 //            entryDetail.setSerialNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(3).getNumericCellValue()))));
