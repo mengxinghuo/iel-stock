@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.sun.org.apache.regexp.internal.RE;
 import com.truck.common.Const;
 import com.truck.common.ServerResponse;
+import com.truck.dao.EntryDetailMapper;
 import com.truck.dao.EntryMapper;
 import com.truck.dao.TransportMapper;
 import com.truck.pojo.Entry;
@@ -36,6 +37,8 @@ public class TransportServiceImpl implements ITransportService {
     private TransportMapper transportMapper;
     @Autowired
     private EntryMapper entryMapper;
+    @Autowired
+    private EntryDetailMapper entryDetailMapper;
 
     private static  final Logger logger = LoggerFactory.getLogger(TransportServiceImpl.class);
 
@@ -261,6 +264,20 @@ public class TransportServiceImpl implements ITransportService {
             return ServerResponse.createBySuccess(Integer.parseInt(Str));
         }
         return ServerResponse.createByErrorMessage("创建失败");
+    }
+
+    public ServerResponse checkEntryByDeclareNum(String declareNum){
+        Entry entry = entryMapper.selectByDeclareNum(declareNum);
+        if(entry != null){
+            int resultCount = entryDetailMapper.deleteByEntryId(entry.getId());
+            if(resultCount > 0){
+                entryMapper.deleteByPrimaryKey(entry.getId());
+                return ServerResponse.createBySuccess();
+            }else{
+                return ServerResponse.createByErrorMessage("清除失败");
+            }
+        }
+        return ServerResponse.createBySuccess();
     }
 
     private long generateEntryNo(){

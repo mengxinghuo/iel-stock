@@ -20,4 +20,6 @@ public interface ITransportService {
     ServerResponse createEntry(Integer id);
 
     ServerResponse createHostEntry(Integer id);
+
+    ServerResponse checkEntryByDeclareNum(String declareNum);
 }

@@ -291,4 +291,9 @@
     from iel_entry_detail
     where entry_id = #{entryId}
   </select>
+
+  <delete id="deleteByEntryId" parameterType="map">
+    delete from iel_entry_detail
+    where entry_id = #{entryId}
+  </delete>
 </mapper>

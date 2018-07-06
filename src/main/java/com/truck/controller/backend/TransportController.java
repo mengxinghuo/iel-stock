@@ -106,8 +106,13 @@ public class TransportController {
     public ServerResponse consummateTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        if(Const.TransportStatusEnum.ON_CHECK.getCode() == transport.getStatus()){
+        if(transport.getStatus() > Const.TransportStatusEnum.OVER_CONFIRM.getCode()){
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
+        }
+        //进行查看并且进行删除判断
+        ServerResponse checkEntry = iTransportService.checkEntryByDeclareNum(transport.getDeclareNum());
+        if(checkEntry.getStatus() == 1){
+            return checkEntry;
         }
         ServerResponse serverResponse = iTransportService.createEntry(id);
         int status = 0;
@@ -136,9 +141,10 @@ public class TransportController {
     public ServerResponse hostTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        if(Const.TransportStatusEnum.ON_CHECK.getCode() == transport.getStatus()){
+        if(transport.getStatus() > Const.TransportStatusEnum.OVER_CONFIRM.getCode()){
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
+
         ServerResponse serverResponse = iTransportService.createHostEntry(id);
         int status = 1;
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse,status);
