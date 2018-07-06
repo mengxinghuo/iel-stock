@@ -219,6 +219,11 @@
     where declare_num = #{declareNum}
   </select>
 
+  <select id="getByDeclareNum" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from iel_transport
+    where declare_num = #{declareNum}
+  </select>
+
   <select id="checkoutDeclareNum" parameterType="map" resultType="int">
     select count(1) from iel_transport
     where declare_num = #{declareNum} and id != #{id}

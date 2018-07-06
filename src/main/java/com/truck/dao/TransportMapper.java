@@ -20,6 +20,8 @@ public interface TransportMapper {
 
     int selectByDeclareNum(@Param("declareNum") String declareNum);
 
+    Transport getByDeclareNum(@Param("declareNum") String declareNum);
+
     int checkoutDeclareNum(@Param("id") Integer id,@Param("declareNum") String declareNum);
 
     List getAllList(@Param("status") Integer status);

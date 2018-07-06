@@ -172,7 +172,7 @@ public class TransportServiceImpl implements ITransportService {
         Transport search = transportMapper.selectByPrimaryKey(id);
         Transport transport = new Transport();
         transport.setId(id);
-        transport.setSalesList(zhuJiList);
+        transport.setZhuJiSalesList(zhuJiList);
         if(StringUtils.isEmpty(search.getZhuJiSalesList())){
             transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
         }else{

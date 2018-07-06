@@ -8,9 +8,11 @@ import com.truck.common.ServerResponse;
 import com.truck.dao.EntryDetailMapper;
 import com.truck.dao.EntryMapper;
 import com.truck.dao.RepertoryMapper;
+import com.truck.dao.TransportMapper;
 import com.truck.pojo.Entry;
 import com.truck.pojo.EntryDetail;
 import com.truck.pojo.Repertory;
+import com.truck.pojo.Transport;
 import com.truck.service.IEntryService;
 import com.truck.service.IRepertoryService;
 import com.truck.util.DateTimeUtil;
@@ -33,6 +35,8 @@ public class EntryServiceImpl implements IEntryService {
     private RepertoryMapper repertoryMapper;
     @Autowired
     private IRepertoryService iRepertoryService;
+    @Autowired
+    private TransportMapper transportMapper;
 
     /**
      * 入库单列表
@@ -75,6 +79,11 @@ public class EntryServiceImpl implements IEntryService {
             return ServerResponse.createByErrorMessage("更新入库详情状态错误");
         }
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
+        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
+            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
+        }
         /*if(inspectStatus == 1){
             if(!StringUtils.isEmpty(entryDetail.getEntryNum())){
                 if(entryDetail.getEntryNum() != entryDetail.getPurchaseNum()){
@@ -85,10 +94,13 @@ public class EntryServiceImpl implements IEntryService {
         entryDetail.setInspectStatus(inspectStatus);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
-            Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
             if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
                 entry.setStatus(Const.EntryStatusEnum.CONFIRM.getCode());
                 entryMapper.updateByPrimaryKeySelective(entry);
+            }
+            if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() == transport.getStatus()){
+                transport.setStatus(Const.TransportStatusEnum.ON_CHECK.getCode());
+                transportMapper.updateByPrimaryKeySelective(transport);
             }
             return ServerResponse.createBySuccess("更新入库详情状态成功");
         }
@@ -100,16 +112,25 @@ public class EntryServiceImpl implements IEntryService {
             return ServerResponse.createByErrorMessage("更新入库详情数量错误");
         }
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
+        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
+            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
+        }
+
         if(entryDetail.getInspectStatus() == 1){
             return ServerResponse.createByErrorMessage("请更改状态");
         }
         entryDetail.setEntryNum(entryNum);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
-            Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
             if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
                 entry.setStatus(Const.EntryStatusEnum.CONFIRM.getCode());
                 entryMapper.updateByPrimaryKeySelective(entry);
+            }
+            if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() == transport.getStatus()){
+                transport.setStatus(Const.TransportStatusEnum.ON_CHECK.getCode());
+                transportMapper.updateByPrimaryKeySelective(transport);
             }
             return ServerResponse.createBySuccess("更新入库详情数量成功");
         }
@@ -121,9 +142,23 @@ public class EntryServiceImpl implements IEntryService {
             return ServerResponse.createByErrorMessage("更新入库详情位置错误");
         }
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
+        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
+            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
+        }
+
         entryDetail.setEntryPosition(entryPosition);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
+            if(Const.EntryStatusEnum.STANDBY.getCode() == entry.getStatus()){
+                entry.setStatus(Const.EntryStatusEnum.CONFIRM.getCode());
+                entryMapper.updateByPrimaryKeySelective(entry);
+            }
+            if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() == transport.getStatus()){
+                transport.setStatus(Const.TransportStatusEnum.ON_CHECK.getCode());
+                transportMapper.updateByPrimaryKeySelective(transport);
+            }
             return ServerResponse.createBySuccess("更新入库详情位置成功");
         }
         return ServerResponse.createByErrorMessage("更新入库详情位置失败");
