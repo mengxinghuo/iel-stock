@@ -13,6 +13,8 @@ public interface ITransportService {
 
     ServerResponse consummateTransport( Integer id, String salesList);
 
+    ServerResponse hostTransport( Integer id, String zhuJiList);
+
     ServerResponse getAllList(Integer status,int pageNum,int pageSize);
 
     ServerResponse createEntry(Integer id);

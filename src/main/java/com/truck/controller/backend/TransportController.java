@@ -106,7 +106,7 @@ public class TransportController {
     public ServerResponse consummateTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        if(Const.TransportStatusEnum.ON_ENTRY.getCode() == transport.getStatus()){
+        if(Const.TransportStatusEnum.ON_CHECK.getCode() == transport.getStatus()){
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
         ServerResponse serverResponse = iTransportService.createEntry(id);
@@ -136,7 +136,7 @@ public class TransportController {
     public ServerResponse hostTransport(Integer id,HttpServletRequest request,
                                               @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        if(Const.TransportStatusEnum.ON_ENTRY.getCode() == transport.getStatus()){
+        if(Const.TransportStatusEnum.ON_CHECK.getCode() == transport.getStatus()){
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
         ServerResponse serverResponse = iTransportService.createHostEntry(id);
@@ -151,7 +151,7 @@ public class TransportController {
                 filePath.append(",").append(urlS[i]);
             }
         }
-        return iTransportService.consummateTransport(id,filePath.toString());
+        return iTransportService.hostTransport(id,filePath.toString());
     }
 
     /**
@@ -183,9 +183,9 @@ public class TransportController {
                     urlS[i] = PropertiesUtil.getProperty("field") +targetFileName;
                     targetFileName = targetFileName.substring(targetFileName.lastIndexOf("/")+1);
                     if(serverResponse.isSuccess()){
-                        if(status == 0){
+                        if(status.equals(0)){
                             iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
-                        }else if(status == 1){
+                        }else if(status.equals(1)){
                             //远程调用  批量插入
 
                             String url = "http://101.132.172.240:8085/manage/transport/batch_insert_exports.do";

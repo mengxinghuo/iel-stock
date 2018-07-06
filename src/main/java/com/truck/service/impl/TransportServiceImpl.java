@@ -146,15 +146,43 @@ public class TransportServiceImpl implements ITransportService {
         if(StringUtils.isEmpty(salesList)){
             return ServerResponse.createByErrorMessage("信息不完整");
         }
+        Transport search = transportMapper.selectByPrimaryKey(id);
         Transport transport = new Transport();
         transport.setId(id);
         transport.setSalesList(salesList);
-        transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
+        if(StringUtils.isEmpty(search.getZhuJiSalesList())){
+            transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
+        }else{
+            transport.setStatus(Const.TransportStatusEnum.OVER_CONFIRM.getCode());
+        }
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("完善成功");
         }
         return ServerResponse.createByErrorMessage("完善失败");
+    }
+
+    public ServerResponse hostTransport( Integer id, String zhuJiList){
+        if(StringUtils.isEmpty(id)){
+            return ServerResponse.createByErrorMessage("请选择记录");
+        }
+        if(StringUtils.isEmpty(zhuJiList)){
+            return ServerResponse.createByErrorMessage("信息不完整");
+        }
+        Transport search = transportMapper.selectByPrimaryKey(id);
+        Transport transport = new Transport();
+        transport.setId(id);
+        transport.setSalesList(zhuJiList);
+        if(StringUtils.isEmpty(search.getZhuJiSalesList())){
+            transport.setStatus(Const.TransportStatusEnum.CONFIRM.getCode());
+        }else{
+            transport.setStatus(Const.TransportStatusEnum.OVER_CONFIRM.getCode());
+        }
+        int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccess("上传成功");
+        }
+        return ServerResponse.createByErrorMessage("上传失败");
     }
 
     /**

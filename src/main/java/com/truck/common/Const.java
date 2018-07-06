@@ -30,8 +30,10 @@ public class Const {
 
     public enum TransportStatusEnum{
         OVER_EXIT(0,"已出口"),
-        CONFIRM(1,"已接收"),
-        ON_ENTRY(2,"正在入库");
+        CONFIRM(1,"正在接收"),
+        OVER_CONFIRM(2,"接收完成"),
+        ON_CHECK(3,"检验中"),
+        ON_ENTRY(4,"正在入库");
 
         private String value;
         private int code;
