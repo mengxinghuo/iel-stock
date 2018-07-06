@@ -11,6 +11,7 @@ import com.truck.service.FileService;
 import com.truck.service.IExportsListsService;
 import com.truck.service.ITransportService;
 import com.truck.util.JsonUtil;
+import com.truck.util.Post4;
 import com.truck.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -109,7 +110,8 @@ public class TransportController {
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
         ServerResponse serverResponse = iTransportService.createEntry(id);
-        Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse);
+        int status = 0;
+        Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse,status);
         String[] urlS= (String[])salesMap.get("file_path");
         StringBuffer filePath = new StringBuffer();
         for(int i=0;i<urlS.length;i++){
@@ -119,7 +121,36 @@ public class TransportController {
                 filePath.append(",").append(urlS[i]);
             }
         }
+        return iTransportService.consummateTransport(id,filePath.toString());
+    }
 
+    /**
+     * 主机清单上传接口
+     * @param id
+     * @param request
+     * @param salesList
+     * @return
+     */
+    @RequestMapping("host_transport.do")
+    @ResponseBody
+    public ServerResponse hostTransport(Integer id,HttpServletRequest request,
+                                              @RequestParam(value = "salesList",required = false) MultipartFile[] salesList){
+        Transport transport = transportMapper.selectByPrimaryKey(id);
+        if(Const.TransportStatusEnum.ON_ENTRY.getCode() == transport.getStatus()){
+            return ServerResponse.createByErrorMessage("该记录无法进行修改");
+        }
+        ServerResponse serverResponse = iTransportService.createHostEntry(id);
+        int status = 1;
+        Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse,status);
+        String[] urlS= (String[])salesMap.get("file_path");
+        StringBuffer filePath = new StringBuffer();
+        for(int i=0;i<urlS.length;i++){
+            if(i==0){
+                filePath.append(urlS[i]);
+            }else{
+                filePath.append(",").append(urlS[i]);
+            }
+        }
         return iTransportService.consummateTransport(id,filePath.toString());
     }
 
@@ -138,7 +169,7 @@ public class TransportController {
         return iTransportService.getAllList(status,pageNum,pageSize);
     }
 
-    public Map uploadFileCDNExcel(MultipartFile[] files, HttpServletRequest request,ServerResponse serverResponse) {
+    public Map uploadFileCDNExcel(MultipartFile[] files, HttpServletRequest request,ServerResponse serverResponse,Integer status) {
         Map resultMap = Maps.newHashMap();
         MultipartFile file = null;
         String path = request.getSession().getServletContext().getRealPath("upload");
@@ -151,7 +182,17 @@ public class TransportController {
                 if (StringUtils.isNotBlank(targetFileName)) {
                     urlS[i] = PropertiesUtil.getProperty("field") + PropertiesUtil.getProperty("uploadUrl") +targetFileName;
                     if(serverResponse.isSuccess()){
-                        iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
+                        if(status == 0){
+                            iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
+                        }else if(status == 1){
+                            //远程调用  批量插入
+
+                            String url = "http://101.132.172.240:8094/manage/transport/batch_insert_exports.do";
+                            StringBuffer sb = new StringBuffer();
+                            sb.append("entryId=").append(Integer.parseInt(serverResponse.getData().toString())).append("&path=").append(path+"/"+targetFileName);
+                            Post4.connectionUrl(url, sb,null);
+
+                        }
                         File targetFile = new File(path, targetFileName);
                         Boolean results = targetFile.delete();
                         logger.info("删除结果:{}",results);

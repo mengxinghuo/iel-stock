@@ -15,7 +15,9 @@ import com.truck.pojo.Transport;
 import com.truck.service.ITransportService;
 import com.truck.util.DateTimeUtil;
 import com.truck.util.FTPUtil;
+import com.truck.util.Post4;
 import com.truck.vo.TransportVo;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,6 +194,33 @@ public class TransportServiceImpl implements ITransportService {
         int resultCount = entryMapper.insertSelective(entry);
         if(resultCount > 0){
             return ServerResponse.createBySuccess(entry.getId());
+        }
+        return ServerResponse.createByErrorMessage("创建失败");
+    }
+
+    public ServerResponse createHostEntry(Integer id){
+        Transport transport = transportMapper.selectByPrimaryKey(id);
+        int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
+        if(rowCount > 0){
+            return ServerResponse.createByErrorMessage("已存在");
+            //业务待定
+        }
+        String entryNo = String.valueOf(this.generateEntryNo());
+        Entry entry = new Entry();
+        entry.setEntryNo(entryNo);
+        entry.setDeclareNum(transport.getDeclareNum());
+        entry.setDestination(transport.getDestination());
+        entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
+        JSONObject json = JSONObject.fromObject(entry);
+        String url = "http://101.132.172.240:8094/manage/entry/create_entry.do";
+        StringBuffer sb = new StringBuffer();
+        sb.append("entryStr=").append(json.toString());
+        String str = Post4.connectionUrl(url, sb,null);
+        JSONObject jsonObject = JSONObject.fromObject(str);
+        String status = jsonObject.get("status").toString();
+        if(status.equals(0)){
+            String Str = jsonObject.get("data").toString();
+            return ServerResponse.createBySuccess(Integer.parseInt(Str));
         }
         return ServerResponse.createByErrorMessage("创建失败");
     }
