@@ -212,7 +212,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
         JSONObject json = JSONObject.fromObject(entry);
-        String url = "http://101.132.172.240:8094/manage/entry/create_entry.do";
+        String url = "http://101.132.172.240:8085/manage/entry/create_entry.do";
         StringBuffer sb = new StringBuffer();
         sb.append("entryStr=").append(json.toString());
         String str = Post4.connectionUrl(url, sb,null);

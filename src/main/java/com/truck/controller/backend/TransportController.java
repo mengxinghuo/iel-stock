@@ -187,7 +187,7 @@ public class TransportController {
                         }else if(status == 1){
                             //远程调用  批量插入
 
-                            String url = "http://101.132.172.240:8094/manage/transport/batch_insert_exports.do";
+                            String url = "http://101.132.172.240:8085/manage/transport/batch_insert_exports.do";
                             StringBuffer sb = new StringBuffer();
                             sb.append("entryId=").append(Integer.parseInt(serverResponse.getData().toString())).append("&path=").append(path+"/"+targetFileName);
                             Post4.connectionUrl(url, sb,null);
