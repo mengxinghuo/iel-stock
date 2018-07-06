@@ -110,7 +110,8 @@ public class FileController {
         for (int i = 0; i < files.length; i++) {
             targetFileName = fileService.uploadReturnCDN(files[i], path);
             if (StringUtils.isNotBlank(targetFileName)) {
-                urlS[i] = PropertiesUtil.getProperty("field") + PropertiesUtil.getProperty("uploadUrl") +targetFileName;
+                urlS[i] = PropertiesUtil.getProperty("field") +targetFileName;
+                targetFileName = targetFileName.substring(targetFileName.lastIndexOf("/")+1);
                 iExportsListsService.bachInsertExports(null,path+"/"+targetFileName);
                 File targetFile = new File(path, targetFileName);
                 Boolean results = targetFile.delete();

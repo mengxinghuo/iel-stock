@@ -71,7 +71,7 @@ public class FileServiceImpl implements FileService {
 //        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
         Date date = new Date();
         String dateStr = DateTimeUtil.dateToStr(date,"yyyy-MM-dd");
-        String uploadFileName = dateStr+fileName;
+        String uploadFileName = fileName;
         File fileDir = new File(path);
         if (!fileDir.exists()) {
             fileDir.setWritable(true);
@@ -79,11 +79,12 @@ public class FileServiceImpl implements FileService {
         }
         File targetFile = new File(path, uploadFileName);
         file.transferTo(targetFile);
-        boolean result = upyun.writeFile(uploadUrl + uploadFileName,
+        int shu = (int)(Math.random()*1000);
+        boolean result = upyun.writeFile(uploadUrl +dateStr+"/"+shu+"/"+ uploadFileName,
                 targetFile, true);
         targetFile.delete();
         if (result) {
-            return uploadUrl + uploadFileName;
+            return uploadUrl +dateStr+"/"+shu+"/"+ uploadFileName;
         }
         return null;
     }
@@ -112,7 +113,7 @@ public class FileServiceImpl implements FileService {
         String fileExtensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
         Date date = new Date();
         String dateStr = DateTimeUtil.dateToStr(date,"yyyy-MM-dd");
-        String uploadFileName = dateStr+fileName;
+        String uploadFileName = fileName;
         File fileDir = new File(path);
         if (!fileDir.exists()) {
             fileDir.setWritable(true);
@@ -120,14 +121,15 @@ public class FileServiceImpl implements FileService {
         }
         File targetFile = new File(path, uploadFileName);
         file.transferTo(targetFile);
-        boolean result = upyun.writeFile(uploadUrl + uploadFileName,
+        int shu = (int)(Math.random()*1000);
+        boolean result = upyun.writeFile(uploadUrl +dateStr+"/"+shu+"/"+ uploadFileName,
                 targetFile, true);
 //        targetFile.delete();
         if (result) {
             String remoteFilePath = PropertiesUtil.getProperty("field") +uploadUrl+uploadFileName;
             File file2 = new File(path); // 创建一个本地临时文件
             boolean result2= upyun.readFile(remoteFilePath, file2);
-            return uploadFileName;
+            return uploadUrl +dateStr+"/"+shu+"/"+ uploadFileName;
         }
         return null;
     }
