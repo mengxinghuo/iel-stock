@@ -259,7 +259,7 @@ public class TransportServiceImpl implements ITransportService {
         String str = Post4.connectionUrl(url, sb,null);
         JSONObject jsonObject = JSONObject.fromObject(str);
         String status = jsonObject.get("status").toString();
-        if(status.equals(0)){
+        if(status.equals("0")){
             String Str = jsonObject.get("data").toString();
             return ServerResponse.createBySuccess(Integer.parseInt(Str));
         }

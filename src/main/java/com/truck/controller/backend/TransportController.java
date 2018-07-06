@@ -144,6 +144,8 @@ public class TransportController {
         if(transport.getStatus() > Const.TransportStatusEnum.OVER_CONFIRM.getCode()){
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
+        //重新上传  重新导入
+
 
         ServerResponse serverResponse = iTransportService.createHostEntry(id);
         int status = 1;
