@@ -43,6 +43,8 @@ public class TransportVo {
 
     private String zhuJiSalesList;
 
+    private String createTimeStr;
+
     public String getStatusDesc() {
         return statusDesc;
     }
@@ -193,5 +195,13 @@ public class TransportVo {
 
     public void setZhuJiSalesList(String zhuJiSalesList) {
         this.zhuJiSalesList = zhuJiSalesList;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }

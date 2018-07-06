@@ -87,7 +87,9 @@
       <if test="status != null" >
         status,
       </if>
-      create_time,
+      <if test="createTime != null" >
+        create_time,
+      </if>
       update_time,
       <if test="shipNum != null" >
         ship_num,
@@ -133,7 +135,9 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      now(),
+      <if test="createTime != null" >
+        #{createTime},
+      </if>
       now(),
       <if test="shipNum != null" >
         #{shipNum},
@@ -178,6 +182,9 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time =#{createTime},
       </if>
       update_time = now(),
       <if test="shipNum != null" >

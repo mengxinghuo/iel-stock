@@ -35,6 +35,8 @@ public class Transport {
 
     private String zhuJiSalesList;
 
+    private String createTimeStr;
+
     public Transport(Integer id, String declareNum, String destination, String arrivalList, String purchaseList, String salesContract,
                      String invoice, String purchaseContract, String exportCost, String salesList, String entranceCost, Integer status,
                      Date createTime, Date updateTime,String shipNum,String zhuJiSalesList) {
@@ -186,5 +188,13 @@ public class Transport {
 
     public void setZhuJiSalesList(String zhuJiSalesList) {
         this.zhuJiSalesList = zhuJiSalesList;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }

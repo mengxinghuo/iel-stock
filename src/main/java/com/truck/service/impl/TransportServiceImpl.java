@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -59,6 +60,12 @@ public class TransportServiceImpl implements ITransportService {
                 || StringUtils.isEmpty(transport.getSalesContract()) || StringUtils.isEmpty(transport.getInvoice()) || StringUtils.isEmpty(transport.getExportCost())){
             return ServerResponse.createByErrorMessage("上传信息不足，请完善");
         }*/
+
+        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr()));
+        }else{
+            transport.setCreateTime(new Date());
+        }
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
         int resultCount = transportMapper.insertSelective(transport);
         if(resultCount > 0){
@@ -89,6 +96,9 @@ public class TransportServiceImpl implements ITransportService {
             if(rowCount > 0){
                 return ServerResponse.createByErrorMessage("报关次数已存在");
             }
+        }
+        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr()));
         }
         //待定判断
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
@@ -344,6 +354,7 @@ public class TransportServiceImpl implements ITransportService {
         transportVo.setUrlPeiJian("http://cdn.ayotrust.com/upload/配件入库模板.xls");
         transportVo.setUrlZhuJi("http://cdn.ayotrust.com/upload/主机入库模板.xls");
         transportVo.setZhuJiSalesList(transport.getZhuJiSalesList());
+        transportVo.setCreateTimeStr(DateTimeUtil.dateToStr(transport.getCreateTime(),"yyyy-MM-dd"));
 
         return transportVo;
     }
