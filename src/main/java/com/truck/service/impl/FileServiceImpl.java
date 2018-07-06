@@ -126,9 +126,9 @@ public class FileServiceImpl implements FileService {
                 targetFile, true);
 //        targetFile.delete();
         if (result) {
-            String remoteFilePath = PropertiesUtil.getProperty("field") +uploadUrl+uploadFileName;
+          /*  String remoteFilePath = PropertiesUtil.getProperty("field") +uploadUrl+uploadFileName;
             File file2 = new File(path); // 创建一个本地临时文件
-            boolean result2= upyun.readFile(remoteFilePath, file2);
+            boolean result2= upyun.readFile(remoteFilePath, file2);*/
             return uploadUrl +dateStr+"/"+shu+"/"+ uploadFileName;
         }
         return null;

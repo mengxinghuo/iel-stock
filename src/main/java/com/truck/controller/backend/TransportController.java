@@ -36,7 +36,7 @@ import java.util.Random;
 @RequestMapping("/manage/transport/")
 public class TransportController {
 
-    private static  final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private static  final Logger logger = LoggerFactory.getLogger(TransportController.class);
     @Autowired
     private ITransportService iTransportService;
     @Autowired
@@ -181,6 +181,7 @@ public class TransportController {
         Map resultMap = Maps.newHashMap();
         MultipartFile file = null;
         String path = request.getSession().getServletContext().getRealPath("upload");
+        logger.info("服务器path: {}",path);
         String targetFileName = null;
         int success = 0;
         String[] urlS = new String[files.length];
@@ -202,9 +203,9 @@ public class TransportController {
                             Post4.connectionUrl(url, sb,null);
 
                         }
-                        File targetFile = new File(path, targetFileName);
+                /*        File targetFile = new File(path, targetFileName);
                         Boolean results = targetFile.delete();
-                        logger.info("删除结果:{}",results);
+                        logger.info("删除结果:{}",results);*/
                     }
                 }
                 success++;
