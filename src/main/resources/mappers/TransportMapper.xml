@@ -197,7 +197,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectByDeclareNum" parameterType="map" resultType="string">
+  <select id="selectByDeclareNum" parameterType="map" resultType="int">
     select count(1) from iel_transport
     where declare_num = #{declareNum}
   </select>
