@@ -23,6 +23,8 @@ public class InventoryDetailVo {
 
     private String statusDesc;
 
+    private String errorDescs;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class InventoryDetailVo {
 
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
+    }
+
+    public String getErrorDescs() {
+        return errorDescs;
+    }
+
+    public void setErrorDescs(String errorDescs) {
+        this.errorDescs = errorDescs;
     }
 }

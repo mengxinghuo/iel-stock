@@ -45,6 +45,8 @@ public class EntryDetailVo {
 
     private String shipNum;
 
+    private String errorDescs;
+
     public Integer getId() {
         return id;
     }
@@ -211,5 +213,13 @@ public class EntryDetailVo {
 
     public void setShipNum(String shipNum) {
         this.shipNum = shipNum;
+    }
+
+    public String getErrorDescs() {
+        return errorDescs;
+    }
+
+    public void setErrorDescs(String errorDescs) {
+        this.errorDescs = errorDescs;
     }
 }

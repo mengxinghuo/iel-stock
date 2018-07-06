@@ -19,7 +19,9 @@ public class InventoryDetail {
 
     private Integer status;
 
-    public InventoryDetail(Integer id,Integer inventoryId, Integer stockId, Integer stockNum, Integer inventoryNum, Date createTime, Date updateTime,Integer status) {
+    private String errorDescs;
+
+    public InventoryDetail(Integer id,Integer inventoryId, Integer stockId, Integer stockNum, Integer inventoryNum, Date createTime, Date updateTime,Integer status,String errorDescs) {
         this.id = id;
         this.inventoryId = inventoryId;
         this.stockId = stockId;
@@ -28,6 +30,7 @@ public class InventoryDetail {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.status = status;
+        this.errorDescs = errorDescs;
     }
 
     public Integer getInventoryId() {
@@ -96,5 +99,13 @@ public class InventoryDetail {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getErrorDescs() {
+        return errorDescs;
+    }
+
+    public void setErrorDescs(String errorDescs) {
+        this.errorDescs = errorDescs;
     }
 }

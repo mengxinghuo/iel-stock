@@ -138,6 +138,10 @@ public class InventoryServiceImpl implements IInventoryService {
 
         inventoryDetailVo.setStatus(inventoryDetail.getStatus());
         inventoryDetailVo.setStatusDesc(Const.InventoryDetailStatusEnum.codeOf(inventoryDetail.getStatus()).getValue());
+
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(inventoryDetail.getErrorDescs())){
+            inventoryDetailVo.setErrorDescs(inventoryDetail.getErrorDescs());
+        }
         return inventoryDetailVo;
     }
 

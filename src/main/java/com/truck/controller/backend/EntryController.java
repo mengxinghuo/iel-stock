@@ -25,7 +25,7 @@ public class EntryController {
     @RequestMapping("get_entry_list.do")
     @ResponseBody
     public ServerResponse getEntryList(@RequestParam(value = "status",required = false) Integer status,
-                                       @RequestParam(value = "declareNum",required = false) Integer declareNum,
+                                       @RequestParam(value = "declareNum",required = false) String declareNum,
                                        @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         return iEntryService.getEntryList(status,declareNum,pageNum,pageSize);
