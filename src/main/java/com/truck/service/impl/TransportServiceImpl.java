@@ -62,7 +62,7 @@ public class TransportServiceImpl implements ITransportService {
         }*/
 
         if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
-            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr()));
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
         }else{
             transport.setCreateTime(new Date());
         }
@@ -98,7 +98,7 @@ public class TransportServiceImpl implements ITransportService {
             }
         }
         if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
-            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr()));
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
         }
         //待定判断
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
