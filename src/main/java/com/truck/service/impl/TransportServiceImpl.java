@@ -12,6 +12,7 @@ import com.truck.dao.EntryDetailMapper;
 import com.truck.dao.EntryMapper;
 import com.truck.dao.TransportMapper;
 import com.truck.pojo.Entry;
+import com.truck.pojo.EntryDetail;
 import com.truck.pojo.Transport;
 import com.truck.service.ITransportService;
 import com.truck.util.DateTimeUtil;
@@ -269,8 +270,9 @@ public class TransportServiceImpl implements ITransportService {
     public ServerResponse checkEntryByDeclareNum(String declareNum){
         Entry entry = entryMapper.selectByDeclareNum(declareNum);
         if(entry != null){
-            int resultCount = entryDetailMapper.deleteByEntryId(entry.getId());
-            if(resultCount > 0){
+            entryDetailMapper.deleteByEntryId(entry.getId());
+            List<EntryDetail> entryDetailList = entryDetailMapper.selectEntryDetail(entry.getId());
+            if(entryDetailList.size() == 0){
                 entryMapper.deleteByPrimaryKey(entry.getId());
                 return ServerResponse.createBySuccess();
             }else{
