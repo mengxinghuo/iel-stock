@@ -81,9 +81,7 @@ public class EntryServiceImpl implements IEntryService {
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
-        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
-            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
-        }
+
         /*if(inspectStatus == 1){
             if(!StringUtils.isEmpty(entryDetail.getEntryNum())){
                 if(entryDetail.getEntryNum() != entryDetail.getPurchaseNum()){
@@ -114,9 +112,7 @@ public class EntryServiceImpl implements IEntryService {
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
-        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
-            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
-        }
+
 
         if(entryDetail.getInspectStatus() == 1){
             return ServerResponse.createByErrorMessage("请更改状态");
@@ -144,9 +140,7 @@ public class EntryServiceImpl implements IEntryService {
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
-        if(Const.TransportStatusEnum.OVER_CONFIRM.getCode() != transport.getStatus()){
-            return ServerResponse.createByErrorMessage("文件信息缺少，无法开始检验");
-        }
+
 
         entryDetail.setEntryPosition(entryPosition);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
