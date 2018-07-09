@@ -50,7 +50,7 @@ public class Excel {
             if(r.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
                 entryDetail.setCustomsClearance(r.getCell(1).getStringCellValue());
             }else{
-                entryDetail.setCustomsClearance(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(1).getNumericCellValue()))));
+                entryDetail.setCustomsClearance(String.valueOf(Long.parseLong(new java.text.DecimalFormat("0").format(r.getCell(1).getNumericCellValue()))));
             }
 
             entryDetail.setDestination(r.getCell(2).getStringCellValue());
@@ -60,8 +60,13 @@ public class Excel {
          if(r.getCell(4).getCellType() == HSSFCell.CELL_TYPE_STRING){
              entryDetail.setPartsNo(r.getCell(4).getStringCellValue());
          }else{
-             entryDetail.setPartsNo(String.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(r.getCell(4).getNumericCellValue()))));
-//             exportsLists.setSerialNo(String.valueOf(r.getCell(4).getNumericCellValue()));、
+             String no = String.valueOf(Long.parseLong(new java.text.DecimalFormat("0").format(r.getCell(4).getNumericCellValue())));
+             if (no.equals("0")) {
+                 entryDetail.setPartsNo(StringUtils.EMPTY);
+             }else{
+                 entryDetail.setPartsNo(no);
+             }
+//             exportsLists.setSerialNo(String.valueOf(r.getCell(4).getNumericCellValue()));
          }
 
             entryDetail.setPartsName(r.getCell(5).getStringCellValue());
