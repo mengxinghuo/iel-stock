@@ -192,9 +192,9 @@ public class TransportController {
                     urlS[i] = PropertiesUtil.getProperty("field") +targetFileName;
                     targetFileName = targetFileName.substring(targetFileName.lastIndexOf("/")+1);
                     if(serverResponse.isSuccess()){
-                        if(status.equals(0)){
+                        if(status == 0){
                             iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
-                        }else if(status.equals(1)){
+                        }else if(status == 1){
                             //远程调用  批量插入
 
                             String url = "http://101.132.172.240:8085/manage/transport/batch_insert_exports.do";
