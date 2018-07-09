@@ -41,7 +41,7 @@ public class TransportVo {
 
     private String urlZhuJi;
 
-    private String zhuJiSalesList;
+    private List zhuJiSalesList;
 
     private String createTimeStr;
 
@@ -189,11 +189,11 @@ public class TransportVo {
         this.urlZhuJi = urlZhuJi;
     }
 
-    public String getZhuJiSalesList() {
+    public List getZhuJiSalesList() {
         return zhuJiSalesList;
     }
 
-    public void setZhuJiSalesList(String zhuJiSalesList) {
+    public void setZhuJiSalesList(List zhuJiSalesList) {
         this.zhuJiSalesList = zhuJiSalesList;
     }
 

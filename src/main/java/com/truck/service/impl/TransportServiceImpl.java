@@ -391,6 +391,18 @@ public class TransportServiceImpl implements ITransportService {
             }
             transportVo.setSalesList(mapList);
         }
+        if(!StringUtils.isEmpty(transport.getZhuJiSalesList())){
+            List<Map>  mapList = Lists.newArrayList();
+            List<String> list = Splitter.on(",").splitToList(transport.getZhuJiSalesList());
+            for (String str : list) {
+                Map map = Maps.newHashMap();
+                String name = getFileName(str);
+                map.put("name",name);
+                map.put("url",str);
+                mapList.add(map);
+            }
+            transportVo.setZhuJiSalesList(mapList);
+        }
         transportVo.setStatus(transport.getStatus());
         transportVo.setStatusDesc(Const.TransportStatusEnum.codeOf(transport.getStatus()).getValue());
         transportVo.setCreateTime(DateTimeUtil.dateToStr(transport.getCreateTime(),"yyyy-MM-dd"));
@@ -398,7 +410,6 @@ public class TransportServiceImpl implements ITransportService {
         transportVo.setShipNum(transport.getShipNum());
         transportVo.setUrlPeiJian("http://cdn.ayotrust.com/upload/配件入库模板.xls");
         transportVo.setUrlZhuJi("http://cdn.ayotrust.com/upload/主机入库模板.xls");
-        transportVo.setZhuJiSalesList(transport.getZhuJiSalesList());
         transportVo.setCreateTimeStr(DateTimeUtil.dateToStr(transport.getCreateTime(),"yyyy-MM-dd"));
 
         return transportVo;
