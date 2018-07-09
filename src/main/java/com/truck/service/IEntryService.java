@@ -13,4 +13,7 @@ public interface IEntryService {
     ServerResponse updateEntryDetailNum(Integer entryDetailId,Integer entryNum);
 
     ServerResponse updateEntryDetailPosition(Integer entryDetailId,Integer entryPosition);
+
+    ServerResponse updateEntryDetailIdOrDescs(Integer entryDetailId,Integer typeCategoryId,String errorDescs);
+
 }

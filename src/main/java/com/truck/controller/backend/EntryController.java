@@ -77,4 +77,16 @@ public class EntryController {
                                               @RequestParam(value = "entryPosition", required = false) Integer entryPosition){
         return iEntryService.updateEntryDetailPosition(entryDetailId,entryPosition);
     }
+
+    /**
+     * 检验实际入库量,填写问题描述
+     * @return
+     */
+    @RequestMapping("update_entry_detail_idOrDescs.do")
+    @ResponseBody
+    public ServerResponse updateEntryDetailIdOrDescs(Integer entryDetailId,
+                                                     @RequestParam(value = "typeCategoryId", required = false) Integer typeCategoryId,
+                                                     @RequestParam(value = "errorDescs", required = false) String errorDescs){
+        return iEntryService.updateEntryDetailIdOrDescs(entryDetailId,typeCategoryId,errorDescs);
+    }
 }
