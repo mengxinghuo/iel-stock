@@ -189,12 +189,16 @@ public class TransportController {
             for (int i = 0; i < files.length; i++) {
                 targetFileName = fileService.uploadReturnCDN(files[i], path);
                 if (StringUtils.isNotBlank(targetFileName)) {
+                    logger.info("targetFileName的值: {}",targetFileName);
                     urlS[i] = PropertiesUtil.getProperty("field") +targetFileName;
                     targetFileName = targetFileName.substring(targetFileName.lastIndexOf("/")+1);
                     if(serverResponse.isSuccess()){
+                        logger.info("serverResponse.isSuccess()======");
                         if(status == 0){
+                            logger.info("status == 0======");
                             iExportsListsService.bachInsertExports(Integer.parseInt(serverResponse.getData().toString()),path+"/"+targetFileName);
                         }else if(status == 1){
+                            logger.info("status == 1======");
                             //远程调用  批量插入
 
                             String url = "http://101.132.172.240:8085/manage/transport/batch_insert_exports.do";
