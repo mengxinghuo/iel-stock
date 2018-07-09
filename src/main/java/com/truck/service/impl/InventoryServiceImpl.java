@@ -136,12 +136,12 @@ public class InventoryServiceImpl implements IInventoryService {
         inventoryDetailVo.setCreateTime(DateTimeUtil.dateToStr(inventoryDetail.getCreateTime()));
         inventoryDetailVo.setUpdateTime(DateTimeUtil.dateToStr(inventoryDetail.getUpdateTime()));
 
-        inventoryDetailVo.setStatus(inventoryDetail.getStatus());
+     /*   inventoryDetailVo.setStatus(inventoryDetail.getStatus());
         inventoryDetailVo.setStatusDesc(Const.InventoryDetailStatusEnum.codeOf(inventoryDetail.getStatus()).getValue());
 
         if(org.apache.commons.lang3.StringUtils.isNotBlank(inventoryDetail.getErrorDescs())){
             inventoryDetailVo.setErrorDescs(inventoryDetail.getErrorDescs());
-        }
+        }*/
         return inventoryDetailVo;
     }
 
