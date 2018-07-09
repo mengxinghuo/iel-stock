@@ -242,11 +242,11 @@ public class TransportServiceImpl implements ITransportService {
 
     public ServerResponse createHostEntry(Integer id){
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
+        /*int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
         if(rowCount > 0){
             return ServerResponse.createByErrorMessage("已存在");
             //业务待定
-        }
+        }*/
         String entryNo = String.valueOf(this.generateEntryNo());
         Entry entry = new Entry();
         entry.setEntryNo(entryNo);
