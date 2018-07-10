@@ -145,7 +145,11 @@ public class TransportController {
             return ServerResponse.createByErrorMessage("该记录无法进行修改");
         }
         //重新上传  重新导入
-
+        //进行查看并且进行删除判断
+        ServerResponse checkEntry = iTransportService.checkZhuJiEntryByDeclareNum(transport.getDeclareNum());
+        if(checkEntry.getStatus() == 1){
+            return checkEntry;
+        }
 
         ServerResponse serverResponse = iTransportService.createHostEntry(id);
         int status = 1;

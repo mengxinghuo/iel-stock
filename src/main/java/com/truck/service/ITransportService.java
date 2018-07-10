@@ -22,4 +22,6 @@ public interface ITransportService {
     ServerResponse createHostEntry(Integer id);
 
     ServerResponse checkEntryByDeclareNum(String declareNum);
+
+    ServerResponse checkZhuJiEntryByDeclareNum(String declareNum);
 }

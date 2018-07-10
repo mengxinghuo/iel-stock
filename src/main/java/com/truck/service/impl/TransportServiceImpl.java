@@ -254,6 +254,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
         JSONObject json = JSONObject.fromObject(entry);
+
         String url = "http://101.132.172.240:8085/manage/entry/create_entry.do";
         StringBuffer sb = new StringBuffer();
         sb.append("entryStr=").append(json.toString());
@@ -280,6 +281,19 @@ public class TransportServiceImpl implements ITransportService {
             }
         }
         return ServerResponse.createBySuccess();
+    }
+
+    public ServerResponse checkZhuJiEntryByDeclareNum(String declareNum){
+        String url = "http://101.132.172.240:8085/manage/transport/check_entry_by_declare_num.do";
+        StringBuffer sb = new StringBuffer();
+        sb.append("declareNum=").append(declareNum);
+        String str = Post4.connectionUrl(url, sb,null);
+        JSONObject jsonObject = JSONObject.fromObject(str);
+        String status = jsonObject.get("status").toString();
+        if(status.equals("0")){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByErrorMessage("清除失败");
     }
 
     private long generateEntryNo(){
