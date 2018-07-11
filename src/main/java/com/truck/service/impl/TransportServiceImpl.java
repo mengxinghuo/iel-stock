@@ -107,6 +107,12 @@ public class TransportServiceImpl implements ITransportService {
         //待定判断
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
+            if(StringUtils.isEmpty(transport.getSalesList())){
+                this.checkEntryByDeclareNum(transport.getDeclareNum());
+            }
+            if(StringUtils.isEmpty(transport.getZhuJiSalesList())){
+                this.checkZhuJiEntryByDeclareNum(transport.getDeclareNum());
+            }
             return ServerResponse.createBySuccess("修改成功");
         }
         return ServerResponse.createByErrorMessage("修改失败");
@@ -259,6 +265,9 @@ public class TransportServiceImpl implements ITransportService {
         StringBuffer sb = new StringBuffer();
         sb.append("entryStr=").append(json.toString());
         String str = Post4.connectionUrl(url, sb,null);
+        if (str.equals("error")) {
+            return ServerResponse.createByErrorMessage("系统异常");
+        }
         JSONObject jsonObject = JSONObject.fromObject(str);
         String status = jsonObject.get("status").toString();
         if(status.equals("0")){
@@ -289,6 +298,9 @@ public class TransportServiceImpl implements ITransportService {
         sb.append("declareNum=").append(declareNum);
         String str = Post4.connectionUrl(url, sb,null);
         JSONObject jsonObject = JSONObject.fromObject(str);
+        if (str.equals("error")) {
+            return ServerResponse.createByErrorMessage("系统异常");
+        }
         String status = jsonObject.get("status").toString();
         if(status.equals("0")){
             return ServerResponse.createBySuccess();
