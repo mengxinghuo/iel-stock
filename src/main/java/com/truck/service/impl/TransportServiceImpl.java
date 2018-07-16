@@ -104,7 +104,7 @@ public class TransportServiceImpl implements ITransportService {
         if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
             transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
         }
-        //待定判断
+        //待定判断  修改判定  如果已经入库就不能进行修改了  对应的入库单
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             Transport search = transportMapper.selectByPrimaryKey(transport.getId());

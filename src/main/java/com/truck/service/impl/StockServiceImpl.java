@@ -56,10 +56,11 @@ public class StockServiceImpl implements IStockService {
         List<Stock> stockList = entryDetailToStock(entryDetails);
         int count = stockMapper.batchInsert(stockList);
         if(count == 0){
-            entry.setStatus(Const.EntryStatusEnum.FINISH.getCode());
-            entryMapper.updateByPrimaryKeySelective(entry);
+
             return ServerResponse.createByErrorMessage("入库失败");
         }
+        entry.setStatus(Const.EntryStatusEnum.FINISH.getCode());
+        entryMapper.updateByPrimaryKeySelective(entry);
         return ServerResponse.createBySuccess("入库成功");
     }
 
