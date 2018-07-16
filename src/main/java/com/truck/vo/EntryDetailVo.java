@@ -47,6 +47,25 @@ public class EntryDetailVo {
 
     private String errorDescs;
 
+    private Integer entryStatus;
+    private String entryStatusDesc;
+
+    public String getEntryStatusDesc() {
+        return entryStatusDesc;
+    }
+
+    public void setEntryStatusDesc(String entryStatusDesc) {
+        this.entryStatusDesc = entryStatusDesc;
+    }
+
+    public Integer getEntryStatus() {
+        return entryStatus;
+    }
+
+    public void setEntryStatus(Integer entryStatus) {
+        this.entryStatus = entryStatus;
+    }
+
     public Integer getId() {
         return id;
     }

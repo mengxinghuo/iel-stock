@@ -89,6 +89,9 @@ public class EntryServiceImpl implements IEntryService {
                 }
             }
         }*/
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("该单已入库，不可编辑");
+        }
         entryDetail.setInspectStatus(inspectStatus);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
         if(rowCount > 0){
@@ -112,7 +115,9 @@ public class EntryServiceImpl implements IEntryService {
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
-
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("该单已入库，不可编辑");
+        }
 
         if(entryDetail.getInspectStatus() == 1){
             return ServerResponse.createByErrorMessage("请更改状态");
@@ -140,7 +145,9 @@ public class EntryServiceImpl implements IEntryService {
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         Transport transport = transportMapper.getByDeclareNum(entry.getDeclareNum());
-
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("该单已入库，不可编辑");
+        }
 
         entryDetail.setEntryPosition(entryPosition);
         int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetail);
@@ -163,6 +170,10 @@ public class EntryServiceImpl implements IEntryService {
             return ServerResponse.createByErrorMessage("更新入库详情问题描述错误");
         }
         EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetailId);
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("该单已入库，不可编辑");
+        }
         if(errorDescs!=null){
             if(entryDetail.getInspectStatus()==1){
                 return ServerResponse.createByErrorMessage("已经标记没有问题，不能填写问题描述");
@@ -234,6 +245,9 @@ public class EntryServiceImpl implements IEntryService {
         if(org.apache.commons.lang3.StringUtils.isNotBlank(entryDetail.getErrorDescs())){
             entryDetailVo.setErrorDescs(entryDetail.getErrorDescs());
         }
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        entryDetailVo.setEntryStatus(entry.getStatus());
+        entryDetailVo.setEntryStatusDesc(Const.EntryStatusEnum.codeOf(entry.getStatus()).getValue());
         return entryDetailVo;
     }
 }
