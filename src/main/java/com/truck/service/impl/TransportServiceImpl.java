@@ -306,7 +306,7 @@ public class TransportServiceImpl implements ITransportService {
             return ServerResponse.createByErrorMessage("系统异常");
         }
         String status = jsonObject.get("status").toString();
-        if(status.equals("0")){
+        if(status == "0"){
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByErrorMessage("清除失败");
