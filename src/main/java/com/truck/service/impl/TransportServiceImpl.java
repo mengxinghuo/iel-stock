@@ -306,11 +306,10 @@ public class TransportServiceImpl implements ITransportService {
             return ServerResponse.createByErrorMessage("系统异常");
         }
         String status = jsonObject.get("status").toString();
-        String msg = jsonObject.get("msg").toString();
         if(status.equals("0")){
             return ServerResponse.createBySuccess();
         }
-        return ServerResponse.createByErrorMessage(msg);
+        return ServerResponse.createByErrorMessage("清除失败");
     }
 
     private long generateEntryNo(){
