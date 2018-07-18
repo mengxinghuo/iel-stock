@@ -108,7 +108,7 @@ public class TransportServiceImpl implements ITransportService {
                 return serverResponse;
             }
             //修改主机入库单
-            String url = "http://101.132.172.240:8085/manage/transport/update_entry.do";
+            String url = "http://149.129.220.43:8082/manage/transport/update_entry.do";
             StringBuffer sb = new StringBuffer();
             sb.append("oldDeclareNum=").append(search.getDeclareNum()).append("&declareNum=").append(transport.getDeclareNum()).append("&shipNum=").append(transport.getShipNum());
             String str = Post4.connectionUrl(url, sb,null);
@@ -302,7 +302,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setShipNum(transport.getShipNum());
         JSONObject json = JSONObject.fromObject(entry);
 
-        String url = "http://101.132.172.240:8085/manage/entry/create_entry.do";
+        String url = "http://149.129.220.43:8082/manage/entry/create_entry.do";
         StringBuffer sb = new StringBuffer();
         sb.append("entryStr=").append(json.toString());
         String str = Post4.connectionUrl(url, sb,null);
@@ -337,7 +337,7 @@ public class TransportServiceImpl implements ITransportService {
     }
 
     public ServerResponse checkZhuJiEntryByDeclareNum(String declareNum){
-        String url = "http://101.132.172.240:8085/manage/transport/check_entry_by_declare_num.do";
+        String url = "http://149.129.220.43:8082/manage/transport/check_entry_by_declare_num.do";
         StringBuffer sb = new StringBuffer();
         sb.append("declareNum=").append(declareNum);
         String str = Post4.connectionUrl(url, sb,null);
