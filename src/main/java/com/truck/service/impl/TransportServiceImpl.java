@@ -129,10 +129,10 @@ public class TransportServiceImpl implements ITransportService {
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             Transport search = transportMapper.selectByPrimaryKey(transport.getId());
-            if(StringUtils.isEmpty(transport.getSalesList())){
+            if(StringUtils.isEmpty(transport.getSalesList()) && StringUtils.isEmpty(transport.getDeclareNum())){
                 this.checkEntryByDeclareNum(search.getDeclareNum());
             }
-            if(StringUtils.isEmpty(transport.getZhuJiSalesList())){
+            if(StringUtils.isEmpty(transport.getZhuJiSalesList()) && StringUtils.isEmpty(transport.getDeclareNum())){
                 this.checkZhuJiEntryByDeclareNum(search.getDeclareNum());
             }
             return ServerResponse.createBySuccess("修改成功");
