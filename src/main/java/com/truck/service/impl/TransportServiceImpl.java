@@ -100,6 +100,27 @@ public class TransportServiceImpl implements ITransportService {
             if(rowCount > 0){
                 return ServerResponse.createByErrorMessage("报关次数已存在");
             }
+            //修改报关次数和船次
+            Transport search = transportMapper.selectByPrimaryKey(transport.getId());
+            //修改配件入库单
+            ServerResponse serverResponse = this.updateEntry(search.getDeclareNum(),transport.getDeclareNum(),transport.getShipNum());
+            if(!serverResponse.isSuccess()){
+                return serverResponse;
+            }
+            //修改主机入库单
+            String url = "http://101.132.172.240:8085/manage/transport/update_entry.do";
+            StringBuffer sb = new StringBuffer();
+            sb.append("oldDeclareNum=").append(search.getDeclareNum()).append("&declareNum=").append(transport.getDeclareNum()).append("&shipNum=").append(transport.getShipNum());
+            String str = Post4.connectionUrl(url, sb,null);
+            JSONObject jsonObject = JSONObject.fromObject(str);
+            if (str.equals("error")) {
+                return ServerResponse.createByErrorMessage("系统异常");
+            }
+            String status = jsonObject.get("status").toString();
+            if(status.equals("1")){
+                return ServerResponse.createByErrorMessage("主机入库单同步失败失败");
+            }
+
         }
         if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
             transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
@@ -117,6 +138,23 @@ public class TransportServiceImpl implements ITransportService {
             return ServerResponse.createBySuccess("修改成功");
         }
         return ServerResponse.createByErrorMessage("修改失败");
+    }
+
+    public ServerResponse updateEntry(String oldDeclareNum, String declareNum, String shipNum){
+        Entry search = entryMapper.selectByDeclareNum(oldDeclareNum);
+        if(search == null){
+            return ServerResponse.createBySuccess();
+        }
+        Entry entry = new Entry();
+        entry.setId(search.getId());
+        entry.setDeclareNum(declareNum);
+        entry.setShipNum(shipNum);
+        int resultCount = entryMapper.updateByPrimaryKeySelective(entry);
+        if(resultCount > 0){
+            return ServerResponse.createBySuccess();
+        }else{
+            return ServerResponse.createByErrorMessage("数据异常入库单更改失败");
+        }
     }
 
     /**
@@ -240,6 +278,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDeclareNum(transport.getDeclareNum());
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
+        entry.setShipNum(transport.getShipNum());
         int resultCount = entryMapper.insertSelective(entry);
         if(resultCount > 0){
             return ServerResponse.createBySuccess(entry.getId());
@@ -260,6 +299,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDeclareNum(transport.getDeclareNum());
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
+        entry.setShipNum(transport.getShipNum());
         JSONObject json = JSONObject.fromObject(entry);
 
         String url = "http://101.132.172.240:8085/manage/entry/create_entry.do";
