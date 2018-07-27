@@ -47,6 +47,7 @@ public class Excel {
 //取出当前行第1个单元格数据，并封装在info实体stuName属性上
             entryDetail.setShipNum(r.getCell(0).getStringCellValue());
 
+            logger.info("ShipNum==={}",r.getCell(0).getStringCellValue());
             if(r.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
                 entryDetail.setCustomsClearance(r.getCell(1).getStringCellValue());
             }else{
