@@ -71,7 +71,6 @@ public class ExportsListsServiceImpl implements IExportsListsService {
         String errorString = StringUtils.EMPTY;
         try {
             if (path != null) {
-                if(status == 0)
                 errorString = Excel.checkExcel(path,status);
             }
         } catch (IOException e) {
