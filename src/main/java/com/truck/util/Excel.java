@@ -154,13 +154,14 @@ public class Excel {
 //            errorString+="出错啦！请检查"+(rowNum+1)+"行"+(cell_num+1)+"列。"+"价格必须为数字！";
                     errorString+="出错啦！请检查"+(rowNum+1)+"行"+list.get(cell_num)+"列。"+"价格必须为数字！";
             }
-            if(cell_num == 0){
-                if(cell==null||cell.equals("")||cell.getCellType() ==HSSFCell.CELL_TYPE_BLANK){
-//                errorString+="出错啦！请检查"+(rowNum+1)+"行"+(cell_num+1)+"列。"+"！";
-                    errorString+="出错啦！请检查"+(rowNum+1)+"行"+list.get(cell_num)+"列。"+"船次不能为空。！";
-                }
-            }
 
+        }
+
+        if(cell_num == 0){
+            if(cell==null||cell.equals("")||cell.getCellType() ==HSSFCell.CELL_TYPE_BLANK){
+//                errorString+="出错啦！请检查"+(rowNum+1)+"行"+(cell_num+1)+"列。"+"！";
+                errorString+="出错啦！请检查"+(rowNum+1)+"行"+list.get(cell_num)+"列。"+"船次不能为空。！";
+            }
         }
         if(cell_num == 1){
             if(cell==null||cell.equals("")||cell.getCellType() ==HSSFCell.CELL_TYPE_BLANK){
@@ -177,11 +178,12 @@ public class Excel {
 
 
     public static void main(String[] args) {
-        String path =  "/Users/jianhe/Desktop/INLINE9_SP_MOR.xls";
+//        String path =  "/Users/jianhe/Desktop/INLINE9_SP_MOR.xls";
+        String path =  "/Users/jianhe/Desktop/主机入库模板.xls";
         String errorStr = null;
         try {
             // status 0  配件  1主机
-            errorStr = checkExcel(path,0);
+            errorStr = checkExcel(path,1);
         } catch (IOException e) {
             e.printStackTrace();
         }
