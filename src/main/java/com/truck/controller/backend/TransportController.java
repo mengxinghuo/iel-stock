@@ -114,8 +114,12 @@ public class TransportController {
         if(checkEntry.getStatus() == 1){
             return checkEntry;
         }
-        ServerResponse serverResponse = iTransportService.createEntry(id);
         int status = 0;
+        ServerResponse serverResponse2 = iExportsListsService.checkExcel(salesList,request,status);
+        if(!serverResponse2.isSuccess()) {
+            return serverResponse2;
+        }
+        ServerResponse serverResponse = iTransportService.createEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse,status);
         String[] urlS= (String[])salesMap.get("file_path");
         StringBuffer filePath = new StringBuffer();
@@ -151,8 +155,12 @@ public class TransportController {
             return checkEntry;
         }
 
-        ServerResponse serverResponse = iTransportService.createHostEntry(id);
         int status = 1;
+        ServerResponse serverResponse2 = iExportsListsService.checkExcel(salesList,request,status);
+        if(!serverResponse2.isSuccess()) {
+            return serverResponse2;
+        }
+        ServerResponse serverResponse = iTransportService.createHostEntry(id);
         Map salesMap = uploadFileCDNExcel(salesList,request,serverResponse,status);
         String[] urlS= (String[])salesMap.get("file_path");
         StringBuffer filePath = new StringBuffer();
