@@ -21,4 +21,6 @@ public interface OutDetailMapper {
     int batchInsert(@Param("outDetailList") List<OutDetail> outDetailList);
 
     List selectByOutId(@Param("outId") Integer outId);
+
+    List selectByOutNo(@Param("outNo") String outNo);
 }

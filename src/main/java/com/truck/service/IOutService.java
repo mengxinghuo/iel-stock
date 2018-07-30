@@ -9,4 +9,6 @@ public interface IOutService {
     ServerResponse getOutList(Integer adminId,int pageNum,int pageSize);
 
     ServerResponse getOutDetail(Integer outId,int pageNum,int pageSize);
+
+    ServerResponse getOutDetailNo(String outNo);
 }

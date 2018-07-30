@@ -108,6 +108,11 @@ public class OutServiceImpl implements IOutService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    public ServerResponse getOutDetailNo(String outNo){
+        List<OutDetail> outDetailList = outDetailMapper.selectByOutNo(outNo);
+        return ServerResponse.createBySuccess(outDetailList);
+    }
+
     public OutVo assembleOut(Out out){
         OutVo outVo = new OutVo();
         outVo.setId(out.getId());

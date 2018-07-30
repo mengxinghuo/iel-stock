@@ -197,4 +197,12 @@
     where out_id = #{outId}
     order by create_time desc
   </select>
+
+  <select id="selectByOutNo" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from iel_out_detail
+    where out_id = (select out_id from iel_out where out_no=#{outNo})
+    order by create_time desc
+  </select>
 </mapper>
