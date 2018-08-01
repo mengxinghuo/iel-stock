@@ -34,7 +34,7 @@ public class CartServiceImpl implements ICartService {
     }
 
 
-    public ServerResponse<CartVo> add(Integer adminId, Integer stockId, Integer count) {
+    public ServerResponse add(Integer adminId, Integer stockId, Integer count) {
         if (count == null || stockId == null)
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         Stock stock = stockMapper.selectByPrimaryKey(stockId);
@@ -51,6 +51,9 @@ public class CartServiceImpl implements ICartService {
         } else {
             //这个产品已经在购物车中相加产品数量
             count = cart.getAmount() + count;
+            if (count > stock.getQuantity()) {
+                return ServerResponse.createByErrorMessage("产品库存不足,无法继续加入购物车");
+            }
             cart.setAmount(count);
             if(count <=0){
                 cartMapper.deleteByPrimaryKey(cart.getCartId());
