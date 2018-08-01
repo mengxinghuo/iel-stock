@@ -82,9 +82,9 @@ public class OutServiceImpl implements IOutService {
         return outDetailList;
     }
 
-    public ServerResponse getOutList(Integer adminId,int pageNum,int pageSize){
+    public ServerResponse getOutList(Integer adminId,Integer outId,int pageNum,int pageSize){
         PageHelper.startPage(pageNum, pageSize);
-        List<Out> outList = outMapper.selectByAdminId(adminId);
+        List<Out> outList = outMapper.selectByAdminId(adminId,outId);
         if(outList.size() == 0){
             return ServerResponse.createByErrorMessage("未查到任何记录");
         }
@@ -125,6 +125,8 @@ public class OutServiceImpl implements IOutService {
         outVo.setStatusDesc(Const.OutStatusEnum.codeOf(out.getStatus()).getValue());
         outVo.setCreateTime(DateTimeUtil.dateToStr(out.getCreateTime()));
         outVo.setUpdateTime(DateTimeUtil.dateToStr(out.getUpdateTime()));
+        List<OutDetail> outDetailList = outDetailMapper.selectByOutId(out.getId());
+        outVo.setOutDetailList(outDetailList);
         return outVo;
     }
 

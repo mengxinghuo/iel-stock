@@ -1,6 +1,9 @@
 package com.truck.vo;
 
+import com.truck.pojo.OutDetail;
+
 import java.util.Date;
+import java.util.List;
 
 public class OutVo {
     private Integer id;
@@ -20,6 +23,8 @@ public class OutVo {
     private Integer repairId;
 
     private String repairNo;
+
+    private List<OutDetail> outDetailList;
 
     public String getStatusDesc() {
         return statusDesc;
@@ -99,5 +104,13 @@ public class OutVo {
 
     public void setRepairNo(String repairNo) {
         this.repairNo = repairNo;
+    }
+
+    public List<OutDetail> getOutDetailList() {
+        return outDetailList;
+    }
+
+    public void setOutDetailList(List<OutDetail> outDetailList) {
+        this.outDetailList = outDetailList;
     }
 }

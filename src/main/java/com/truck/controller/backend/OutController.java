@@ -45,13 +45,14 @@ public class OutController {
     @RequestMapping("get_out_list.do")
     @ResponseBody
     public ServerResponse getOutList(HttpSession session,
+                                     Integer outId,
                                      @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
-        return iOutService.getOutList(admin.getAdminId(),pageNum,pageSize);
+        return iOutService.getOutList(admin.getAdminId(),outId,pageNum,pageSize);
     }
 
     /**

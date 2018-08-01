@@ -122,6 +122,9 @@
       <if test="adminId != null">
         and operator_id = #{adminId}
       </if>
+      <if test="outId !=null">
+        and id=#{outId}
+      </if>
     </where>
     order by create_time desc
   </select>

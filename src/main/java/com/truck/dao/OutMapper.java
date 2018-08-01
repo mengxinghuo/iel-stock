@@ -18,5 +18,5 @@ public interface OutMapper {
 
     int updateByPrimaryKey(Out record);
 
-    List selectByAdminId(@Param("adminId") Integer adminId);
+    List selectByAdminId(@Param("adminId") Integer adminId,@Param("outId")Integer outId);
 }
