@@ -33,6 +33,17 @@ public class CartController {
         return iCartService.list(admin.getAdminId());
     }
 
+    @RequestMapping("baojia.do")
+    @ResponseBody
+    public ServerResponse<CartVo> baoJia(HttpSession session,String repairNo){
+      Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
+        if(admin == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
+        }
+
+        return iCartService.baoJia(repairNo);
+    }
+
 
     @RequestMapping("add.do")
     @ResponseBody

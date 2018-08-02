@@ -1,5 +1,6 @@
 package com.truck.vo;
 
+import com.truck.pojo.Customer;
 import com.truck.pojo.Stock;
 
 import java.math.BigDecimal;
@@ -25,6 +26,10 @@ public class CartVo {
     private Stock stock;
 
     private BigDecimal cartTotalPrice;
+
+    private OrderVo orderVo;
+
+    private String baoJiaNo;
 
     public CartVo() {
     }
@@ -107,5 +112,21 @@ public class CartVo {
 
     public void setCartTotalPrice(BigDecimal cartTotalPrice) {
         this.cartTotalPrice = cartTotalPrice;
+    }
+
+    public OrderVo getOrderVo() {
+        return orderVo;
+    }
+
+    public void setOrderVo(OrderVo orderVo) {
+        this.orderVo = orderVo;
+    }
+
+    public String getBaoJiaNo() {
+        return baoJiaNo;
+    }
+
+    public void setBaoJiaNo(String baoJiaNo) {
+        this.baoJiaNo = baoJiaNo;
     }
 }

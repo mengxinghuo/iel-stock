@@ -7,18 +7,23 @@ import com.truck.common.ResponseCode;
 import com.truck.common.ServerResponse;
 import com.truck.dao.CartMapper;
 import com.truck.dao.StockMapper;
-import com.truck.pojo.Cart;
-import com.truck.pojo.Stock;
+import com.truck.pojo.*;
 import com.truck.service.ICartService;
 import com.truck.util.BigDecimalUtil;
 import com.truck.util.DateTimeUtil;
+import com.truck.util.JsonUtil;
+import com.truck.util.Post4;
 import com.truck.vo.CartVo;
+import com.truck.vo.OrderVo;
+import net.sf.json.JSONObject;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 @Service("iCartService")
 public class CartServiceImpl implements ICartService {
@@ -29,7 +34,12 @@ public class CartServiceImpl implements ICartService {
     StockMapper stockMapper;
 
     public ServerResponse list(Integer adminId) {
-        List<CartVo> cartVoList = this.getCartVoLimit(adminId);
+        List<CartVo> cartVoList = this.getCartVoLimit(adminId,null);
+        return ServerResponse.createBySuccess(cartVoList);
+    }
+
+    public ServerResponse baoJia(String repairNo) {
+        List<CartVo> cartVoList = this.getCartVoLimit(null,repairNo);
         return ServerResponse.createBySuccess(cartVoList);
     }
 
@@ -127,7 +137,14 @@ public class CartServiceImpl implements ICartService {
 
     }
 
-    private List<CartVo> getCartVoLimit(Integer adminId) {
+    private List<CartVo> getCartVoLimit(Integer adminId,String repairNo) {
+        OrderVo orderVo = new OrderVo();
+        if(StringUtils.isNotBlank(repairNo)){
+            ServerResponse serverResponse = this.getCustomerByNo(repairNo);
+            if(serverResponse.isSuccess()){
+                orderVo =(OrderVo)serverResponse.getData();
+            }
+        }
         List<CartVo> cartVoList = Lists.newArrayList();
         List<Cart> cartLists = cartMapper.selectCartByAdminId(adminId);
 
@@ -137,11 +154,40 @@ public class CartServiceImpl implements ICartService {
             cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(), cartVo.getCartPrice().doubleValue());
             cartVoList.add(cartVo);
         }
+        String baoJiaNo = String.valueOf(this.generateOutNo());
         for (CartVo cartVo : cartVoList) {
             cartVo.setCartTotalPrice(cartTotalPrice);
+            cartVo.setOrderVo(orderVo);
+            cartVo.setBaoJiaNo(baoJiaNo);
         }
         return cartVoList;
     }
+
+    private long generateOutNo() {
+        long currentTime = System.currentTimeMillis();
+        return currentTime + new Random().nextInt(100);
+    }
+
+
+    public ServerResponse getCustomerByNo(String repairNo){
+        String url = "http://39.104.139.229:8087/order/manage/detail.do";
+        StringBuffer sb = new StringBuffer();
+        sb.append("orderNo=").append(repairNo);
+        String str = Post4.connectionUrl(url, sb,null);
+        if (str.equals("error")) {
+            return ServerResponse.createByErrorMessage("iel服务系统异常，查询服务信息失败");
+        }
+        JSONObject jsonObject = JSONObject.fromObject(str);
+        String statuss = jsonObject.get("status").toString();
+        if (statuss.equals("1")) {
+            String errMsg = jsonObject.get("msg").toString();
+            return ServerResponse.createByErrorMessage(errMsg);
+        }
+        String Str = jsonObject.get("data").toString();
+        OrderVo orderVo = JsonUtil.string2Obj(Str,OrderVo.class);
+        return ServerResponse.createBySuccess(orderVo);
+    }
+
 
     private CartVo assembleCartVo(Cart cart){
         CartVo cartVo = new CartVo();

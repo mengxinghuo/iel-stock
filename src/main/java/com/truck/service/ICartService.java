@@ -9,6 +9,8 @@ public interface ICartService {
 
     ServerResponse<CartVo> list(Integer adminId);
 
+    ServerResponse<CartVo> baoJia(String repairNo);
+
     ServerResponse add(Integer adminId, Integer stockId, Integer count);
 
     ServerResponse<CartVo> update(Integer adminId, Integer count, Integer stockId, BigDecimal cartPrice);
