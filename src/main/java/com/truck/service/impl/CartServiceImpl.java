@@ -38,7 +38,7 @@ public class CartServiceImpl implements ICartService {
         return ServerResponse.createBySuccess(cartVoList);
     }
 
-    public ServerResponse baoJia(String repairNo) {
+    public ServerResponse baoJia(Integer adminId,String repairNo) {
         if(StringUtils.isBlank(repairNo)){
             return ServerResponse.createByErrorMessage("报修单号不能为空");
         }
@@ -51,7 +51,7 @@ public class CartServiceImpl implements ICartService {
         if(customer==null)
         return ServerResponse.createByErrorMessage("报修单号单号有误，请重新输入");
 
-        List<CartVo> cartVoList = this.getCartVoLimit(null,customer);
+        List<CartVo> cartVoList = this.getCartVoLimit(adminId,customer);
         return ServerResponse.createBySuccess(cartVoList);
     }
 

@@ -9,7 +9,7 @@ public interface ICartService {
 
     ServerResponse<CartVo> list(Integer adminId);
 
-    ServerResponse<CartVo> baoJia(String repairNo);
+    ServerResponse<CartVo> baoJia(Integer adminId,String repairNo);
 
     ServerResponse add(Integer adminId, Integer stockId, Integer count);
 

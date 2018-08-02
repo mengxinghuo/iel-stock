@@ -35,13 +35,12 @@ public class CartController {
 
     @RequestMapping("baojia.do")
     @ResponseBody
-    public ServerResponse<CartVo> baoJia(HttpSession session,String repairNo){
+    public ServerResponse baoJia(HttpSession session,String repairNo){
       Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
-
-        return iCartService.baoJia(repairNo);
+        return iCartService.baoJia(admin.getAdminId(),repairNo);
     }
 
 
