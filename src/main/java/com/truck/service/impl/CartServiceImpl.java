@@ -65,7 +65,7 @@ public class CartServiceImpl implements ICartService {
     }
 
     public ServerResponse<CartVo> update(Integer adminId, Integer count, Integer stockId, BigDecimal cartPrice) {
-        if (count == null || stockId == null)
+        if (stockId == null)
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         if (count < 1)
             return ServerResponse.createByErrorMessage("");
