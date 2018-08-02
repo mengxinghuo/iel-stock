@@ -180,6 +180,7 @@ public class StockServiceImpl implements IStockService {
                 stock.setRepertory(idList.get(idList.size()-1));
             }
             stock.setPosition(entryDetailItem.getEntryPosition());
+            stock.setShipNum(entryDetailItem.getShipNum());
             stockList.add(stock);
         }
         return stockList;
