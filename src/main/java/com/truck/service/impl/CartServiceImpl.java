@@ -39,7 +39,19 @@ public class CartServiceImpl implements ICartService {
     }
 
     public ServerResponse baoJia(String repairNo) {
-        List<CartVo> cartVoList = this.getCartVoLimit(null,repairNo);
+        if(StringUtils.isBlank(repairNo)){
+            return ServerResponse.createByErrorMessage("报修单号不能为空");
+        }
+
+        ServerResponse serverResponse2 = this.getCustomerByNo(repairNo);
+        if(!serverResponse2.isSuccess()){
+            return serverResponse2;
+        }
+        Customer customer =(Customer)serverResponse2.getData();
+        if(customer==null)
+        return ServerResponse.createByErrorMessage("报修单号单号有误，请重新输入");
+
+        List<CartVo> cartVoList = this.getCartVoLimit(null,customer);
         return ServerResponse.createBySuccess(cartVoList);
     }
 
@@ -137,14 +149,7 @@ public class CartServiceImpl implements ICartService {
 
     }
 
-    private List<CartVo> getCartVoLimit(Integer adminId,String repairNo) {
-        Customer customer = new Customer();
-        if(StringUtils.isNotBlank(repairNo)){
-            ServerResponse serverResponse = this.getCustomerByNo(repairNo);
-            if(serverResponse.isSuccess()){
-                customer =(Customer)serverResponse.getData();
-            }
-        }
+    private List<CartVo> getCartVoLimit(Integer adminId,Customer customer) {
         List<CartVo> cartVoList = Lists.newArrayList();
         List<Cart> cartLists = cartMapper.selectCartByAdminId(adminId);
 
