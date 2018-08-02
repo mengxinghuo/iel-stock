@@ -138,11 +138,11 @@ public class CartServiceImpl implements ICartService {
     }
 
     private List<CartVo> getCartVoLimit(Integer adminId,String repairNo) {
-        OrderVo orderVo = new OrderVo();
+        Customer customer = new Customer();
         if(StringUtils.isNotBlank(repairNo)){
             ServerResponse serverResponse = this.getCustomerByNo(repairNo);
             if(serverResponse.isSuccess()){
-                orderVo =(OrderVo)serverResponse.getData();
+                customer =(Customer)serverResponse.getData();
             }
         }
         List<CartVo> cartVoList = Lists.newArrayList();
@@ -157,7 +157,7 @@ public class CartServiceImpl implements ICartService {
         String baoJiaNo = String.valueOf(this.generateOutNo());
         for (CartVo cartVo : cartVoList) {
             cartVo.setCartTotalPrice(cartTotalPrice);
-            cartVo.setOrderVo(orderVo);
+            cartVo.setCustomer(customer);
             cartVo.setBaoJiaNo(baoJiaNo);
         }
         return cartVoList;
@@ -170,7 +170,7 @@ public class CartServiceImpl implements ICartService {
 
 
     public ServerResponse getCustomerByNo(String repairNo){
-        String url = "http://39.104.139.229:8087/order/manage/detail.do";
+        String url = "http://39.104.139.229:8087/order/manage/get_customer.do";
         StringBuffer sb = new StringBuffer();
         sb.append("orderNo=").append(repairNo);
         String str = Post4.connectionUrl(url, sb,null);
@@ -184,8 +184,8 @@ public class CartServiceImpl implements ICartService {
             return ServerResponse.createByErrorMessage(errMsg);
         }
         String Str = jsonObject.get("data").toString();
-        OrderVo orderVo = JsonUtil.string2Obj(Str,OrderVo.class);
-        return ServerResponse.createBySuccess(orderVo);
+        Customer customer = JsonUtil.string2Obj(Str,Customer.class);
+        return ServerResponse.createBySuccess(customer);
     }
 
 

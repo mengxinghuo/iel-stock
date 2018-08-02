@@ -27,7 +27,7 @@ public class CartVo {
 
     private BigDecimal cartTotalPrice;
 
-    private OrderVo orderVo;
+    private Customer customer;
 
     private String baoJiaNo;
 
@@ -114,13 +114,6 @@ public class CartVo {
         this.cartTotalPrice = cartTotalPrice;
     }
 
-    public OrderVo getOrderVo() {
-        return orderVo;
-    }
-
-    public void setOrderVo(OrderVo orderVo) {
-        this.orderVo = orderVo;
-    }
 
     public String getBaoJiaNo() {
         return baoJiaNo;
@@ -128,5 +121,13 @@ public class CartVo {
 
     public void setBaoJiaNo(String baoJiaNo) {
         this.baoJiaNo = baoJiaNo;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }
