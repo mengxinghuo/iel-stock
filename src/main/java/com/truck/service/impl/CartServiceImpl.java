@@ -76,6 +76,7 @@ public class CartServiceImpl implements ICartService {
                     return  ServerResponse.createByErrorMessage("单价不可小于0");
                 }
                 cart.setCartPrice(cartPrice);
+                cartMapper.updateByPrimaryKeySelective(cart);
             }
             if(count !=null){
                 Integer real= cart.getAmount()+count;
