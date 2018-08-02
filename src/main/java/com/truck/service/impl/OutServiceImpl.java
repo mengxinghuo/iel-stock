@@ -73,7 +73,7 @@ public class OutServiceImpl implements IOutService {
             outDetail.setPartsName(stock.getPartsName());
             outDetail.setPartsEnName(stock.getPartsEnName());
             outDetail.setUnit(stock.getUnit());
-            outDetail.setSalesPrice(stock.getSalesPrice());
+            outDetail.setSalesPrice(cartItem.getCartPrice());
             outDetail.setDeviceType(stock.getDeviceType());
             outDetail.setStockPosition(stock.getPosition());
             outDetail.setOutNum(cartItem.getAmount());
