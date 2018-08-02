@@ -67,8 +67,8 @@ public class CartServiceImpl implements ICartService {
     public ServerResponse<CartVo> update(Integer adminId, Integer count, Integer stockId, BigDecimal cartPrice) {
         if (stockId == null)
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
-        if (count < 1)
-            return ServerResponse.createByErrorMessage("");
+        if (count!=null && count < 1)
+            return ServerResponse.createByErrorMessage("数量变化不能为负");
         Cart cart = cartMapper.selectCartByAdminIdStockId(adminId, stockId);
         if (cart != null){
             if (cartPrice !=null  ) {
@@ -77,12 +77,14 @@ public class CartServiceImpl implements ICartService {
                 }
                 cart.setCartPrice(cartPrice);
             }
-            Integer real= cart.getAmount()+count;
-            if(real <=0){
-                cartMapper.deleteByPrimaryKey(cart.getCartId());
-            }else{
-                cart.setAmount(count);
-                cartMapper.updateByPrimaryKeySelective(cart);
+            if(count !=null){
+                Integer real= cart.getAmount()+count;
+                if(real <=0){
+                    cartMapper.deleteByPrimaryKey(cart.getCartId());
+                }else{
+                    cart.setAmount(count);
+                    cartMapper.updateByPrimaryKeySelective(cart);
+                }
             }
         }
         return this.list(adminId);
