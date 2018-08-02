@@ -24,6 +24,8 @@ public class CartVo {
 
     private Stock stock;
 
+    private BigDecimal cartTotalPrice;
+
     public CartVo() {
     }
 
@@ -97,5 +99,13 @@ public class CartVo {
 
     public void setStock(Stock stock) {
         this.stock = stock;
+    }
+
+    public BigDecimal getCartTotalPrice() {
+        return cartTotalPrice;
+    }
+
+    public void setCartTotalPrice(BigDecimal cartTotalPrice) {
+        this.cartTotalPrice = cartTotalPrice;
     }
 }

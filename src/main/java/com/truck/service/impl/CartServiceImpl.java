@@ -130,10 +130,15 @@ public class CartServiceImpl implements ICartService {
     private List<CartVo> getCartVoLimit(Integer adminId) {
         List<CartVo> cartVoList = Lists.newArrayList();
         List<Cart> cartLists = cartMapper.selectCartByAdminId(adminId);
+
+        BigDecimal cartTotalPrice = new BigDecimal("0");
         for (Cart cartList : cartLists) {
             CartVo cartVo = this.assembleCartVo(cartList);
+            cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(), cartVo.getCartPrice().doubleValue());
             cartVoList.add(cartVo);
-
+        }
+        for (CartVo cartVo : cartVoList) {
+            cartVo.setCartTotalPrice(cartTotalPrice);
         }
         return cartVoList;
     }
@@ -149,7 +154,7 @@ public class CartServiceImpl implements ICartService {
         cartVo.setStock(stock);
         cartVo.setCreateTime(DateTimeUtil.dateToStr(cart.getCreateTime()));
         cartVo.setUpdateTime(DateTimeUtil.dateToStr(cart.getUpdateTime()));
-        cartVo.setCartPrice(cart.getCartPrice());
+        cartVo.setCartPrice(BigDecimalUtil.mul(cart.getCartPrice().doubleValue(),cart.getAmount().doubleValue()));
         return cartVo;
     }
 
