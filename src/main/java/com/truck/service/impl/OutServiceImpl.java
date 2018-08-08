@@ -52,6 +52,11 @@ public class OutServiceImpl implements IOutService {
         List<OutDetail> outDetailList = getOutDetailList(cartList,out.getId());
         resultCount = outDetailMapper.batchInsert(outDetailList);
         if(resultCount > 0){
+            for (OutDetail outDetail : outDetailList) {
+                Stock stock = stockMapper.selectByPrimaryKey(outDetail.getStockPosition());
+                stock.setQuantity(stock.getQuantity()-outDetail.getOutNum());
+                stockMapper.updateByPrimaryKeySelective(stock);
+            }
             cartMapper.deleteByAdminId(adminId);
             return ServerResponse.createBySuccess("生成出库单成功");
         }
@@ -67,6 +72,7 @@ public class OutServiceImpl implements IOutService {
         List<OutDetail> outDetailList = Lists.newArrayList();
         for(Cart cartItem : cartList){
             Stock stock = stockMapper.selectByPrimaryKey(cartItem.getStockId());
+
             OutDetail outDetail = new OutDetail();
             outDetail.setOutId(outId);
             outDetail.setPartsNo(stock.getPartsNo());
