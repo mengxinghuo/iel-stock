@@ -52,9 +52,9 @@ public class OutServiceImpl implements IOutService {
         List<OutDetail> outDetailList = getOutDetailList(cartList,out.getId());
         resultCount = outDetailMapper.batchInsert(outDetailList);
         if(resultCount > 0){
-            for (OutDetail outDetail : outDetailList) {
-                Stock stock = stockMapper.selectByPrimaryKey(outDetail.getStockPosition());
-                stock.setQuantity(stock.getQuantity()-outDetail.getOutNum());
+            for(Cart cartItem : cartList){
+                Stock stock = stockMapper.selectByPrimaryKey(cartItem.getStockId());
+                stock.setQuantity(stock.getQuantity()-cartItem.getAmount());
                 stockMapper.updateByPrimaryKeySelective(stock);
             }
             cartMapper.deleteByAdminId(adminId);
