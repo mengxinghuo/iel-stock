@@ -32,9 +32,9 @@ public class OutServiceImpl implements IOutService {
     private AdminMapper adminMapper;
 
     public ServerResponse outStock(Integer adminId,String repairNo){
-        if(StringUtils.isBlank(repairNo)){
+     /*   if(StringUtils.isBlank(repairNo)){
             return ServerResponse.createByErrorMessage("请输入维修单号");
-        }
+        }*/
         List<Cart> cartList = cartMapper.selectCartByAdminId(adminId);
         if(cartList.size() == 0){
             return ServerResponse.createByErrorMessage("购物车为空");
@@ -44,6 +44,7 @@ public class OutServiceImpl implements IOutService {
         out.setOutNo(outNo);
         out.setStatus(Const.OutStatusEnum.UN_OUT.getCode());
         out.setOperatorId(adminId);
+        if(StringUtils.isNotBlank(repairNo))
         out.setRepairNo(repairNo);
         int resultCount = outMapper.insertSelective(out);
         if(resultCount == 0){
