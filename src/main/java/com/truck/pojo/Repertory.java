@@ -1,5 +1,6 @@
 package com.truck.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,7 +23,12 @@ public class Repertory {
 
     private Date updateTime;
 
-    public Repertory(Integer id, Integer adminId, Integer parentId, String name, String code, Boolean status, Integer sortOrder, Date createTime, Date updateTime) {
+    private BigDecimal positionLongitude;
+
+    private BigDecimal positionLatitude;
+
+    public Repertory(Integer id, Integer adminId, Integer parentId, String name, String code, Boolean status,
+                     Integer sortOrder, Date createTime, Date updateTime,BigDecimal positionLongitude,BigDecimal positionLatitude) {
         this.id = id;
         this.adminId = adminId;
         this.parentId = parentId;
@@ -32,6 +38,8 @@ public class Repertory {
         this.sortOrder = sortOrder;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.positionLongitude = positionLongitude;
+        this.positionLatitude = positionLatitude;
     }
 
     public Repertory() {
@@ -108,6 +116,22 @@ public class Repertory {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public BigDecimal getPositionLongitude() {
+        return positionLongitude;
+    }
+
+    public void setPositionLongitude(BigDecimal positionLongitude) {
+        this.positionLongitude = positionLongitude;
+    }
+
+    public BigDecimal getPositionLatitude() {
+        return positionLatitude;
+    }
+
+    public void setPositionLatitude(BigDecimal positionLatitude) {
+        this.positionLatitude = positionLatitude;
     }
 
     @Override

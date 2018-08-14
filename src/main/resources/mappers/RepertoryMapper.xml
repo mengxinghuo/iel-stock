@@ -12,10 +12,12 @@
       <arg column="sort_order" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="position_longitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="position_latitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, admin_id, parent_id, name,code, status, sort_order, create_time, update_time
+    id, admin_id, parent_id, name,code, status, sort_order, create_time, update_time,position_longitude, position_latitude
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -30,10 +32,11 @@
   <insert id="insert" parameterType="com.truck.pojo.Repertory" >
     insert into iel_repertory (id, admin_id, parent_id,
       name,code, status, sort_order,
-      create_time, update_time)
+      create_time, update_time,position_longitude, position_latitude)
     values (#{id,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR},#{code}, #{status,jdbcType=BIT}, #{sortOrder,jdbcType=INTEGER},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{positionLongitude,jdbcType=DECIMAL},
+      #{positionLatitude,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.truck.pojo.Repertory" useGeneratedKeys="true" keyProperty="id">
     insert into iel_repertory
@@ -60,7 +63,13 @@
         sort_order,
       </if>
         create_time,
-        update_time
+        update_time,
+      <if test="positionLongitude != null" >
+        position_longitude,
+      </if>
+      <if test="positionLatitude != null" >
+        position_latitude,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,8 +93,14 @@
       <if test="sortOrder != null" >
         #{sortOrder,jdbcType=INTEGER},
       </if>
-    now(),
-      now()
+      now(),
+      now(),
+      <if test="positionLongitude != null" >
+        #{positionLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="positionLatitude != null" >
+        #{positionLatitude,jdbcType=DECIMAL},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.truck.pojo.Repertory" >
@@ -113,6 +128,12 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
         update_time = now(),
+      <if test="positionLongitude != null" >
+        position_longitude=#{positionLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="positionLatitude != null" >
+        position_latitude=#{positionLatitude,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -125,7 +146,9 @@
       status = #{status,jdbcType=BIT},
       sort_order = #{sortOrder,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      position_longitude=#{positionLongitude,jdbcType=DECIMAL},
+      position_latitude=#{positionLatitude,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectRepertoryChildrenByParentId" resultMap="BaseResultMap" parameterType="integer">

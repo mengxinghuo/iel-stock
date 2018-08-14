@@ -1,5 +1,6 @@
 package com.truck.vo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,10 @@ public class RepertoryVo {
     private String createTime;
 
     private String updateTime;
+
+    private BigDecimal positionLongitude;
+
+    private BigDecimal positionLatitude;
 
     private List<RepertoryVo> repertoryVoList;
 
@@ -103,5 +108,21 @@ public class RepertoryVo {
 
     public void setRepertoryVoList(List<RepertoryVo> repertoryVoList) {
         this.repertoryVoList = repertoryVoList;
+    }
+
+    public BigDecimal getPositionLongitude() {
+        return positionLongitude;
+    }
+
+    public void setPositionLongitude(BigDecimal positionLongitude) {
+        this.positionLongitude = positionLongitude;
+    }
+
+    public BigDecimal getPositionLatitude() {
+        return positionLatitude;
+    }
+
+    public void setPositionLatitude(BigDecimal positionLatitude) {
+        this.positionLatitude = positionLatitude;
     }
 }

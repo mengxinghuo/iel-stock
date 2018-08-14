@@ -198,6 +198,9 @@ public class RepertoryServiceImpl implements IRepertoryService {
         //repertoryVo.setStatus(repertory.getStatus());
         repertoryVo.setCreateTime(DateTimeUtil.dateToStr(repertory.getCreateTime()));
         repertoryVo.setUpdateTime(DateTimeUtil.dateToStr(repertory.getUpdateTime()));
+
+        repertoryVo.setPositionLatitude(repertory.getPositionLatitude());
+        repertoryVo.setPositionLongitude(repertory.getPositionLongitude());
         return repertoryVo;
     }
 
