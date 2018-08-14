@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 
 /**
  * Created by geely
@@ -28,13 +29,15 @@ public class RepertoryManageController {
 
     @RequestMapping("add.do")
     @ResponseBody
-    public ServerResponse addRepertory(HttpSession session, String name, @RequestParam(value = "parentId",defaultValue = "0") int parentId, String code){
+    public ServerResponse addRepertory(HttpSession session, String name,
+                                       @RequestParam(value = "parentId",defaultValue = "0") int parentId,
+                                       String code,BigDecimal positionLongitude,BigDecimal positionLatitude){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
         if (iAdminService.checkAdminRole(admin).isSuccess()) {
-            return iRepertoryService.addRepertory(admin.getAdminId(),name,parentId,code);
+            return iRepertoryService.addRepertory(admin.getAdminId(),name,parentId,code,positionLongitude,positionLatitude);
         }
         return ServerResponse.createByErrorMessage("无权限操作");
     }

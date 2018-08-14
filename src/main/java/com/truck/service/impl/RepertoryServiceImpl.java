@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,12 @@ public class RepertoryServiceImpl implements IRepertoryService {
     @Autowired
     private RepertoryMapper repertoryMapper;
 
-    public ServerResponse addRepertory(Integer adminId, String repertoryName, Integer parentId, String code) {
+    public ServerResponse addRepertory(Integer adminId, String repertoryName, Integer parentId, String code, BigDecimal positionLongitude, BigDecimal positionLatitude) {
         if (StringUtils.isBlank(repertoryName) || StringUtils.isBlank(code)) {
             return ServerResponse.createByErrorMessage("添加仓库参数错误");
+        }
+        if (positionLongitude==null || positionLatitude==null) {
+            return ServerResponse.createByErrorMessage("请添加仓库经纬度");
         }
 
         Repertory repertory = new Repertory();
@@ -51,7 +55,8 @@ public class RepertoryServiceImpl implements IRepertoryService {
         }
         repertory.setName(repertoryName);
         repertory.setCode(code);
-
+        repertory.setPositionLongitude(positionLongitude);
+        repertory.setPositionLatitude(positionLatitude);
         int rowCount = repertoryMapper.insertSelective(repertory);
         if (rowCount > 0) {
             Map result = Maps.newHashMap();
