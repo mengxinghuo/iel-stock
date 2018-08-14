@@ -46,13 +46,15 @@ public class RepertoryManageController {
     @ResponseBody
     public ServerResponse setRepertoryName(HttpSession session, Integer id,
                                            @RequestParam(value = "name", required = false) String name,
+                                           @RequestParam(value = "positionLongitude", required = false) BigDecimal positionLongitude,
+                                           @RequestParam(value = "positionLatitude", required = false) BigDecimal positionLatitude,
                                            @RequestParam(value = "code", required = false) String code){
        Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
         }
         if (iAdminService.checkAdminRole(admin).isSuccess()) {
-            return iRepertoryService.updateRepertoryName(id,name,code);
+            return iRepertoryService.updateRepertoryName(id,name,code,positionLongitude,positionLatitude);
         }
         return ServerResponse.createByErrorMessage("无权限操作");
     }

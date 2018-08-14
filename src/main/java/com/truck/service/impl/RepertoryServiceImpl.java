@@ -66,11 +66,11 @@ public class RepertoryServiceImpl implements IRepertoryService {
         return ServerResponse.createByErrorMessage("添加仓库失败");
     }
 
-    public ServerResponse updateRepertoryName(Integer repertoryId, String repertoryName, String code) {
+    public ServerResponse updateRepertoryName(Integer repertoryId, String repertoryName, String code,BigDecimal positionLongitude,BigDecimal positionLatitude) {
         if (repertoryId == null) {
             return ServerResponse.createByErrorMessage("更新仓库参数错误");
         }
-        if (StringUtils.isBlank(repertoryName) && StringUtils.isBlank(code)) {
+        if (StringUtils.isBlank(repertoryName) && StringUtils.isBlank(code) && positionLongitude==null && positionLatitude==null) {
             return ServerResponse.createByErrorMessage("更新仓库参数错误");
         }
         Repertory repertory = repertoryMapper.selectByPrimaryKey(repertoryId);
@@ -88,6 +88,8 @@ public class RepertoryServiceImpl implements IRepertoryService {
             }
         }
 
+        repertory.setPositionLatitude(positionLatitude);
+        repertory.setPositionLongitude(positionLongitude);
         int rowCount = repertoryMapper.updateByPrimaryKeySelective(repertory);
         if(rowCount > 0){
             return ServerResponse.createBySuccess("更新仓库参数成功");

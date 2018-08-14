@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IRepertoryService {
     ServerResponse addRepertory(Integer adminId, String categoryName, Integer parentId, String code, BigDecimal positionLongitude, BigDecimal positionLatitude);
-    ServerResponse updateRepertoryName(Integer categoryId, String categoryName, String code);
+    ServerResponse updateRepertoryName(Integer categoryId, String categoryName, String code,BigDecimal positionLongitude,BigDecimal positionLatitude);
     ServerResponse<List<Repertory>> getChildrenParallelRepertory(Integer categoryId);
     ServerResponse<List<Integer>> selectRepertoryAndChildrenById(Integer categoryId);
 
