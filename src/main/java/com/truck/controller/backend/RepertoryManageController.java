@@ -62,10 +62,10 @@ public class RepertoryManageController {
     @RequestMapping("get.do")
     @ResponseBody
     public ServerResponse getChildrenParallelRepertory(HttpSession session, @RequestParam(value = "id" ,defaultValue = "0") Integer id){
-       Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
+     /*  Admin admin = (Admin)session.getAttribute(Const.CURRENT_ADMIN);
         if(admin == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"管理员用户未登录，请登录");
-        }
+        }*/
             //查询子节点的repertory信息,并且不递归,保持平级
             return iRepertoryService.getChildrenParallelRepertory(id);
     }
