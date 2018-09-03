@@ -213,7 +213,7 @@ public class TransportController {
                             logger.info("status == 1======");
                             //远程调用  批量插入
 
-                            String url = "http://149.129.220.43:8082/manage/transport/batch_insert_exports.do";
+                            String url = "http://39.104.139.229:8086/manage/transport/batch_insert_exports.do";
                             StringBuffer sb = new StringBuffer();
                             sb.append("entryId=").append(Integer.parseInt(serverResponse.getData().toString())).append("&path=").append(path+"/"+targetFileName);
                             Post4.connectionUrl(url, sb,null);
