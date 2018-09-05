@@ -101,7 +101,8 @@ public class RepertoryServiceImpl implements IRepertoryService {
         List<Repertory> repertoryList = repertoryMapper.selectRepertoryChildrenByParentId(repertoryId);
         if(CollectionUtils.isEmpty(repertoryList)){
             logger.info("未找到当前分类的子分类");
-            return ServerResponse.createByErrorMessage("未找到当前分类的子分类");
+//            return ServerResponse.createByErrorMessage("未找到当前分类的子分类");
+            return ServerResponse.createByErrorMessage("Please complete the warehouse information in warehouse mgmt with admin account!");
         }
         return ServerResponse.createBySuccess(repertoryList);
     }
