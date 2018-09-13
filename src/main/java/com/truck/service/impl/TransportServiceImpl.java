@@ -265,8 +265,7 @@ public class TransportServiceImpl implements ITransportService {
     public ServerResponse createEntry(Integer id){
         logger.info("id:{}",id);
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        logger.info("mmm:{}",transport);
-        logger.info("mmm:{}",transport.getDeclareNum());
+        logger.info("mmmmmm:{}",transport.getDeclareNum());
         int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
         if(rowCount > 0){
             return ServerResponse.createByErrorMessage("已存在");
@@ -279,6 +278,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
         entry.setShipNum(transport.getShipNum());
+        entry.setCreateTime(transport.getCreateTime());
         int resultCount = entryMapper.insertSelective(entry);
         if(resultCount > 0){
             return ServerResponse.createBySuccess(entry.getId());
