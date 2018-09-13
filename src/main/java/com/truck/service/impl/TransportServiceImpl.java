@@ -300,6 +300,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setDestination(transport.getDestination());
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
         entry.setShipNum(transport.getShipNum());
+        //报关时间
         entry.setCreateTime(transport.getCreateTime());
         JSONObject json = JSONObject.fromObject(entry);
 
