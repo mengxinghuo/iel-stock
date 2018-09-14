@@ -2,6 +2,8 @@ package com.truck.service.impl;
 
 import com.truck.common.ServerResponse;
 import com.truck.dao.EntryDetailMapper;
+import com.truck.dao.EntryMapper;
+import com.truck.pojo.Entry;
 import com.truck.pojo.EntryDetail;
 import com.truck.service.FileService;
 import com.truck.service.IExportsListsService;
@@ -23,6 +25,9 @@ public class ExportsListsServiceImpl implements IExportsListsService {
     private EntryDetailMapper entryDetailMapper;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private EntryMapper entryMapper;
+
 
 
     public ServerResponse bachInsertExports (Integer entryId, String path) {
@@ -34,7 +39,13 @@ public class ExportsListsServiceImpl implements IExportsListsService {
         int result=0;
         try {
             if (path != null) {
+                Entry entry =entryMapper.selectByPrimaryKey(entryId);
                 list = Excel.loadExportsLists(entryId,path);
+                for (EntryDetail entryDetail : list) {
+                    entryDetail.setCustomsClearance(entry.getDeclareNum());
+                    entryDetail.setDestination(entry.getDestination());
+                    entryDetail.setShipNum(entry.getShipNum());
+                }
                 if (list != null) {
                     result = entryDetailMapper.bachInsertExports(list);
                 }
