@@ -1,5 +1,6 @@
 package com.truck.dao;
 
+import com.truck.pojo.Entry;
 import com.truck.pojo.Transport;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,6 +22,8 @@ public interface TransportMapper {
     int selectByDeclareNum(@Param("declareNum") String declareNum);
 
     Transport getByDeclareNum(@Param("declareNum") String declareNum);
+
+    Transport selectByEntry(@Param("entry") Entry entry);
 
     int checkoutDeclareNum(@Param("id") Integer id,@Param("declareNum") String declareNum);
 

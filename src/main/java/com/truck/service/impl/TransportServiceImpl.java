@@ -355,6 +355,14 @@ public class TransportServiceImpl implements ITransportService {
         return ServerResponse.createByErrorMessage("清除失败");
     }
 
+    @Override
+    public ServerResponse<Transport> getTransByEntry(Entry entry) {
+        Transport transport = transportMapper.selectByEntry(entry);
+        if(transport==null)
+            return ServerResponse.createByErrorMessage("配件系统找不到进出口信息");
+        return ServerResponse.createBySuccess(transport);
+    }
+
     private long generateEntryNo(){
         long currentTime =System.currentTimeMillis();
         return currentTime+new Random().nextInt(100);

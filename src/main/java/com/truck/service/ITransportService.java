@@ -1,6 +1,7 @@
 package com.truck.service;
 
 import com.truck.common.ServerResponse;
+import com.truck.pojo.Entry;
 import com.truck.pojo.Transport;
 
 public interface ITransportService {
@@ -24,4 +25,6 @@ public interface ITransportService {
     ServerResponse checkEntryByDeclareNum(String declareNum);
 
     ServerResponse checkZhuJiEntryByDeclareNum(String declareNum);
+
+    ServerResponse<Transport> getTransByEntry(Entry entry);
 }

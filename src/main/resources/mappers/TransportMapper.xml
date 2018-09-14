@@ -224,6 +224,21 @@
     where declare_num = #{declareNum}
   </select>
 
+  <select id="selectByEntry" parameterType="com.truck.pojo.Transport" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from iel_transport
+    <where>
+      <if test="declareNum != null" >
+        and declare_num = #{declareNum,jdbcType=VARCHAR}
+      </if>
+      <if test="destination != null" >
+        and destination = #{destination,jdbcType=VARCHAR}
+      </if>
+      <if test="shipNum != null" >
+        and ship_num=#{shipNum}
+      </if>
+    </where>
+  </select>
+
   <select id="checkoutDeclareNum" parameterType="map" resultType="int">
     select count(1) from iel_transport
     where declare_num = #{declareNum} and id != #{id}

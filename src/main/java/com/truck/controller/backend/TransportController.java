@@ -6,6 +6,7 @@ import com.truck.common.ResponseCode;
 import com.truck.common.ServerResponse;
 import com.truck.dao.TransportMapper;
 import com.truck.pojo.Admin;
+import com.truck.pojo.Entry;
 import com.truck.pojo.Transport;
 import com.truck.service.FileService;
 import com.truck.service.IExportsListsService;
@@ -278,4 +279,18 @@ public class TransportController {
 
         return resultMap;
     }
+
+
+
+    /**
+     * 跨系统查询transport
+     * @param entry
+     * @return
+     */
+    @RequestMapping("get_trans_by_entry.do")
+    @ResponseBody
+    public ServerResponse<Transport> getTransByEntry(Entry entry){
+        return iTransportService.getTransByEntry(entry);
+    }
+
 }
