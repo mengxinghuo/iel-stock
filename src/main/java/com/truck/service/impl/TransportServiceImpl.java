@@ -320,6 +320,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setStatus(Const.EntryStatusEnum.STANDBY.getCode());
         entry.setShipNum(transport.getShipNum());
         entry.setCreateTime(transport.getCreateTime());
+        entry.setTransportId(id);
         int resultCount = entryMapper.insertSelective(entry);
         if(resultCount > 0){
             return ServerResponse.createBySuccess(entry.getId());
