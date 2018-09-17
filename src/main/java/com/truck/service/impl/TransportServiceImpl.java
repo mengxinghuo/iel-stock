@@ -344,6 +344,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setShipNum(transport.getShipNum());
         //报关时间
         entry.setCreateTime(transport.getCreateTime());
+        entry.setTransportId(id);
         JSONObject json = JSONObject.fromObject(entry);
 
         String url = "http://39.104.139.229:8086/manage/entry/create_entry.do";
