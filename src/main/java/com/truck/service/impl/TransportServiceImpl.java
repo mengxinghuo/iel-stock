@@ -71,11 +71,33 @@ public class TransportServiceImpl implements ITransportService {
             transport.setCreateTime(new Date());
         }
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
+
+        String url = "http://39.104.139.229:8086/manage/transport/add_transport.do";
+        ServerResponse errMsg = syncZhuJiTransport(url,transport);
+        if (errMsg != null) return errMsg;
+
         int resultCount = transportMapper.insertSelective(transport);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("信息录入成功");
         }
         return ServerResponse.createByErrorMessage("信息录入失败");
+    }
+
+    private ServerResponse syncZhuJiTransport(String url,Transport transport) {
+        StringBuffer sb = new StringBuffer();
+        JSONObject json = JSONObject.fromObject(transport);
+        sb.append("transport=").append(json.toString());
+        String str = Post4.connectionUrl(url, sb,null);
+        JSONObject jsonObject = JSONObject.fromObject(str);
+        if (str.equals("error")) {
+            return ServerResponse.createByErrorMessage("主机系统异常");
+        }
+        String status = jsonObject.get("status").toString();
+        if (status.equals("1")) {
+            String errMsg = jsonObject.get("msg").toString();
+            return ServerResponse.createByErrorMessage(errMsg);
+        }
+        return null;
     }
 
     /**
@@ -126,6 +148,10 @@ public class TransportServiceImpl implements ITransportService {
             transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
         }
         //待定判断  修改判定  如果已经入库就不能进行修改了  对应的入库单
+        String url = "http://39.104.139.229:8086/manage/transport/update_transport.do";
+        ServerResponse errMsg = syncZhuJiTransport(url,transport);
+        if (errMsg != null) return errMsg;
+
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             Transport search = transportMapper.selectByPrimaryKey(transport.getId());
@@ -175,6 +201,21 @@ public class TransportServiceImpl implements ITransportService {
             }
         }*/
         //待定判断
+
+        String url = "http://39.104.139.229:8086/manage/transport/del_transport.do";
+        StringBuffer sb = new StringBuffer();
+        sb.append("id=").append(id);
+        String str = Post4.connectionUrl(url, sb,null);
+        JSONObject jsonObject = JSONObject.fromObject(str);
+        if (str.equals("error")) {
+            return ServerResponse.createByErrorMessage("主机系统异常");
+        }
+        String status = jsonObject.get("status").toString();
+        if (status.equals("1")) {
+            String errMsg = jsonObject.get("msg").toString();
+            return ServerResponse.createByErrorMessage(errMsg);
+        }
+
         int resultCount = transportMapper.deleteByPrimaryKey(id);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("删除成功");
