@@ -304,9 +304,9 @@ public class TransportServiceImpl implements ITransportService {
      * @return
      */
     public ServerResponse createEntry(Integer id){
-        logger.info("id:{}",id);
+        logger.info("id==============={}",id);
         Transport transport = transportMapper.selectByPrimaryKey(id);
-        logger.info("mmmmmm:{}",transport.getDeclareNum());
+        logger.info("mmmm======{}",transport.getDeclareNum());
         int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
         if(rowCount > 0){
             return ServerResponse.createByErrorMessage("已存在");
@@ -330,6 +330,7 @@ public class TransportServiceImpl implements ITransportService {
 
     public ServerResponse createHostEntry(Integer id){
         Transport transport = transportMapper.selectByPrimaryKey(id);
+        logger.info("transport======{}",transport.toString());
         /*int rowCount = entryMapper.checkoutDeclare(transport.getDeclareNum());
         if(rowCount > 0){
             return ServerResponse.createByErrorMessage("已存在");
@@ -349,6 +350,7 @@ public class TransportServiceImpl implements ITransportService {
 
         String url = "http://39.104.139.229:8086/manage/entry/create_entry.do";
         StringBuffer sb = new StringBuffer();
+        logger.info("entryStr======{}",json.toString());
         sb.append("entryStr=").append(json.toString());
         String str = Post4.connectionUrl(url, sb,null);
         if (str.equals("error")) {

@@ -197,4 +197,26 @@ public class Transport {
     public void setCreateTimeStr(String createTimeStr) {
         this.createTimeStr = createTimeStr;
     }
+
+    @Override
+    public String toString() {
+        return "Transport{" +
+                "id=" + id +
+                ", declareNum='" + declareNum + '\'' +
+                ", destination='" + destination + '\'' +
+                ", arrivalList='" + arrivalList + '\'' +
+                ", purchaseList='" + purchaseList + '\'' +
+                ", salesContract='" + salesContract + '\'' +
+                ", invoice='" + invoice + '\'' +
+                ", purchaseContract='" + purchaseContract + '\'' +
+                ", exportCost='" + exportCost + '\'' +
+                ", salesList='" + salesList + '\'' +
+                ", entranceCost='" + entranceCost + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", shipNum='" + shipNum + '\'' +
+                ", zhuJiSalesList='" + zhuJiSalesList + '\'' +
+                '}';
+    }
 }
