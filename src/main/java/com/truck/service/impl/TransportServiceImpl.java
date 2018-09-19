@@ -73,7 +73,6 @@ public class TransportServiceImpl implements ITransportService {
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
 
         String url = "http://39.104.139.229:8086/manage/transport/add_transport.do";
-        logger.info("transport====={}",transport);
         ServerResponse errMsg = syncZhuJiTransport(url,transport);
         if (errMsg != null) return errMsg;
 
@@ -88,6 +87,7 @@ public class TransportServiceImpl implements ITransportService {
         StringBuffer sb = new StringBuffer();
         JSONObject json = JSONObject.fromObject(transport);
         sb.append("transport=").append(json.toString());
+        logger.info("配件transport===json======{}",json.toString());
         String str = Post4.connectionUrl(url, sb,null);
         JSONObject jsonObject = JSONObject.fromObject(str);
         if (str.equals("error")) {
