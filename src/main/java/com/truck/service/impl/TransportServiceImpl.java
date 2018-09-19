@@ -85,6 +85,7 @@ public class TransportServiceImpl implements ITransportService {
 
     private ServerResponse syncZhuJiTransport(String url,Transport transport) {
         StringBuffer sb = new StringBuffer();
+        transport.setCreateTime(null);
         JSONObject json = JSONObject.fromObject(transport);
         sb.append("transport=").append(json.toString());
         logger.info("配件transport===json======{}",json.toString());
