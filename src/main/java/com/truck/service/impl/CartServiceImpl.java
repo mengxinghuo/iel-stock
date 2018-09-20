@@ -175,7 +175,7 @@ public class CartServiceImpl implements ICartService {
 
 
     public ServerResponse getCustomerByNo(String repairNo){
-        String url = "http://39.104.139.229:8087/order/manage/get_customer.do";
+        String url = "http://47.100.240.34:8087/order/manage/get_customer.do";
         StringBuffer sb = new StringBuffer();
         sb.append("orderNo=").append(repairNo);
         String str = Post4.connectionUrl(url, sb,null);
