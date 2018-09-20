@@ -72,7 +72,7 @@ public class TransportServiceImpl implements ITransportService {
         }
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
 
-        String url = "http://47.100.240.34:8086/manage/transport/add_transport.do";
+        String url = "http://localhost:8086/manage/transport/add_transport.do";
         ServerResponse errMsg = syncZhuJiTransport(url,transport);
         if (errMsg != null) return errMsg;
 
@@ -133,7 +133,7 @@ public class TransportServiceImpl implements ITransportService {
                 return serverResponse;
             }
             //修改主机入库单
-            String url = "http://47.100.240.34:8086/manage/transport/update_entry.do";
+            String url = "http://localhost:8086/manage/transport/update_entry.do";
             StringBuffer sb = new StringBuffer();
             sb.append("oldDeclareNum=").append(search.getDeclareNum()).append("&declareNum=").append(transport.getDeclareNum()).append("&shipNum=").append(transport.getShipNum());
             String str = Post4.connectionUrl(url, sb,null);
@@ -151,7 +151,7 @@ public class TransportServiceImpl implements ITransportService {
             transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
         }
         //待定判断  修改判定  如果已经入库就不能进行修改了  对应的入库单
-        String url = "http://47.100.240.34:8086/manage/transport/update_transport.do";
+        String url = "http://localhost:8086/manage/transport/update_transport.do";
         ServerResponse errMsg = syncZhuJiTransport(url,transport);
         if (errMsg != null) return errMsg;
 
@@ -205,7 +205,7 @@ public class TransportServiceImpl implements ITransportService {
         }*/
         //待定判断
 
-        String url = "http://47.100.240.34:8086/manage/transport/del_transport.do";
+        String url = "http://localhost:8086/manage/transport/del_transport.do";
         StringBuffer sb = new StringBuffer();
         sb.append("id=").append(id);
         String str = Post4.connectionUrl(url, sb,null);
@@ -351,7 +351,7 @@ public class TransportServiceImpl implements ITransportService {
         entry.setTransportId(id);
         JSONObject json = JSONObject.fromObject(entry);
 
-        String url = "http://47.100.240.34:8086/manage/entry/create_entry.do";
+        String url = "http://localhost:8086/manage/entry/create_entry.do";
         StringBuffer sb = new StringBuffer();
         logger.info("entryStr======{}",json.toString());
         sb.append("entryStr=").append(json.toString());
@@ -387,7 +387,7 @@ public class TransportServiceImpl implements ITransportService {
     }
 
     public ServerResponse checkZhuJiEntryByDeclareNum(String declareNum){
-        String url = "http://47.100.240.34:8086/manage/transport/check_entry_by_declare_num.do";
+        String url = "http://localhost:8086/manage/transport/check_entry_by_declare_num.do";
         StringBuffer sb = new StringBuffer();
         sb.append("declareNum=").append(declareNum);
         String str = Post4.connectionUrl(url, sb,null);
