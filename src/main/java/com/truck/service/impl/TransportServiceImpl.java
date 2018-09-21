@@ -65,17 +65,17 @@ public class TransportServiceImpl implements ITransportService {
             return ServerResponse.createByErrorMessage("上传信息不足，请完善");
         }*/
 
-        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
-            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
-        }else{
-            transport.setCreateTime(new Date());
-        }
         transport.setStatus(Const.TransportStatusEnum.OVER_EXIT.getCode());
 
         String url = "http://localhost:8086/manage/transport/add_transport.do";
         ServerResponse errMsg = syncZhuJiTransport(url,transport);
         if (errMsg != null) return errMsg;
 
+        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
+        }else{
+            transport.setCreateTime(new Date());
+        }
         int resultCount = transportMapper.insertSelective(transport);
         if(resultCount > 0){
             return ServerResponse.createBySuccess("信息录入成功");
@@ -85,7 +85,6 @@ public class TransportServiceImpl implements ITransportService {
 
     private ServerResponse syncZhuJiTransport(String url,Transport transport) {
         StringBuffer sb = new StringBuffer();
-        transport.setCreateTime(null);
         JSONObject json = JSONObject.fromObject(transport);
         sb.append("transport=").append(json.toString());
         logger.info("配件transport===json======{}",json.toString());
@@ -221,6 +220,7 @@ public class TransportServiceImpl implements ITransportService {
 
         int resultCount = transportMapper.deleteByPrimaryKey(id);
         if(resultCount > 0){
+//            entryMapper.deleteByPrimaryKey();
             return ServerResponse.createBySuccess("删除成功");
         }
         return ServerResponse.createByErrorMessage("删除失败");
