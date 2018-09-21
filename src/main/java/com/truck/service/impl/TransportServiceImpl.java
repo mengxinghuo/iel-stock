@@ -146,14 +146,14 @@ public class TransportServiceImpl implements ITransportService {
             }
 
         }
-        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
-            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
-        }
         //待定判断  修改判定  如果已经入库就不能进行修改了  对应的入库单
         String url = "http://localhost:8086/manage/transport/update_transport.do";
         ServerResponse errMsg = syncZhuJiTransport(url,transport);
         if (errMsg != null) return errMsg;
 
+        if(!StringUtils.isEmpty(transport.getCreateTimeStr())){
+            transport.setCreateTime(DateTimeUtil.strToDate(transport.getCreateTimeStr(),"yyyy-MM-dd"));
+        }
         int resultCount = transportMapper.updateByPrimaryKeySelective(transport);
         if(resultCount > 0){
             Transport search = transportMapper.selectByPrimaryKey(transport.getId());
