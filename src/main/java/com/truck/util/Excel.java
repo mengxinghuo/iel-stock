@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.truck.pojo.EntryDetail;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -108,11 +110,13 @@ public class Excel {
     public static String checkExcel(String xlsPath,Integer status) throws IOException {
         String errorString = StringUtils.EMPTY;
         logger.info("xlsPath路径：{}",xlsPath);
+        System.out.println("xlsPath路径：{}"+xlsPath);
         FileInputStream fileIn = new FileInputStream(xlsPath);
         Workbook wb0 = new HSSFWorkbook(fileIn);
         Sheet sht0 = wb0.getSheetAt(0);
         for (Row r : sht0) {
-            if (r.getRowNum() < 2) {
+//            if (r.getRowNum() < 2 || isBlankRow(r)) {
+            if (r.getRowNum() < 2 ) {
                 continue;
             }
             for (int i = 0; i < 11; i++) {
@@ -124,6 +128,43 @@ public class Excel {
         fileIn.close();
         return errorString;
     }
+
+    public static boolean isBlankRow(HSSFRow row){
+        if(row == null) return true;
+        boolean result = true;
+        for(int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++){
+            HSSFCell cell = row.getCell(i, HSSFRow.RETURN_BLANK_AS_NULL);
+            String value = "";
+            if(cell != null){
+                switch (cell.getCellType()) {
+                    case Cell.CELL_TYPE_STRING:
+                        value = cell.getStringCellValue();
+                        break;
+                    case Cell.CELL_TYPE_NUMERIC:
+                        value = String.valueOf((int) cell.getNumericCellValue());
+                        break;
+                    case Cell.CELL_TYPE_BOOLEAN:
+                        value = String.valueOf(cell.getBooleanCellValue());
+                        break;
+                    case Cell.CELL_TYPE_FORMULA:
+                        value = String.valueOf(cell.getCellFormula());
+                        break;
+                    //case Cell.CELL_TYPE_BLANK:
+                    //    break;
+                    default:
+                        break;
+                }
+
+                if(!value.trim().equals("")){
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
 
     //判断某行某列有问题
     private static String CheckRowError(HSSFCell cell,int rowNum,int cell_num,Integer status){
@@ -184,7 +225,7 @@ public class Excel {
         try {
             // status 0  配件  1主机
             errorStr = checkExcel(path,1);
-            System.out.println(errorStr);
+            System.out.println("errorStr========="+errorStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -198,7 +239,6 @@ public class Excel {
             System.out.println(exportsLists.getCartType());
             System.out.println(exportsLists.getPartsName());
         }*/
-        System.out.println(errorStr);
     }
 
 }
