@@ -179,11 +179,12 @@ public class Excel {
 
     public static void main(String[] args) {
 //        String path =  "/Users/jianhe/Desktop/INLINE9_SP_MOR.xls";
-        String path =  "/Users/jianhe/Desktop/主机入库模板.xls";
+        String path =  "/Users/jianhezhang/Desktop/the_model_of_unit_storage_list.xls";
         String errorStr = null;
         try {
             // status 0  配件  1主机
             errorStr = checkExcel(path,1);
+            System.out.println(errorStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
