@@ -188,6 +188,22 @@ public class EntryServiceImpl implements IEntryService {
         return ServerResponse.createByErrorMessage("更新入库详情问题描述失败");
     }
 
+    public ServerResponse updateEntryDetailRemarks(EntryDetail entryDetails){
+        if (entryDetails.getId() == null || entryDetails.getRemarks()==null) {
+            return ServerResponse.createByErrorMessage("更新入库详情问题描述错误");
+        }
+        EntryDetail entryDetail = entryDetailMapper.selectByPrimaryKey(entryDetails.getId());
+        Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
+        if(Const.EntryStatusEnum.FINISH.getCode() == entry.getStatus()){
+            return ServerResponse.createByErrorMessage("该单已入库，不可编辑");
+        }
+        int rowCount = entryDetailMapper.updateByPrimaryKeySelective(entryDetails);
+        if(rowCount > 0){
+            return ServerResponse.createBySuccess("更新入库详情问题描述成功");
+        }
+        return ServerResponse.createByErrorMessage("更新入库详情问题描述失败");
+    }
+
     public EntryVo assembleEntry(Entry entry){
         EntryVo entryVo = new EntryVo();
         if(entry.getEntryNo() ==null)
@@ -251,6 +267,9 @@ public class EntryServiceImpl implements IEntryService {
         Entry entry = entryMapper.selectByPrimaryKey(entryDetail.getEntryId());
         entryDetailVo.setEntryStatus(entry.getStatus());
         entryDetailVo.setEntryStatusDesc(Const.EntryStatusEnum.codeOf(entry.getStatus()).getValue());
+        if(!StringUtils.isEmpty(entryDetail.getRemarks())){
+            entryDetailVo.setRemarks(entryDetail.getRemarks());
+        }
         return entryDetailVo;
     }
 }

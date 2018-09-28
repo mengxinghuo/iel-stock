@@ -50,6 +50,8 @@ public class EntryDetailVo {
     private Integer entryStatus;
     private String entryStatusDesc;
 
+    private String remarks;
+
     public String getEntryStatusDesc() {
         return entryStatusDesc;
     }
@@ -240,5 +242,13 @@ public class EntryDetailVo {
 
     public void setErrorDescs(String errorDescs) {
         this.errorDescs = errorDescs;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

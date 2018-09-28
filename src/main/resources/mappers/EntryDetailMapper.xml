@@ -24,12 +24,13 @@
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="ship_num" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="error_descs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="remarks" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, entry_id, customs_clearance, destination, package_no, serial_no, parts_no, parts_name, 
     parts_en_name, unit, purchase_num, purchase_price, sales_price, device_type, entry_position, 
-    inspect_status, entry_num, create_time, update_time,ship_num,error_descs
+    inspect_status, entry_num, create_time, update_time,ship_num,error_descs, remarks
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -48,14 +49,14 @@
       unit, purchase_num, purchase_price, 
       sales_price, device_type, entry_position, 
       inspect_status, entry_num, create_time, 
-      update_time,ship_num,error_descs)
+      update_time,ship_num,error_descs, remarks)
     values (#{id,jdbcType=INTEGER}, #{entryId,jdbcType=INTEGER}, #{customsClearance,jdbcType=VARCHAR}, 
       #{destination,jdbcType=VARCHAR}, #{packageNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR}, 
       #{partsNo,jdbcType=VARCHAR}, #{partsName,jdbcType=VARCHAR}, #{partsEnName,jdbcType=VARCHAR}, 
       #{unit,jdbcType=VARCHAR}, #{purchaseNum,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL}, 
       #{salesPrice,jdbcType=DECIMAL}, #{deviceType,jdbcType=VARCHAR}, #{entryPosition,jdbcType=INTEGER},
       #{inspectStatus,jdbcType=INTEGER}, #{entryNum,jdbcType=INTEGER}, now(),
-      now(),#{shipNum},#{errorDescs})
+      now(),#{shipNum},#{errorDescs}, #{remarks,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.truck.pojo.EntryDetail" >
     insert into iel_entry_detail
@@ -119,6 +120,9 @@
       <if test="errorDescs != null" >
         error_descs,
       </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -180,6 +184,9 @@
       <if test="errorDescs != null" >
         #{errorDescs},
       </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.truck.pojo.EntryDetail" >
@@ -240,6 +247,9 @@
       <if test="errorDescs != null" >
         error_descs=#{errorDescs},
       </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -261,7 +271,8 @@
       entry_position = #{entryPosition,jdbcType=INTEGER},
       inspect_status = #{inspectStatus,jdbcType=INTEGER},
       entry_num = #{entryNum,jdbcType=INTEGER},
-      update_time = now()
+      update_time = now(),
+      remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

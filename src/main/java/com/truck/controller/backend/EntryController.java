@@ -1,6 +1,7 @@
 package com.truck.controller.backend;
 
 import com.truck.common.ServerResponse;
+import com.truck.pojo.EntryDetail;
 import com.truck.service.IEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,5 +89,17 @@ public class EntryController {
                                                      @RequestParam(value = "typeCategoryId", required = false) Integer typeCategoryId,
                                                      @RequestParam(value = "errorDescs", required = false) String errorDescs){
         return iEntryService.updateEntryDetailIdOrDescs(entryDetailId,typeCategoryId,errorDescs);
+    }
+
+    /**
+     * 填写remarks
+     * param id
+     * param remarks
+     * @return
+     */
+    @RequestMapping("update_entry_detail_remarks.do")
+    @ResponseBody
+    public ServerResponse updateEntryDetailRemarks(EntryDetail entryDetail){
+        return iEntryService.updateEntryDetailRemarks(entryDetail);
     }
 }

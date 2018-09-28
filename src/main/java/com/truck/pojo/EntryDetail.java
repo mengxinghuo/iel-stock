@@ -46,7 +46,9 @@ public class EntryDetail {
 
     private String errorDescs;
 
-    public EntryDetail(Integer id, Integer entryId, String customsClearance, String destination, String packageNo, String serialNo, String partsNo, String partsName, String partsEnName, String unit, Integer purchaseNum, BigDecimal purchasePrice, BigDecimal salesPrice, String deviceType, Integer entryPosition, Integer inspectStatus, Integer entryNum, Date createTime, Date updateTime,String shipNum,String errorDescs) {
+    private String remarks;
+
+    public EntryDetail(Integer id, Integer entryId, String customsClearance, String destination, String packageNo, String serialNo, String partsNo, String partsName, String partsEnName, String unit, Integer purchaseNum, BigDecimal purchasePrice, BigDecimal salesPrice, String deviceType, Integer entryPosition, Integer inspectStatus, Integer entryNum, Date createTime, Date updateTime, String shipNum, String errorDescs, String remarks) {
         this.id = id;
         this.entryId = entryId;
         this.customsClearance = customsClearance;
@@ -68,10 +70,10 @@ public class EntryDetail {
         this.updateTime = updateTime;
         this.shipNum = shipNum;
         this.errorDescs = errorDescs;
+        this.remarks = remarks;
     }
 
     public EntryDetail() {
-        super();
     }
 
     public Integer getId() {
@@ -240,5 +242,13 @@ public class EntryDetail {
 
     public void setErrorDescs(String errorDescs) {
         this.errorDescs = errorDescs;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

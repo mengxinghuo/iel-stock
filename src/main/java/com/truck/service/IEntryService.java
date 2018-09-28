@@ -1,6 +1,7 @@
 package com.truck.service;
 
 import com.truck.common.ServerResponse;
+import com.truck.pojo.EntryDetail;
 
 public interface IEntryService {
 
@@ -15,5 +16,7 @@ public interface IEntryService {
     ServerResponse updateEntryDetailPosition(Integer entryDetailId,Integer entryPosition);
 
     ServerResponse updateEntryDetailIdOrDescs(Integer entryDetailId,Integer typeCategoryId,String errorDescs);
+
+    ServerResponse updateEntryDetailRemarks(EntryDetail entryDetail);
 
 }
